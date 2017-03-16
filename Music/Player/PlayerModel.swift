@@ -1,5 +1,5 @@
 //
-//  UIViewExtension.swift
+//  PlayerModel.swift
 //  Music
 //
 //  Created by Jack on 3/16/17.

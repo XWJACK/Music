@@ -13,6 +13,9 @@
 		044F1AE81E78F8DA00A8502A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AE21E78F8DA00A8502A /* ViewController.swift */; };
 		044F1AED1E78FA1200A8502A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 044F1AEC1E78FA1200A8502A /* Assets.xcassets */; };
 		044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AEE1E79256E00A8502A /* BlurEffect.swift */; };
+		04C2D0791E7A79A2001BDE73 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0781E7A79A2001BDE73 /* CacheManager.swift */; };
+		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
+		04C2D07F1E7A7C53001BDE73 /* CacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07E1E7A7C53001BDE73 /* CacheError.swift */; };
 		6E181F7E8F7051A0B03A3067 /* Pods_Music.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76CC542C45072C07C69D6C01 /* Pods_Music.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +28,9 @@
 		044F1AEC1E78FA1200A8502A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Supporting Files/Assets.xcassets"; sourceTree = "<group>"; };
 		044F1AEE1E79256E00A8502A /* BlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffect.swift; sourceTree = "<group>"; };
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04C2D0781E7A79A2001BDE73 /* CacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CacheManager.swift; path = Cache/CacheManager.swift; sourceTree = "<group>"; };
+		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
+		04C2D07E1E7A7C53001BDE73 /* CacheError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CacheError.swift; path = Error/CacheError.swift; sourceTree = "<group>"; };
 		76CC542C45072C07C69D6C01 /* Pods_Music.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Music.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DDB20514E13A8BA6E30D378 /* Pods-Music.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music.release.xcconfig"; path = "Pods/Target Support Files/Pods-Music/Pods-Music.release.xcconfig"; sourceTree = "<group>"; };
 		C364B99A93D31C6D4F567BCE /* Pods-Music.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Music/Pods-Music.debug.xcconfig"; sourceTree = "<group>"; };
@@ -47,6 +53,8 @@
 			children = (
 				044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */,
 				044F1AE21E78F8DA00A8502A /* ViewController.swift */,
+				04C2D07B1E7A7BDB001BDE73 /* Error */,
+				04C2D0761E7A7960001BDE73 /* Cache */,
 				044F1AE01E78F8DA00A8502A /* Universal */,
 				044F1ADE1E78F8DA00A8502A /* Player */,
 				044F1AE91E78F8F300A8502A /* Supporting Files */,
@@ -96,6 +104,23 @@
 				04C188461E66C6C900432954 /* Music.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		04C2D0761E7A7960001BDE73 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				04C2D0781E7A79A2001BDE73 /* CacheManager.swift */,
+			);
+			name = Cache;
+			sourceTree = "<group>";
+		};
+		04C2D07B1E7A7BDB001BDE73 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				04C2D07C1E7A7C3B001BDE73 /* Error.swift */,
+				04C2D07E1E7A7C53001BDE73 /* CacheError.swift */,
+			);
+			name = Error;
 			sourceTree = "<group>";
 		};
 		1E89E02F58C9DA01F3E3A0E7 /* Frameworks */ = {
@@ -237,9 +262,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				044F1AE61E78F8DA00A8502A /* Player.swift in Sources */,
+				04C2D07F1E7A7C53001BDE73 /* CacheError.swift in Sources */,
 				044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */,
 				044F1AE81E78F8DA00A8502A /* ViewController.swift in Sources */,
 				044F1AE71E78F8DA00A8502A /* Skin.swift in Sources */,
+				04C2D0791E7A79A2001BDE73 /* CacheManager.swift in Sources */,
+				04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */,
 				044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,7 +15,7 @@ class CacheManager {
     
     static let `default`: CacheManager = CacheManager()
     
-    private(set) var allCachesURL: [URL] = []
+    private(set) var allCachesFolder: [URL] = []
     
     private let cachesURL: URL?
     
@@ -31,4 +31,11 @@ class CacheManager {
     func delete(folder name: String, success: Success?, fail: Fail?) {
         
     }
+    
+    func deleteCache() {
+        
+    }
+}
+
+private extension URL {
 }

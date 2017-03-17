@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+enum PlayerStatus {
+    case playing
+    case paused
+}

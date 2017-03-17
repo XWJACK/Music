@@ -8,6 +8,32 @@
 
 import UIKit
 
-class MusicPlayerViewController: UIViewController {
+final class MusicPlayerViewController: UIViewController {
     
+    private let musicPlayerView = MusicPlayerView()
+    
+    override func loadView() {
+        view = musicPlayerView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
+
+// MARK: - MusicPlayerViewDelegate
+extension MusicPlayerViewController: MusicPlayerViewDelegate {
+    
+    func last() {
+        
+    }
+    func play() {
+        
+    }
+    func next() {
+        
+    }
+    func download() {
+        
+    }
 }

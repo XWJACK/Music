@@ -13,11 +13,11 @@ class LocalAudioPlayer: AVAudioPlayer {
     
 }
 
-protocol PlayerControl {
+@objc protocol AudioPlayerControl {
     func play() -> Bool
     func play(atTime time: TimeInterval) -> Bool
     func pause()
-    func stop()
+    @objc optional func stop()
     func last()
     func next()
 }

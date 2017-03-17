@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CacheManager {
+final class CacheManager {
     
     typealias Success = () -> ()
     typealias Fail = (CacheError) -> ()
@@ -16,7 +16,6 @@ class CacheManager {
     static let `default`: CacheManager = CacheManager()
     
     private(set) var allCachesFolder: [URL] = []
-    
     private let cachesURL: URL?
     
     private init() {

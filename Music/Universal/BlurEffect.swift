@@ -7,20 +7,37 @@
 //
 
 import UIKit
+import SnapKit
 
 /// BlurEffect for UIView
 protocol BlurEffect {
-    func addBlur(style: UIBlurEffectStyle)
+    
+    /// Add New Blur Effect
+    ///
+    /// - Parameter style: UIBlurEffectStyle
+    func addBlur(style: UIBlurEffectStyle) -> UIVisualEffectView
+    
+    /// Remove Blur from super view
     func removeBlur()
-    /// Setting the alpha to less than 1 on the visual effect view or any of its superviews causes many effects to look incorrect or not show up at all.
+    
+    /// Adjust Blur Effective by alpha
+    ///
+    /// Setting the alpha to less than 1 on the visual effect view
+    /// or any of its superviews causes many effects to look incorrect or not show up at all.
+    ///
+    /// - Parameter alpha: Alpha in the range 0.0 to 1.0
     func adjustBlur(alpha: CGFloat)
 }
 
 extension BlurEffect where Self: UIView {
     
-    func addBlur(style: UIBlurEffectStyle = .dark) {
+    @discardableResult
+    func addBlur(style: UIBlurEffectStyle = .dark) -> UIVisualEffectView {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: style))
         addSubview(effectView)
+        
+//        effectView.snpEdges()
+        return effectView
     }
     
     func removeBlur() {

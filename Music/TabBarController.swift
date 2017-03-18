@@ -12,6 +12,12 @@ class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let musicPlayerController = UINavigationController(rootViewController: MusicPlayerViewController())
+
+        let item = UITabBarItem(title: "播放器", image: nil, selectedImage: nil)
+        musicPlayerController.tabBarItem = item
+        
+        viewControllers = [musicPlayerController]
     }
 
     override func didReceiveMemoryWarning() {

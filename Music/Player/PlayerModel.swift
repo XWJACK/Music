@@ -12,3 +12,9 @@ enum PlayerStatus {
     case playing
     case paused
 }
+
+import Skin
+
+enum Skin: UIColorPicker {
+    case playerBackgroundColor
+}

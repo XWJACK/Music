@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Skin
 
 @objc protocol MusicPlayerViewDelegate: MusicPlayerDisplayViewDelegate, MusicPlayerActionViewDelegate, MusicPlayerControlViewDelegate {
     
@@ -32,7 +33,7 @@ final class MusicPlayerView: UIView, BlurEffect {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundImage.contentMode = .scaleAspectFill
+        backgroundImage.contentMode = .scaleAspectFill        
         
         addSubview(backgroundImage)
         effectView = addBlur()

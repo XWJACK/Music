@@ -12,32 +12,30 @@ extension Notification.Name {
     static let ChangeSkin: Notification.Name = Notification.Name.init("ChangeSkin")
 }
 
-@objc protocol Skin {
-    func addSkin()
-    func removeSkin()
-    @objc func updateSkin()
+public protocol SkinParse {
+    func parse() -> SkinPicker
 }
 
-extension Skin where Self: UIView {
-    func addSkin() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateSkin), name: .ChangeSkin, object: nil)
-    }
-    func removeSkin() {
-        NotificationCenter.default.removeObserver(self, name: .ChangeSkin, object: nil)
-    }
-}
-
-class SkinManager {
+public class SkinManager<T: SkinPicker> {
     
-    var skins: [String: String] = [:]
+    typealias SkinBlock = (T) -> ()
     
-    var currentSkin: String = ""
+//    public static let `default`: SkinManager = SkinManager()
     
-    func searchSkin() {
+    public internal(set) var skins: [String: String] = [:]
+    public internal(set) var currentSkin: String = ""
+    
+    var skinBlocks: [String: SkinBlock] = [:]
+    
+    public func registerSkin() {
         
     }
     
-    func changeSkin(by index: Int) {
+    public func changeSkin(by index: Int) {
         NotificationCenter.default.post(name: .ChangeSkin, object: nil, userInfo: nil)
+    }
+    
+    func addSkin(_ identifity: String, with objc: @escaping SkinBlock) {
+        skinBlocks[identifity] = objc
     }
 }

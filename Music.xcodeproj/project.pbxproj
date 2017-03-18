@@ -16,6 +16,9 @@
 		0452BCD41E7B793500DF91A5 /* Skin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0452BCCD1E7B793500DF91A5 /* Skin.framework */; };
 		0452BCD51E7B793500DF91A5 /* Skin.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0452BCCD1E7B793500DF91A5 /* Skin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0452BCDC1E7B799A00DF91A5 /* Skin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0452BCDB1E7B799A00DF91A5 /* Skin.swift */; };
+		0452BCDE1E7B7D1100DF91A5 /* SkinNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0452BCDD1E7B7D1100DF91A5 /* SkinNameSpace.swift */; };
+		0452BCE11E7BC73800DF91A5 /* UIViewSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0452BCE01E7BC73800DF91A5 /* UIViewSkin.swift */; };
+		0452BCE41E7BC7D100DF91A5 /* UIColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0452BCE31E7BC7D100DF91A5 /* UIColorPicker.swift */; };
 		04C2D0791E7A79A2001BDE73 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0781E7A79A2001BDE73 /* CacheManager.swift */; };
 		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
 		04C2D07F1E7A7C53001BDE73 /* CacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07E1E7A7C53001BDE73 /* CacheError.swift */; };
@@ -63,6 +66,9 @@
 		0452BCCF1E7B793500DF91A5 /* Skin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skin.h; sourceTree = "<group>"; };
 		0452BCD01E7B793500DF91A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0452BCDB1E7B799A00DF91A5 /* Skin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skin.swift; sourceTree = "<group>"; };
+		0452BCDD1E7B7D1100DF91A5 /* SkinNameSpace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkinNameSpace.swift; sourceTree = "<group>"; };
+		0452BCE01E7BC73800DF91A5 /* UIViewSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewSkin.swift; path = UIKit/UIViewSkin.swift; sourceTree = "<group>"; };
+		0452BCE31E7BC7D100DF91A5 /* UIColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIColorPicker.swift; path = Pickers/UIColorPicker.swift; sourceTree = "<group>"; };
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C2D0781E7A79A2001BDE73 /* CacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CacheManager.swift; path = Cache/CacheManager.swift; sourceTree = "<group>"; };
 		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
@@ -146,6 +152,9 @@
 			isa = PBXGroup;
 			children = (
 				0452BCDB1E7B799A00DF91A5 /* Skin.swift */,
+				0452BCDD1E7B7D1100DF91A5 /* SkinNameSpace.swift */,
+				0452BCE21E7BC7A400DF91A5 /* Pickers */,
+				0452BCDF1E7BC70E00DF91A5 /* UIKit */,
 				0452BCDA1E7B794900DF91A5 /* Supporting Files */,
 			);
 			path = Skin;
@@ -158,6 +167,22 @@
 				0452BCD01E7B793500DF91A5 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0452BCDF1E7BC70E00DF91A5 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				0452BCE01E7BC73800DF91A5 /* UIViewSkin.swift */,
+			);
+			name = UIKit;
+			sourceTree = "<group>";
+		};
+		0452BCE21E7BC7A400DF91A5 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				0452BCE31E7BC7D100DF91A5 /* UIColorPicker.swift */,
+			);
+			name = Pickers;
 			sourceTree = "<group>";
 		};
 		04C1883D1E66C6C900432954 = {
@@ -310,6 +335,7 @@
 					};
 					04C188451E66C6C900432954 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = AWFM3K5AG4;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -405,6 +431,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0452BCDC1E7B799A00DF91A5 /* Skin.swift in Sources */,
+				0452BCE41E7BC7D100DF91A5 /* UIColorPicker.swift in Sources */,
+				0452BCE11E7BC73800DF91A5 /* UIViewSkin.swift in Sources */,
+				0452BCDE1E7B7D1100DF91A5 /* SkinNameSpace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,13 +619,14 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AWFM3K5AG4;
 				INFOPLIST_FILE = "Music/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jack.Music;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xwjack.Music;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -607,13 +637,14 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AWFM3K5AG4;
 				INFOPLIST_FILE = "Music/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jack.Music;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xwjack.Music;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

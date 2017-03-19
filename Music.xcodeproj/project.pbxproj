@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040FF9321E7E91AD002F2FEE /* ResourcesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040FF9311E7E91AD002F2FEE /* ResourcesManager.swift */; };
+		040FF9361E7E9434002F2FEE /* LocalAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040FF9351E7E9434002F2FEE /* LocalAudioPlayer.swift */; };
 		044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */; };
 		044F1AE61E78F8DA00A8502A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1ADF1E78F8DA00A8502A /* Player.swift */; };
 		044F1AE81E78F8DA00A8502A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AE21E78F8DA00A8502A /* TabBarController.swift */; };
@@ -56,6 +58,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		040FF9311E7E91AD002F2FEE /* ResourcesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourcesManager.swift; sourceTree = "<group>"; };
+		040FF9351E7E9434002F2FEE /* LocalAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalAudioPlayer.swift; path = AudioPlayers/LocalAudioPlayer.swift; sourceTree = "<group>"; };
 		044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		044F1ADF1E78F8DA00A8502A /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		044F1AE21E78F8DA00A8502A /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -104,6 +108,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040FF9341E7E940D002F2FEE /* AudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				040FF9351E7E9434002F2FEE /* LocalAudioPlayer.swift */,
+			);
+			name = AudioPlayer;
+			sourceTree = "<group>";
+		};
 		044F1ADA1E78F8DA00A8502A /* Music */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +135,7 @@
 			children = (
 				044F1ADF1E78F8DA00A8502A /* Player.swift */,
 				04EB6C851E7A95B700A76240 /* PlayerModel.swift */,
+				040FF9341E7E940D002F2FEE /* AudioPlayer */,
 				04C2D0801E7A8492001BDE73 /* Views */,
 				04C2D0811E7A8498001BDE73 /* ViewControllers */,
 			);
@@ -135,6 +148,7 @@
 				04EB6C811E7A884A00A76240 /* Extension */,
 				044F1AEE1E79256E00A8502A /* BlurEffect.swift */,
 				04EB6C8B1E7AA10200A76240 /* Gesture.swift */,
+				040FF9311E7E91AD002F2FEE /* ResourcesManager.swift */,
 			);
 			path = Universal;
 			sourceTree = "<group>";
@@ -452,6 +466,8 @@
 				04C2D0851E7A859E001BDE73 /* MusicPlayerView.swift in Sources */,
 				04C2D0791E7A79A2001BDE73 /* CacheManager.swift in Sources */,
 				04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */,
+				040FF9361E7E9434002F2FEE /* LocalAudioPlayer.swift in Sources */,
+				040FF9321E7E91AD002F2FEE /* ResourcesManager.swift in Sources */,
 				04C2D0831E7A84F3001BDE73 /* MusicPlayerViewController.swift in Sources */,
 				044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */,
 			);
@@ -658,6 +674,7 @@
 				0452BCD71E7B793500DF91A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04C188411E66C6C900432954 /* Build configuration list for PBXProject "Music" */ = {
 			isa = XCConfigurationList;

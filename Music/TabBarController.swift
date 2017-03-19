@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let musicPlayerController = UINavigationController(rootViewController: MusicPlayerViewController())
+        let musicPlayerController = UINavigationController(rootViewController: MusicPlayerViewController<LocalAudioPlayer>())
 
         let item = UITabBarItem(title: "播放器", image: nil, selectedImage: nil)
         musicPlayerController.tabBarItem = item

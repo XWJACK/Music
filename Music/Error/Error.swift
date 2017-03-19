@@ -8,6 +8,22 @@
 
 import Foundation
 
+enum MusicError: Error {
+    
+    enum ResourcesError {
+        case invaliedURL
+    }
+    
+    enum PlayerError {
+        case seekError
+    }
+    
+    case resourcesError(ResourcesError)
+    case playerError(PlayerError)
+}
+
+
+
 enum FileError {
     case fileExist
     case fileNotExist
@@ -15,3 +31,4 @@ enum FileError {
     case floderNotExist
     case floderIsNotEmpty
 }
+

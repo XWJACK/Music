@@ -8,9 +8,11 @@
 
 import UIKit
 
-final class MusicPlayerViewController: UIViewController {
+final class MusicPlayerViewController<Player: AudioPlayer>: UIViewController, MusicPlayerViewDelegate {
     
     private let musicPlayerView = MusicPlayerView()
+    private var player: Player?
+//    private let resourcesManager
     
     override func loadView() {
         view = musicPlayerView
@@ -19,20 +21,19 @@ final class MusicPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-}
-
-// MARK: - MusicPlayerViewDelegate
-extension MusicPlayerViewController: MusicPlayerViewDelegate {
     
     func last() {
         
     }
+    
     func play() {
-        
+//        player?.play(with: <#T##AudioPlayerResourcesConvertible#>)
     }
+    
     func next() {
         
     }
+    
     func download() {
         
     }

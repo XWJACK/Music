@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+protocol AudioPlayerResourcesConvertible {
+    func asResources() throws -> URL
+}
+
+extension URL: AudioPlayerResourcesConvertible {
+    func asResources() throws -> URL { return self }
+}
+
+extension String: AudioPlayerResourcesConvertible {
+    func asResources() throws -> URL {
+        guard let url = URL(string: self) else { throw MusicError.resourcesError(.invaliedURL) }
+        return url
+    }
+}

@@ -9,15 +9,15 @@
 import Foundation
 import AVFoundation
 
-class LocalAudioPlayer: AVAudioPlayer {
-    
+protocol AudioPlayer: AudioPlayerControl {
+    init()
 }
 
-@objc protocol AudioPlayerControl {
-    func play() -> Bool
-    func play(atTime time: TimeInterval) -> Bool
+protocol AudioPlayerControl {
+    func play(with resources: AudioPlayerResourcesConvertible) throws
+    func seek(toTime time: TimeInterval) throws
     func pause()
-    @objc optional func stop()
-    func last()
-    func next()
+    func stop()
+//    func last()
+//    func next()
 }

@@ -23,7 +23,6 @@
 		0452BCE41E7BC7D100DF91A5 /* UIColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0452BCE31E7BC7D100DF91A5 /* UIColorPicker.swift */; };
 		04C2D0791E7A79A2001BDE73 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0781E7A79A2001BDE73 /* CacheManager.swift */; };
 		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
-		04C2D07F1E7A7C53001BDE73 /* CacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07E1E7A7C53001BDE73 /* CacheError.swift */; };
 		04C2D0831E7A84F3001BDE73 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0821E7A84F3001BDE73 /* MusicPlayerViewController.swift */; };
 		04C2D0851E7A859E001BDE73 /* MusicPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0841E7A859E001BDE73 /* MusicPlayerView.swift */; };
 		04EB6C861E7A95B700A76240 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB6C851E7A95B700A76240 /* PlayerModel.swift */; };
@@ -76,7 +75,6 @@
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C2D0781E7A79A2001BDE73 /* CacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CacheManager.swift; path = Cache/CacheManager.swift; sourceTree = "<group>"; };
 		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
-		04C2D07E1E7A7C53001BDE73 /* CacheError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CacheError.swift; path = Error/CacheError.swift; sourceTree = "<group>"; };
 		04C2D0821E7A84F3001BDE73 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerViewController.swift; path = ViewControllers/MusicPlayerViewController.swift; sourceTree = "<group>"; };
 		04C2D0841E7A859E001BDE73 /* MusicPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerView.swift; path = Views/MusicPlayerView.swift; sourceTree = "<group>"; };
 		04EB6C851E7A95B700A76240 /* PlayerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
@@ -231,7 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				04C2D07C1E7A7C3B001BDE73 /* Error.swift */,
-				04C2D07E1E7A7C53001BDE73 /* CacheError.swift */,
 			);
 			name = Error;
 			sourceTree = "<group>";
@@ -351,6 +348,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = AWFM3K5AG4;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -456,7 +458,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				044F1AE61E78F8DA00A8502A /* Player.swift in Sources */,
-				04C2D07F1E7A7C53001BDE73 /* CacheError.swift in Sources */,
 				044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */,
 				04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */,
 				044F1AE81E78F8DA00A8502A /* TabBarController.swift in Sources */,

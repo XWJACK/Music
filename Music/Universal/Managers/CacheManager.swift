@@ -11,7 +11,7 @@ import Foundation
 final class CacheManager {
     
     typealias Success = () -> ()
-    typealias Fail = (CacheError) -> ()
+    typealias Fail = (MusicError.CacheError) -> ()
     
     static let `default`: CacheManager = CacheManager()
     

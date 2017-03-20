@@ -22,3 +22,12 @@ extension String: AudioPlayerResourcesConvertible {
         return url
     }
 }
+
+class ResourcesManager {
+    static let `default` = ResourcesManager()
+    private var resources: [AudioPlayerResourcesConvertible] = []
+    
+    func add(searchPath path: String) {
+        
+    }
+}

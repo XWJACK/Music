@@ -11,15 +11,20 @@ import AVFoundation
 
 class LocalAudioPlayer: AVAudioPlayer, AudioPlayer {
     
-    override required init() {
-        super.init()
+    required convenience init(contentsOf resource: AudioPlayerResourcesConvertible, fileTypeHint utiString: String?) throws {
+        do {
+            let url = try resource.asResources()
+            try self.init(contentsOf: url, fileTypeHint: utiString)
+        } catch {
+            throw error
+        }
     }
     
     func seek(toTime time: TimeInterval) throws {
         if !play(atTime: time) { throw MusicError.playerError(.seekError) }
     }
-
-    func play(with resources: AudioPlayerResourcesConvertible) throws {
-        
+    
+    @objc(AudioPlayer) func play() {
+        super.play()
     }
 }

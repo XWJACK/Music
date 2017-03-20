@@ -15,20 +15,23 @@ enum MusicError: Error {
     }
     
     enum PlayerError {
+        case playError(ResourcesError)
         case seekError
+    }
+    
+    enum FileError {
+        case fileExist
+        case fileNotExist
+        case floderExist
+        case floderNotExist
+        case floderIsNotEmpty
+    }
+    
+    enum CacheError {
+        case created(FileError)
+        case deleted(FileError)
     }
     
     case resourcesError(ResourcesError)
     case playerError(PlayerError)
 }
-
-
-
-enum FileError {
-    case fileExist
-    case fileNotExist
-    case floderExist
-    case floderNotExist
-    case floderIsNotEmpty
-}
-

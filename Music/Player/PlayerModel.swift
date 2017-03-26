@@ -8,7 +8,12 @@
 
 import Foundation
 
-enum PlayerStatus {
+enum PlayerStatus: Int {
     case playing
     case paused
+}
+
+enum LovedStatus: Int {
+    case normal
+    case loved
 }

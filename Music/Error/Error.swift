@@ -16,7 +16,6 @@ enum MusicError: Error {
     
     enum PlayerError {
         case playError(ResourcesError)
-        case seekError
     }
     
     enum FileError {

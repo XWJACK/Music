@@ -1,15 +1,15 @@
 PODS:
+  - Reveal-SDK (4)
   - SnapKit (3.0.2)
-  - StreamingKit (0.1.29)
 
 DEPENDENCIES:
-  - SnapKit (~> 3.0.2)
-  - StreamingKit
+  - Reveal-SDK (~> 4)
+  - SnapKit
 
 SPEC CHECKSUMS:
+  Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
-  StreamingKit: c329785aaef3ac142d4ae388345bfe1ed23cfd45
 
-PODFILE CHECKSUM: 6f7960c5a82f43bc390fc5489b89ac61e7eef94a
+PODFILE CHECKSUM: 31d25ffe5066fd13ce30048650102622ff6f8f45
 
 COCOAPODS: 1.1.1

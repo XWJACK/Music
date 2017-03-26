@@ -5,8 +5,9 @@ use_frameworks!
 
 target 'Music' do
 
-pod 'SnapKit', '~> 3.0.2'
-pod 'StreamingKit'
+pod 'SnapKit'
 
+#Debug
+pod 'Reveal-SDK', '~> 4', :configurations => ['Debug']
 end
 

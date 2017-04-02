@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		040FF9361E7E9434002F2FEE /* LocalAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040FF9351E7E9434002F2FEE /* LocalAudioPlayer.swift */; };
 		041164FC1E877D510095811E /* MusicPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041164FB1E877D510095811E /* MusicPlayerButton.swift */; };
+		041164FF1E87EA850095811E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041164FE1E87EA850095811E /* MainViewController.swift */; };
+		041165031E87F0830095811E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041165021E87F0830095811E /* TabBarController.swift */; };
+		041165051E87F2D80095811E /* MusicNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041165041E87F2D80095811E /* MusicNavigationViewController.swift */; };
 		044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */; };
 		044F1AE61E78F8DA00A8502A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1ADF1E78F8DA00A8502A /* Player.swift */; };
-		044F1AE81E78F8DA00A8502A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AE21E78F8DA00A8502A /* TabBarController.swift */; };
 		044F1AED1E78FA1200A8502A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 044F1AEC1E78FA1200A8502A /* Assets.xcassets */; };
 		044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AEE1E79256E00A8502A /* BlurEffect.swift */; };
 		0456B38A1E7F822800ECAC9F /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456B3881E7F822800ECAC9F /* CacheManager.swift */; };
@@ -44,9 +46,11 @@
 /* Begin PBXFileReference section */
 		040FF9351E7E9434002F2FEE /* LocalAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalAudioPlayer.swift; path = AudioPlayers/LocalAudioPlayer.swift; sourceTree = "<group>"; };
 		041164FB1E877D510095811E /* MusicPlayerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerButton.swift; path = Views/MusicPlayerButton.swift; sourceTree = "<group>"; };
+		041164FE1E87EA850095811E /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Modules/ViewControlles/MainViewController.swift; sourceTree = "<group>"; };
+		041165021E87F0830095811E /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = ViewControllers/TabBarController.swift; sourceTree = "<group>"; };
+		041165041E87F2D80095811E /* MusicNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicNavigationViewController.swift; path = ViewControllers/MusicNavigationViewController.swift; sourceTree = "<group>"; };
 		044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		044F1ADF1E78F8DA00A8502A /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		044F1AE21E78F8DA00A8502A /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		044F1AEA1E78F94B00A8502A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = "<group>"; };
 		044F1AEC1E78FA1200A8502A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Supporting Files/Assets.xcassets"; sourceTree = "<group>"; };
 		044F1AEE1E79256E00A8502A /* BlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffect.swift; sourceTree = "<group>"; };
@@ -88,11 +92,35 @@
 			name = AudioPlayer;
 			sourceTree = "<group>";
 		};
+		041164FD1E87EA5B0095811E /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				041165001E87EA8A0095811E /* ViewControllers */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		041165001E87EA8A0095811E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				041164FE1E87EA850095811E /* MainViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		041165011E87F0540095811E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				041165021E87F0830095811E /* TabBarController.swift */,
+				041165041E87F2D80095811E /* MusicNavigationViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		044F1ADA1E78F8DA00A8502A /* Music */ = {
 			isa = PBXGroup;
 			children = (
 				044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */,
-				044F1AE21E78F8DA00A8502A /* TabBarController.swift */,
 				04C2D07B1E7A7BDB001BDE73 /* Error */,
 				044F1AE01E78F8DA00A8502A /* Universal */,
 				044F1ADE1E78F8DA00A8502A /* Player */,
@@ -118,9 +146,10 @@
 		044F1AE01E78F8DA00A8502A /* Universal */ = {
 			isa = PBXGroup;
 			children = (
-				04EB6C811E7A884A00A76240 /* Extension */,
 				044F1AEE1E79256E00A8502A /* BlurEffect.swift */,
 				04EB6C8B1E7AA10200A76240 /* Gesture.swift */,
+				041165011E87F0540095811E /* ViewControllers */,
+				04EB6C811E7A884A00A76240 /* Extension */,
 				0456B3871E7F822800ECAC9F /* Managers */,
 			);
 			path = Universal;
@@ -147,6 +176,7 @@
 		04A6F0471E83B2CA00F2B5FC /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				041164FD1E87EA5B0095811E /* Main */,
 			);
 			name = Modules;
 			sourceTree = "<group>";
@@ -350,19 +380,21 @@
 			files = (
 				0456B38A1E7F822800ECAC9F /* CacheManager.swift in Sources */,
 				044F1AE61E78F8DA00A8502A /* Player.swift in Sources */,
+				041165051E87F2D80095811E /* MusicNavigationViewController.swift in Sources */,
 				044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */,
 				041164FC1E877D510095811E /* MusicPlayerButton.swift in Sources */,
 				04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */,
-				044F1AE81E78F8DA00A8502A /* TabBarController.swift in Sources */,
 				04EB6C861E7A95B700A76240 /* PlayerModel.swift in Sources */,
 				04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */,
 				04EB6C881E7A964900A76240 /* IntExtension.swift in Sources */,
 				04C2D0851E7A859E001BDE73 /* MusicPlayerView.swift in Sources */,
+				041165031E87F0830095811E /* TabBarController.swift in Sources */,
 				04E9B98D1E877A06009ED063 /* PlayerViewModel.swift in Sources */,
 				04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */,
 				040FF9361E7E9434002F2FEE /* LocalAudioPlayer.swift in Sources */,
 				04A6F04C1E83DE8700F2B5FC /* StreamAudioPlayer.swift in Sources */,
 				0456B38B1E7F822800ECAC9F /* ResourcesManager.swift in Sources */,
+				041164FF1E87EA850095811E /* MainViewController.swift in Sources */,
 				04C2D0831E7A84F3001BDE73 /* MusicPlayerViewController.swift in Sources */,
 				044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */,
 			);

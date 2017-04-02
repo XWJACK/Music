@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import SnapKit
 
 @objc protocol MusicPlayerViewDelegate: MusicPlayerDisplayViewDelegate, MusicPlayerActionViewDelegate, MusicPlayerControlViewDelegate {
-    
 }
 
 /// Music Player View
@@ -32,13 +32,28 @@ final class MusicPlayerView: UIView, BlurEffect {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundImage.contentMode = .scaleAspectFill        
+        backgroundImage.contentMode = .scaleAspectFill
         
         addSubview(backgroundImage)
         effectView = addBlur(style: .light)
         addSubview(displayView)
         addSubview(actionView)
         addSubview(controlView)
+        
+        displayView.snp.makeConstraints { (make) in
+            make.left.top.right.equalToSuperview()
+        }
+        actionView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(displayView.snp.bottom)
+            make.height.equalTo(56)
+        }
+        controlView.snp.makeConstraints { (make) in
+            make.top.equalTo(actionView.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(74)
+        }
     }
     
     override func layoutSubviews() {
@@ -113,6 +128,7 @@ private final class MusicPlayerActionView: UIView {
                                                       heightImage: #imageLiteral(resourceName: "player_button_love_press"))
         loveButton.lovedSources     = LovedButton.Bit(normalImage: #imageLiteral(resourceName: "player_button_loved"),
                                                       heightImage: #imageLiteral(resourceName: "player_button_loved_press"))
+        loveButton.status = .normal
         loveButton.addTarget(self, action: #selector(loved), for: .touchUpInside)
         
         downloadButton.addTarget(self, action: #selector(download), for: .touchUpInside)
@@ -164,6 +180,7 @@ private final class MusicPlayerControlView: UIView {
                                                         heightImage: #imageLiteral(resourceName: "player_button_play_press"))
         playButton.pauseSources = MusicPlayerButton.Bit(normalImage: #imageLiteral(resourceName: "player_button_pause"),
                                                         heightImage: #imageLiteral(resourceName: "player_button_pause_press"))
+        playButton.status = .paused
         playButton.addTarget(self, action: #selector(play), for: .touchUpInside)
         
         
@@ -174,6 +191,21 @@ private final class MusicPlayerControlView: UIView {
         addSubview(lastButton)
         addSubview(playButton)
         addSubview(nextButton)
+        
+        lastButton.snp.makeConstraints { (make) in
+            make.width.height.equalTo(30)
+            make.left.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        playButton.snp.makeConstraints { (make) in
+            make.width.height.equalTo(50)
+            make.center.equalToSuperview()
+        }
+        nextButton.snp.makeConstraints { (make) in
+            make.width.height.equalTo(30)
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -183,12 +215,12 @@ private final class MusicPlayerControlView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let buttonWidth = frame.size.width / 3
-        let buttonHeight = frame.size.height
-        
-        lastButton.frame = CGRect(x: 0,                 y: 0, width: buttonWidth, height: buttonHeight)
-        playButton.frame = CGRect(x: buttonWidth,       y: 0, width: buttonWidth, height: buttonHeight)
-        nextButton.frame = CGRect(x: buttonWidth * 2,   y: 0, width: buttonWidth, height: buttonHeight)
+//        let buttonWidth = frame.size.width / 3
+//        let buttonHeight = frame.size.height
+//        
+//        lastButton.frame = CGRect(x: 0,                 y: 0, width: buttonWidth, height: buttonHeight)
+//        playButton.frame = CGRect(x: buttonWidth,       y: 0, width: buttonWidth, height: buttonHeight)
+//        nextButton.frame = CGRect(x: buttonWidth * 2,   y: 0, width: buttonWidth, height: buttonHeight)
     }
     
     @objc private func last() {

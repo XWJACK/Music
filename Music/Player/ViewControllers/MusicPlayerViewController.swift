@@ -12,7 +12,6 @@ final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate
     
     private let musicPlayerView = MusicPlayerView()
     private var player: AudioPlayer?
-//    private let resourcesManager
     
     override func loadView() {
         view = musicPlayerView
@@ -27,7 +26,6 @@ final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate
     }
     
     func play() {
-//        player?.play(with: <#T##AudioPlayerResourcesConvertible#>)
     }
     
     func next() {

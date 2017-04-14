@@ -11,7 +11,8 @@ import Foundation
 enum MusicError: Error {
     
     enum ResourcesError {
-        case invaliedURL
+        case invalidURL
+        case invalidData
     }
     
     enum PlayerError {

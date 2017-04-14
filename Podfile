@@ -6,6 +6,7 @@ use_frameworks!
 target 'Music' do
 
 pod 'SnapKit'
+#pod 'PageKit', path: '/Users/Jack/Documents/Development/Personal/Framework/Swift/PageKit'
 
 #Debug
 pod 'Reveal-SDK', '~> 4', :configurations => ['Debug']

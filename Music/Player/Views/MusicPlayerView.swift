@@ -52,7 +52,6 @@ final class MusicPlayerView: UIView, BlurEffect {
             make.top.equalTo(actionView.snp.bottom)
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.height.equalTo(74)
         }
     }
     
@@ -109,6 +108,7 @@ private final class MusicPlayerDisplayView: UIView, Gesture {
     
     /// Loved button clicked
     @objc func loved()
+    
     /// Download button clicked
     @objc func download()
 }
@@ -118,19 +118,18 @@ private final class MusicPlayerActionView: UIView {
     
     weak var delegate: MusicPlayerActionViewDelegate?
     
-    private let loveButton      = LovedButton()
+    private let loveButton      = UIButton(type: .custom)
     private let downloadButton  = UIButton(type: .custom)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        loveButton.normalSources    = LovedButton.Bit(normalImage: #imageLiteral(resourceName: "player_button_love"),
-                                                      heightImage: #imageLiteral(resourceName: "player_button_love_press"))
-        loveButton.lovedSources     = LovedButton.Bit(normalImage: #imageLiteral(resourceName: "player_button_loved"),
-                                                      heightImage: #imageLiteral(resourceName: "player_button_loved_press"))
-        loveButton.status = .normal
+        loveButton.setImage(#imageLiteral(resourceName: "player_button_love"), for: .normal)
+        loveButton.setImage(#imageLiteral(resourceName: "player_button_loved"), for: .selected)
         loveButton.addTarget(self, action: #selector(loved), for: .touchUpInside)
         
+        downloadButton.setImage(#imageLiteral(resourceName: "player_button_download"), for: .normal)
+        downloadButton.setImage(#imageLiteral(resourceName: "player_button_downloaded"), for: .selected)
         downloadButton.addTarget(self, action: #selector(download), for: .touchUpInside)
     }
     
@@ -141,6 +140,7 @@ private final class MusicPlayerActionView: UIView {
     @objc private func loved() {
         
     }
+    
     @objc private func download() {
         delegate?.download()
     }
@@ -165,27 +165,20 @@ private final class MusicPlayerControlView: UIView {
     weak var delegate: MusicPlayerControlViewDelegate?
     
     private let lastButton = UIButton(type: .custom)
-    private let playButton = PlayButton()
+    private let playButton = UIButton(type: .custom)
     private let nextButton = UIButton(type: .custom)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         lastButton.setImage(#imageLiteral(resourceName: "player_button_last"), for: .normal)
-        lastButton.setImage(#imageLiteral(resourceName: "player_button_last_press"), for: .highlighted)
         lastButton.addTarget(self, action: #selector(last), for: .touchUpInside)
         
-        
-        playButton.playSources  = MusicPlayerButton.Bit(normalImage: #imageLiteral(resourceName: "player_button_play"),
-                                                        heightImage: #imageLiteral(resourceName: "player_button_play_press"))
-        playButton.pauseSources = MusicPlayerButton.Bit(normalImage: #imageLiteral(resourceName: "player_button_pause"),
-                                                        heightImage: #imageLiteral(resourceName: "player_button_pause_press"))
-        playButton.status = .paused
+        playButton.setImage(#imageLiteral(resourceName: "player_button_play"), for: .normal)
+        playButton.setImage(#imageLiteral(resourceName: "player_button_pause"), for: .selected)
         playButton.addTarget(self, action: #selector(play), for: .touchUpInside)
         
-        
         nextButton.setImage(#imageLiteral(resourceName: "player_button_next"), for: .normal)
-        nextButton.setImage(#imageLiteral(resourceName: "player_button_next_press"), for: .highlighted)
         nextButton.addTarget(self, action: #selector(next(sender:)), for: .touchUpInside)
         
         addSubview(lastButton)
@@ -193,34 +186,24 @@ private final class MusicPlayerControlView: UIView {
         addSubview(nextButton)
         
         lastButton.snp.makeConstraints { (make) in
-            make.width.height.equalTo(30)
-            make.left.equalToSuperview()
+            make.width.height.equalTo(40)
             make.centerY.equalToSuperview()
+            make.right.equalTo(playButton.snp.left).offset(-20)
         }
         playButton.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
+            make.top.bottom.equalToSuperview()
+            make.width.height.equalTo(80)
             make.center.equalToSuperview()
         }
         nextButton.snp.makeConstraints { (make) in
-            make.width.height.equalTo(30)
-            make.right.equalToSuperview()
+            make.width.height.equalTo(40)
             make.centerY.equalToSuperview()
+            make.left.equalTo(playButton.snp.right).offset(20)
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-//        let buttonWidth = frame.size.width / 3
-//        let buttonHeight = frame.size.height
-//        
-//        lastButton.frame = CGRect(x: 0,                 y: 0, width: buttonWidth, height: buttonHeight)
-//        playButton.frame = CGRect(x: buttonWidth,       y: 0, width: buttonWidth, height: buttonHeight)
-//        nextButton.frame = CGRect(x: buttonWidth * 2,   y: 0, width: buttonWidth, height: buttonHeight)
     }
     
     @objc private func last() {

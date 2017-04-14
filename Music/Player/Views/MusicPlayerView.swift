@@ -70,10 +70,10 @@ final class MusicPlayerView: UIView, BlurEffect {
 
 /// Delegate for Music Player Display
 @objc protocol MusicPlayerDisplayViewDelegate {
-    /// play last music
-    @objc func last()
+    
+    @objc func leftSwipe(sender: UISwipeGestureRecognizer)
     ///  play next music
-    @objc func next()
+    @objc func rightSwipe(sender: UISwipeGestureRecognizer)
 }
 
 /// Music Player Display View
@@ -93,11 +93,11 @@ private final class MusicPlayerDisplayView: UIView, Gesture {
     }
     
     @objc private func left(sender: UISwipeGestureRecognizer) {
-        delegate?.last()
+        delegate?.leftSwipe(sender: sender)
     }
     
     @objc private func right(sender: UISwipeGestureRecognizer) {
-        delegate?.next()
+        delegate?.rightSwipe(sender: sender)
     }
 }
 
@@ -107,10 +107,10 @@ private final class MusicPlayerDisplayView: UIView, Gesture {
 @objc protocol MusicPlayerActionViewDelegate {
     
     /// Loved button clicked
-    @objc func loved()
+    @objc func lovedClicked(sender: UIButton)
     
     /// Download button clicked
-    @objc func download()
+    @objc func downloadClicked(sender: UIButton)
 }
 
 /// Music Player Action View
@@ -126,23 +126,23 @@ private final class MusicPlayerActionView: UIView {
         
         loveButton.setImage(#imageLiteral(resourceName: "player_button_love"), for: .normal)
         loveButton.setImage(#imageLiteral(resourceName: "player_button_loved"), for: .selected)
-        loveButton.addTarget(self, action: #selector(loved), for: .touchUpInside)
+        loveButton.addTarget(self, action: #selector(lovedClicked(sender:)), for: .touchUpInside)
         
         downloadButton.setImage(#imageLiteral(resourceName: "player_button_download"), for: .normal)
         downloadButton.setImage(#imageLiteral(resourceName: "player_button_downloaded"), for: .selected)
-        downloadButton.addTarget(self, action: #selector(download), for: .touchUpInside)
+        downloadButton.addTarget(self, action: #selector(downloadClicked(sender:)), for: .touchUpInside)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func loved() {
+    @objc private func lovedClicked(sender: UIButton) {
         
     }
     
-    @objc private func download() {
-        delegate?.download()
+    @objc private func downloadClicked(sender: UIButton) {
+        delegate?.downloadClicked(sender: sender)
     }
 }
 
@@ -152,11 +152,11 @@ private final class MusicPlayerActionView: UIView {
 @objc protocol MusicPlayerControlViewDelegate {
     
     /// play last music
-    @objc func last()
+    @objc func lastButtonClicked(sender: UIButton)
     /// play or puse music
-    @objc func play()
+    @objc func playButtonClicked(sender: UIButton)
     ///  play next music
-    @objc func next()
+    @objc func nextButtonClicked(sender: UIButton)
 }
 
 /// Music Player Control View
@@ -172,14 +172,14 @@ private final class MusicPlayerControlView: UIView {
         super.init(frame: frame)
         
         lastButton.setImage(#imageLiteral(resourceName: "player_button_last"), for: .normal)
-        lastButton.addTarget(self, action: #selector(last), for: .touchUpInside)
+        lastButton.addTarget(self, action: #selector(lastButtonClicked(sender:)), for: .touchUpInside)
         
         playButton.setImage(#imageLiteral(resourceName: "player_button_play"), for: .normal)
         playButton.setImage(#imageLiteral(resourceName: "player_button_pause"), for: .selected)
-        playButton.addTarget(self, action: #selector(play), for: .touchUpInside)
+        playButton.addTarget(self, action: #selector(playButtonClicked(sender:)), for: .touchUpInside)
         
         nextButton.setImage(#imageLiteral(resourceName: "player_button_next"), for: .normal)
-        nextButton.addTarget(self, action: #selector(next(sender:)), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonClicked(sender:)), for: .touchUpInside)
         
         addSubview(lastButton)
         addSubview(playButton)
@@ -206,13 +206,13 @@ private final class MusicPlayerControlView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func last() {
-        delegate?.last()
+    @objc private func lastButtonClicked(sender: UIButton) {
+        delegate?.lastButtonClicked(sender: sender)
     }
-    @objc private func play() {
-        delegate?.play()
+    @objc private func playButtonClicked(sender: UIButton) {
+        delegate?.playButtonClicked(sender: sender)
     }
-    @objc private func next(sender: UIButton) {
-        delegate?.next()
+    @objc private func nextButtonClicked(sender: UIButton) {
+        delegate?.nextButtonClicked(sender: sender)
     }
 }

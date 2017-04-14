@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		040FF9361E7E9434002F2FEE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040FF9351E7E9434002F2FEE /* AudioPlayer.swift */; };
-		041164FC1E877D510095811E /* MusicPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041164FB1E877D510095811E /* MusicPlayerButton.swift */; };
 		041164FF1E87EA850095811E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041164FE1E87EA850095811E /* MainViewController.swift */; };
 		041165051E87F2D80095811E /* MusicNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041165041E87F2D80095811E /* MusicNavigationViewController.swift */; };
 		044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */; };
@@ -41,7 +40,6 @@
 
 /* Begin PBXFileReference section */
 		040FF9351E7E9434002F2FEE /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayer.swift; path = AudioPlayers/AudioPlayer.swift; sourceTree = "<group>"; };
-		041164FB1E877D510095811E /* MusicPlayerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerButton.swift; path = Views/MusicPlayerButton.swift; sourceTree = "<group>"; };
 		041164FE1E87EA850095811E /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Modules/ViewControlles/MainViewController.swift; sourceTree = "<group>"; };
 		041165041E87F2D80095811E /* MusicNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicNavigationViewController.swift; path = ViewControllers/MusicNavigationViewController.swift; sourceTree = "<group>"; };
 		044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -199,7 +197,6 @@
 			isa = PBXGroup;
 			children = (
 				04C2D0841E7A859E001BDE73 /* MusicPlayerView.swift */,
-				041164FB1E877D510095811E /* MusicPlayerButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -369,7 +366,6 @@
 				0456B38A1E7F822800ECAC9F /* MusicFileManager.swift in Sources */,
 				041165051E87F2D80095811E /* MusicNavigationViewController.swift in Sources */,
 				044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */,
-				041164FC1E877D510095811E /* MusicPlayerButton.swift in Sources */,
 				04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */,
 				04EB6C861E7A95B700A76240 /* PlayerModel.swift in Sources */,
 				04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */,

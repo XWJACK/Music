@@ -20,22 +20,29 @@ final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    func last() {
+
+
+    func leftSwipe(sender: UISwipeGestureRecognizer) {
+        
+    }
+    func rightSwipe(sender: UISwipeGestureRecognizer) {
         
     }
     
-    func play() {
+    func playButtonClicked(sender: UIButton) {
+        
     }
-    
-    func next() {
+    func lastButtonClicked(sender: UIButton) {
+        
+    }
+    func nextButtonClicked(sender: UIButton) {
         
     }
     
-    func loved() {
+    func lovedClicked(sender: UIButton) {
         
     }
-    func download() {
+    func downloadClicked(sender: UIButton) {
         
     }
 }

@@ -15,36 +15,50 @@ protocol BlurEffect {
     /// Add New Blur Effect
     ///
     /// - Parameter style: UIBlurEffectStyle
-    func addBlur(style: UIBlurEffectStyle) -> UIVisualEffectView
+    /// - Returns: UIVisualEffectView
+    func addBlurEffect(style: UIBlurEffectStyle) -> UIVisualEffectView
     
-    /// Remove Blur from super view
-    func removeBlur()
+    /// Add new vibarancy effect
+    ///
+    /// - Parameter style: UIBlurEffectStyle
+    /// - Returns: UIVisualEffectView
+    func addVibrancyEffect(style: UIBlurEffectStyle) -> UIVisualEffectView
     
-    /// Adjust Blur Effective by alpha
+    /// Remove Effect from super view if exist
+    func removeEffect()
+    
+    /// Adjust Effective by alpha
     ///
     /// Setting the alpha to less than 1 on the visual effect view
     /// or any of its superviews causes many effects to look incorrect or not show up at all.
     ///
     /// - Parameter alpha: Alpha in the range 0.0 to 1.0
-    func adjustBlur(alpha: CGFloat)
+    func adjustEffect(alpha: CGFloat)
 }
 
-extension BlurEffect where Self: UIView {
+extension UIView: BlurEffect {
     
     @discardableResult
-    func addBlur(style: UIBlurEffectStyle = .dark) -> UIVisualEffectView {
+    func addBlurEffect(style: UIBlurEffectStyle = .dark) -> UIVisualEffectView {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: style))
         addSubview(effectView)
         
-//        effectView.snpEdges()
         return effectView
     }
     
-    func removeBlur() {
+    func addVibrancyEffect(style: UIBlurEffectStyle = .dark) -> UIVisualEffectView {
+        
+        let effectView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: style)))
+        addSubview(effectView)
+        
+        return effectView
+    }
+    
+    func removeEffect() {
         subviews.filter{ $0.isKind(of: UIVisualEffectView.self) }.forEach{ $0.removeFromSuperview() }
     }
     
-    func adjustBlur(alpha: CGFloat) {
+    func adjustEffect(alpha: CGFloat) {
         subviews.filter{ $0.isKind(of: UIVisualEffectView.self) }.forEach{ $0.alpha = alpha }
     }
 }

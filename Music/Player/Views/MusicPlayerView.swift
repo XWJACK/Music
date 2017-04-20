@@ -13,7 +13,7 @@ import SnapKit
 }
 
 /// Music Player View
-final class MusicPlayerView: UIView, BlurEffect {
+final class MusicPlayerView: UIView {
     
     weak var delegate: MusicPlayerViewDelegate? {
         didSet {
@@ -33,9 +33,9 @@ final class MusicPlayerView: UIView, BlurEffect {
         super.init(frame: frame)
         
         backgroundImage.contentMode = .scaleAspectFill
+        effectView = addBlurEffect(style: .light)
         
         addSubview(backgroundImage)
-        effectView = addBlur(style: .light)
         addSubview(displayView)
         addSubview(actionView)
         addSubview(controlView)

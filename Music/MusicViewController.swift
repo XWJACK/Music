@@ -20,6 +20,7 @@ final class MusicViewController: UIViewController {
         container = Container(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         container.dataSource = self
         container.register(SearchViewController.self)
+        container.register(MusicPlayerViewController.self)
         container.isReuseEnable = false
         container.parentViewController = self
         view.addSubview(container)
@@ -44,7 +45,7 @@ extension MusicViewController: ContainerDataSource {
             guard let page = container.dequeueReusablePage(withIdentifier: SearchViewController.reuseIdentifier) as? SearchViewController else { return SearchViewController() }
             return page
         case 1:
-            guard let page = container.dequeueReusablePage(withIdentifier: SearchViewController.reuseIdentifier) as? SearchViewController else { return SearchViewController() }
+            guard let page = container.dequeueReusablePage(withIdentifier: MusicPlayerViewController.reuseIdentifier) as? MusicPlayerViewController else { return MusicPlayerViewController() }
             return page
         default: return UIView()
         }

@@ -11,8 +11,8 @@ import SnapKit
 
 final class SearchViewController: UIViewController {
     
-    private let searchBar = UISearchBar()
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,31 +23,12 @@ final class SearchViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        searchBar.searchBarStyle = .minimal
         searchBar.tintColor = .white
-        searchBar.returnKeyType = .search
-        searchBar.showsCancelButton = true
+
         if let searchField = searchBar.value(forKey: "searchField") as? UITextField {
             searchField.layer.cornerRadius = 14
             searchField.layer.masksToBounds = true
             searchField.textColor = .white
-        }
-        
-        let effectView = view.addBlurEffect(style: .light)
-        effectView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
-        effectView.addSubview(searchBar)
-        effectView.addSubview(tableView)
-        
-        searchBar.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
-        }
-        
-        tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(searchBar.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
         }
     }
 }

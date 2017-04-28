@@ -1,15 +1,37 @@
 PODS:
+  - PageKit (0.1.1)
   - Reveal-SDK (4)
   - SnapKit (3.0.2)
+  - Wave (0.1.0)
 
 DEPENDENCIES:
+  - PageKit (from `git@github.com:XWJACK/PageKit.git`, commit `8538ac0`)
   - Reveal-SDK (~> 4)
   - SnapKit
+  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `4d64562`)
+
+EXTERNAL SOURCES:
+  PageKit:
+    :commit: 8538ac0
+    :git: git@github.com:XWJACK/PageKit.git
+  Wave:
+    :commit: 4d64562
+    :git: git@github.com:XWJACK/Wave.git
+
+CHECKOUT OPTIONS:
+  PageKit:
+    :commit: 8538ac0
+    :git: git@github.com:XWJACK/PageKit.git
+  Wave:
+    :commit: 4d64562
+    :git: git@github.com:XWJACK/Wave.git
 
 SPEC CHECKSUMS:
+  PageKit: a3aa5403687a1c7a3608501597c0859eec43d160
   Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
+  Wave: 26f0e8b65d29d53202408b4dd997653f519dabe9
 
-PODFILE CHECKSUM: c0f0699e26f4a751e9843dc827cbb3585231cc88
+PODFILE CHECKSUM: 377020c026aa6426e360dc34d8601d01e3c8b020
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1

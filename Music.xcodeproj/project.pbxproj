@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		040FF9361E7E9434002F2FEE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040FF9351E7E9434002F2FEE /* AudioPlayer.swift */; };
 		041164FF1E87EA850095811E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041164FE1E87EA850095811E /* MainViewController.swift */; };
 		041165051E87F2D80095811E /* MusicNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041165041E87F2D80095811E /* MusicNavigationViewController.swift */; };
 		044F1AE31E78F8DA00A8502A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */; };
@@ -15,10 +14,7 @@
 		044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AEE1E79256E00A8502A /* BlurEffect.swift */; };
 		0456B38A1E7F822800ECAC9F /* MusicFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456B3881E7F822800ECAC9F /* MusicFileManager.swift */; };
 		046F78E31EA6FE6700A0D587 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F78E21EA6FE6700A0D587 /* SearchViewController.swift */; };
-		046F79211EA72DAE00A0D587 /* StreamAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F79201EA72DAE00A0D587 /* StreamAudioPlayer.swift */; };
 		047099641EA8AB1500857315 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047099631EA8AB1500857315 /* MusicViewController.swift */; };
-		0470996A1EA8AB7400857315 /* PageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0470995F1EA8AAC300857315 /* PageKit.framework */; };
-		0470996B1EA8AB7400857315 /* PageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0470995F1EA8AAC300857315 /* PageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
 		04C2D0831E7A84F3001BDE73 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0821E7A84F3001BDE73 /* MusicPlayerViewController.swift */; };
 		04C2D0851E7A859E001BDE73 /* MusicPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D0841E7A859E001BDE73 /* MusicPlayerView.swift */; };
@@ -30,30 +26,6 @@
 		6E181F7E8F7051A0B03A3067 /* Pods_Music.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76CC542C45072C07C69D6C01 /* Pods_Music.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0470995E1EA8AAC300857315 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 047099591EA8AAC300857315 /* PageKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0411A7DE1EA0C8D30029E19C;
-			remoteInfo = PageKit;
-		};
-		047099601EA8AAC300857315 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 047099591EA8AAC300857315 /* PageKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0411A7E71EA0C8D30029E19C;
-			remoteInfo = PageKitTests;
-		};
-		0470996C1EA8AB7400857315 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 047099591EA8AAC300857315 /* PageKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 0411A7DD1EA0C8D30029E19C;
-			remoteInfo = PageKit;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		0452BCD91E7B793500DF91A5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -61,7 +33,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0470996B1EA8AB7400857315 /* PageKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,7 +40,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		040FF9351E7E9434002F2FEE /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayer.swift; path = AudioPlayers/AudioPlayer.swift; sourceTree = "<group>"; };
 		041164FE1E87EA850095811E /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Modules/ViewControlles/MainViewController.swift; sourceTree = "<group>"; };
 		041165041E87F2D80095811E /* MusicNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicNavigationViewController.swift; path = ViewControllers/MusicNavigationViewController.swift; sourceTree = "<group>"; };
 		044F1ADB1E78F8DA00A8502A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,8 +48,6 @@
 		044F1AEE1E79256E00A8502A /* BlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffect.swift; sourceTree = "<group>"; };
 		0456B3881E7F822800ECAC9F /* MusicFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicFileManager.swift; sourceTree = "<group>"; };
 		046F78E21EA6FE6700A0D587 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Modules/ViewControlles/SearchViewController.swift; sourceTree = "<group>"; };
-		046F79201EA72DAE00A0D587 /* StreamAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StreamAudioPlayer.swift; path = AudioPlayers/StreamAudioPlayer.swift; sourceTree = "<group>"; };
-		047099591EA8AAC300857315 /* PageKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PageKit.xcodeproj; path = ../../../Framework/Swift/PageKit/PageKit.xcodeproj; sourceTree = "<group>"; };
 		047099631EA8AB1500857315 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
@@ -100,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0470996A1EA8AB7400857315 /* PageKit.framework in Frameworks */,
 				6E181F7E8F7051A0B03A3067 /* Pods_Music.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,15 +75,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		040FF9341E7E940D002F2FEE /* AudioPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				040FF9351E7E9434002F2FEE /* AudioPlayer.swift */,
-				046F79201EA72DAE00A0D587 /* StreamAudioPlayer.swift */,
-			);
-			name = AudioPlayer;
-			sourceTree = "<group>";
-		};
 		041164FD1E87EA5B0095811E /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,7 +118,6 @@
 			children = (
 				04EB6C851E7A95B700A76240 /* PlayerModel.swift */,
 				04E9B98C1E877A06009ED063 /* PlayerViewModel.swift */,
-				040FF9341E7E940D002F2FEE /* AudioPlayer */,
 				04C2D0801E7A8492001BDE73 /* Views */,
 				04C2D0811E7A8498001BDE73 /* ViewControllers */,
 			);
@@ -212,15 +169,6 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		0470995A1EA8AAC300857315 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0470995F1EA8AAC300857315 /* PageKit.framework */,
-				047099611EA8AAC300857315 /* PageKitTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		04A6F0471E83B2CA00F2B5FC /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -233,7 +181,6 @@
 		04C1883D1E66C6C900432954 = {
 			isa = PBXGroup;
 			children = (
-				047099591EA8AAC300857315 /* PageKit.xcodeproj */,
 				044F1ADA1E78F8DA00A8502A /* Music */,
 				04C188471E66C6C900432954 /* Products */,
 				70E8609C8C0066985CA3F73F /* Pods */,
@@ -317,7 +264,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				0470996D1EA8AB7400857315 /* PBXTargetDependency */,
 			);
 			name = Music;
 			productName = xMusic;
@@ -357,35 +303,12 @@
 			mainGroup = 04C1883D1E66C6C900432954;
 			productRefGroup = 04C188471E66C6C900432954 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 0470995A1EA8AAC300857315 /* Products */;
-					ProjectRef = 047099591EA8AAC300857315 /* PageKit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				04C188451E66C6C900432954 /* Music */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0470995F1EA8AAC300857315 /* PageKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = PageKit.framework;
-			remoteRef = 0470995E1EA8AAC300857315 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		047099611EA8AAC300857315 /* PageKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PageKitTests.xctest;
-			remoteRef = 047099601EA8AAC300857315 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		04C188441E66C6C900432954 /* Resources */ = {
@@ -411,7 +334,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		47C1BC2A5941D8A991159F0C /* [CP] Embed Pods Frameworks */ = {
@@ -463,23 +386,13 @@
 				04E9B98D1E877A06009ED063 /* PlayerViewModel.swift in Sources */,
 				04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */,
 				047099641EA8AB1500857315 /* MusicViewController.swift in Sources */,
-				040FF9361E7E9434002F2FEE /* AudioPlayer.swift in Sources */,
 				041164FF1E87EA850095811E /* MainViewController.swift in Sources */,
-				046F79211EA72DAE00A0D587 /* StreamAudioPlayer.swift in Sources */,
 				04C2D0831E7A84F3001BDE73 /* MusicPlayerViewController.swift in Sources */,
 				044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0470996D1EA8AB7400857315 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = PageKit;
-			targetProxy = 0470996C1EA8AB7400857315 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		04C188561E66C6C900432954 /* Debug */ = {

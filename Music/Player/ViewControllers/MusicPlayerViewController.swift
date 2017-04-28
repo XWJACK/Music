@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Wave
 
-final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate {
+final class MusicPlayerViewController: UIViewController {
     
     private let musicPlayerView = MusicPlayerView()
-    private var player: AudioPlayer?
+    private var player: StreamAudioPlayer? = nil
     
     override func loadView() {
         view = musicPlayerView
@@ -20,11 +21,19 @@ final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    fileprivate func createPlayer() {
+        player = StreamAudioPlayer()
+        player?.delegate = self
+    }
+}
 
-
+extension MusicPlayerViewController: MusicPlayerViewDelegate {
+    
     func leftSwipe(sender: UISwipeGestureRecognizer) {
         
     }
+    
     func rightSwipe(sender: UISwipeGestureRecognizer) {
         
     }
@@ -32,9 +41,11 @@ final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate
     func playButtonClicked(sender: UIButton) {
         
     }
+    
     func lastButtonClicked(sender: UIButton) {
         
     }
+    
     func nextButtonClicked(sender: UIButton) {
         
     }
@@ -42,7 +53,15 @@ final class MusicPlayerViewController: UIViewController, MusicPlayerViewDelegate
     func lovedClicked(sender: UIButton) {
         
     }
+    
     func downloadClicked(sender: UIButton) {
+        
+    }
+}
+
+extension MusicPlayerViewController: StreamAudioPlayerDelegate {
+    
+    func streamAudioPlayer(_ player: StreamAudioPlayer, parsedDuration duration: TimeInterval) {
         
     }
 }

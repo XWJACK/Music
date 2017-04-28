@@ -7,6 +7,8 @@ target 'Music' do
 
 pod 'SnapKit'
 #pod 'PageKit', path: '/Users/Jack/Documents/Development/Personal/Framework/Swift/PageKit'
+pod 'PageKit', :git => 'git@github.com:XWJACK/PageKit.git', :commit => '8538ac0'
+pod 'Wave', :git => 'git@github.com:XWJACK/Wave.git', :commit => '4d64562'
 
 #Debug
 pod 'Reveal-SDK', '~> 4', :configurations => ['Debug']

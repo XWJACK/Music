@@ -14,7 +14,7 @@ final class MusicTabBarController: UITabBarController {
         super.viewDidLoad()
         
 //        let musicList = UITabBarItem(title: "Music List", image: <#T##UIImage?#>, selectedImage: <#T##UIImage?#>)
-        let musicListViewController = MusicNavigationController(rootViewController: MusicListViewController.instanseFromStoryboard()!)
-        viewControllers = []
+//        let musicListViewController = MusicNavigationController(rootViewController: MusicListTableViewController.instanseFromStoryboard()!)
+//        viewControllers = []
     }
 }

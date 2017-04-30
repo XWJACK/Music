@@ -13,7 +13,7 @@
         <scene sceneID="AAv-c4-ZQA">
             <objects>
                 <navigationController id="5Tp-le-fv1" customClass="MusicNavigationController" customModule="Music" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gu6-Tf-3QY">
+                    <navigationBar key="navigationBar" alpha="0.69999999999999996" contentMode="scaleToFill" misplaced="YES" id="gu6-Tf-3QY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -23,7 +23,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YmT-7I-mHJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1874" y="-96"/>
+            <point key="canvasLocation" x="-999" y="-977"/>
         </scene>
         <!--Music Tab Bar Controller-->
         <scene sceneID="8bi-gM-PZo">
@@ -70,7 +70,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EGT-Wc-UbU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-41" y="-97"/>
+            <point key="canvasLocation" x="-1962" y="701"/>
         </scene>
     </scenes>
 </document>

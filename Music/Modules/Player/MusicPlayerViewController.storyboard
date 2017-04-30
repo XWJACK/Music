@@ -106,7 +106,7 @@
                                 <rect key="frame" x="0.0" y="65" width="320" height="295"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_cover" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-5a-IF7">
-                                        <rect key="frame" x="70" y="57.5" width="180" height="180"/>
+                                        <rect key="frame" x="70" y="58" width="180" height="180"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="fzG-5a-IF7" secondAttribute="height" multiplier="1:1" id="KGH-S0-7I6"/>
                                         </constraints>
@@ -124,15 +124,15 @@
                                 <rect key="frame" x="0.0" y="360" width="320" height="80"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBC-NB-0Nk">
-                                        <rect key="frame" x="10" y="20" width="40" height="40"/>
+                                        <rect key="frame" x="15" y="20" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="GTM-Jo-xZG"/>
                                             <constraint firstAttribute="width" constant="40" id="vQ6-Si-EO6"/>
                                         </constraints>
-                                        <state key="normal" image="player_button_love"/>
+                                        <state key="normal" image="player_control_love_dis"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Music Name Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fE4-kx-vCa">
-                                        <rect key="frame" x="60" y="14" width="200" height="25"/>
+                                        <rect key="frame" x="65" y="14" width="190" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="bhT-c8-Hd9"/>
                                         </constraints>
@@ -141,7 +141,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Siger Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tl0-TT-dkd">
-                                        <rect key="frame" x="60" y="43" width="200" height="20"/>
+                                        <rect key="frame" x="65" y="43" width="190" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="5zn-Ml-QAC"/>
                                         </constraints>
@@ -149,13 +149,13 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogJ-DY-Fph" userLabel="Download Button">
-                                        <rect key="frame" x="270" y="20" width="40" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogJ-DY-Fph" userLabel="Download Button" customClass="MusicPlayerDownloadButton" customModule="Music" customModuleProvider="target">
+                                        <rect key="frame" x="265" y="20" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="8MF-Hc-fVU"/>
                                             <constraint firstAttribute="width" constant="40" id="vrE-qx-bEH"/>
                                         </constraints>
-                                        <state key="normal" image="player_button_download"/>
+                                        <state key="normal" image="player_control_download_disable"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -165,10 +165,10 @@
                                     <constraint firstItem="ogJ-DY-Fph" firstAttribute="leading" secondItem="Tl0-TT-dkd" secondAttribute="trailing" constant="10" id="GvH-pX-Irn"/>
                                     <constraint firstItem="fE4-kx-vCa" firstAttribute="centerY" secondItem="eRD-h4-fXP" secondAttribute="centerY" constant="-13" id="VqH-hl-BbJ"/>
                                     <constraint firstItem="Tl0-TT-dkd" firstAttribute="top" secondItem="fE4-kx-vCa" secondAttribute="bottom" constant="4" id="WAw-he-DLf"/>
-                                    <constraint firstAttribute="trailing" secondItem="ogJ-DY-Fph" secondAttribute="trailing" constant="10" id="Yvs-sE-BWw"/>
+                                    <constraint firstAttribute="trailing" secondItem="ogJ-DY-Fph" secondAttribute="trailing" constant="15" id="Yvs-sE-BWw"/>
                                     <constraint firstAttribute="height" constant="80" id="cEI-rl-97O"/>
                                     <constraint firstItem="Tl0-TT-dkd" firstAttribute="leading" secondItem="nBC-NB-0Nk" secondAttribute="trailing" constant="10" id="fhx-j0-5l3"/>
-                                    <constraint firstItem="nBC-NB-0Nk" firstAttribute="leading" secondItem="eRD-h4-fXP" secondAttribute="leading" constant="10" id="iWY-AS-beL"/>
+                                    <constraint firstItem="nBC-NB-0Nk" firstAttribute="leading" secondItem="eRD-h4-fXP" secondAttribute="leading" constant="15" id="iWY-AS-beL"/>
                                     <constraint firstItem="nBC-NB-0Nk" firstAttribute="centerY" secondItem="eRD-h4-fXP" secondAttribute="centerY" id="k0C-hk-caR"/>
                                     <constraint firstItem="fE4-kx-vCa" firstAttribute="leading" secondItem="nBC-NB-0Nk" secondAttribute="trailing" constant="10" id="koK-A4-d6m"/>
                                 </constraints>
@@ -179,56 +179,56 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XkA-71-bxL">
                                         <rect key="frame" x="0.0" y="44" width="320" height="64"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nbv-ms-SBQ" userLabel="Cycle Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nbv-ms-SBQ" userLabel="Mode Button" customClass="MusicPlayerModeButton" customModule="Music" customModuleProvider="target">
                                                 <rect key="frame" x="10" y="7" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="WOg-dr-bAh"/>
                                                     <constraint firstAttribute="height" constant="50" id="grv-kT-WDc"/>
                                                 </constraints>
-                                                <state key="normal" image="player_button_one"/>
+                                                <state key="normal" image="player_control_model_single"/>
                                                 <connections>
-                                                    <action selector="cycleButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="JKU-44-SOd"/>
+                                                    <action selector="playModeButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="I8k-uA-qub"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zgg-wr-cOh">
-                                                <rect key="frame" x="76.5" y="16" width="32" height="32"/>
+                                                <rect key="frame" x="73" y="12" width="40" height="40"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="F8l-CT-zS9"/>
-                                                    <constraint firstAttribute="width" constant="32" id="scP-ig-Xfx"/>
+                                                    <constraint firstAttribute="height" constant="40" id="F8l-CT-zS9"/>
+                                                    <constraint firstAttribute="width" constant="40" id="scP-ig-Xfx"/>
                                                 </constraints>
-                                                <state key="normal" image="player_button_last"/>
+                                                <state key="normal" image="player_control_last"/>
                                                 <connections>
                                                     <action selector="lastButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="pz0-RI-qzc"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tuX-y5-JJt">
-                                                <rect key="frame" x="128.5" y="0.0" width="64" height="64"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tuX-y5-JJt" customClass="MusicPlayerControlButton" customModule="Music" customModuleProvider="target">
+                                                <rect key="frame" x="128" y="0.0" width="64" height="64"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="2ZX-8b-uKr"/>
                                                     <constraint firstAttribute="width" constant="64" id="Rin-3e-37N"/>
                                                 </constraints>
-                                                <state key="normal" image="player_button_play"/>
+                                                <state key="normal" image="player_control_play"/>
                                                 <connections>
-                                                    <action selector="controlButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="uNL-nF-cDK"/>
+                                                    <action selector="controlButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="Mvr-PV-fG2"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFV-g7-xwY">
-                                                <rect key="frame" x="212.5" y="16" width="32" height="32"/>
+                                                <rect key="frame" x="207" y="12" width="40" height="40"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="32" id="6Y7-o2-HgA"/>
+                                                    <constraint firstAttribute="width" constant="40" id="6Y7-o2-HgA"/>
                                                 </constraints>
-                                                <state key="normal" image="player_button_next"/>
+                                                <state key="normal" image="player_control_next"/>
                                                 <connections>
                                                     <action selector="nextButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="jTl-CK-57J"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wXY-17-pXR">
-                                                <rect key="frame" x="260" y="7.5" width="50" height="50"/>
+                                                <rect key="frame" x="260" y="7" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="7Ev-9a-v6G"/>
                                                     <constraint firstAttribute="width" constant="50" id="M20-j7-M8a"/>
                                                 </constraints>
-                                                <state key="normal" image="player_button_list"/>
+                                                <state key="normal" image="player_control_list"/>
                                                 <connections>
                                                     <action selector="listButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="5DC-US-mjX"/>
                                                 </connections>
@@ -239,13 +239,13 @@
                                             <constraint firstAttribute="height" constant="64" id="0Kb-yY-0fP"/>
                                             <constraint firstItem="Zgg-wr-cOh" firstAttribute="centerY" secondItem="XkA-71-bxL" secondAttribute="centerY" id="0ly-5w-UnE"/>
                                             <constraint firstItem="fFV-g7-xwY" firstAttribute="top" secondItem="Zgg-wr-cOh" secondAttribute="top" id="6bv-3q-amB"/>
-                                            <constraint firstItem="tuX-y5-JJt" firstAttribute="leading" secondItem="Zgg-wr-cOh" secondAttribute="trailing" constant="20" id="OQO-Xc-VGm"/>
+                                            <constraint firstItem="tuX-y5-JJt" firstAttribute="leading" secondItem="Zgg-wr-cOh" secondAttribute="trailing" constant="15" id="OQO-Xc-VGm"/>
                                             <constraint firstItem="tuX-y5-JJt" firstAttribute="centerY" secondItem="XkA-71-bxL" secondAttribute="centerY" id="Oh2-SI-lvp"/>
                                             <constraint firstItem="wXY-17-pXR" firstAttribute="centerY" secondItem="XkA-71-bxL" secondAttribute="centerY" id="Q0J-Gb-Uc1"/>
                                             <constraint firstAttribute="bottom" secondItem="tuX-y5-JJt" secondAttribute="bottom" id="YBo-2e-Xh2"/>
                                             <constraint firstItem="tuX-y5-JJt" firstAttribute="top" secondItem="XkA-71-bxL" secondAttribute="top" id="Zhw-Me-MGQ"/>
                                             <constraint firstItem="tuX-y5-JJt" firstAttribute="centerX" secondItem="XkA-71-bxL" secondAttribute="centerX" id="aP7-8D-ZBj"/>
-                                            <constraint firstItem="fFV-g7-xwY" firstAttribute="leading" secondItem="tuX-y5-JJt" secondAttribute="trailing" constant="20" id="bti-AX-OWm"/>
+                                            <constraint firstItem="fFV-g7-xwY" firstAttribute="leading" secondItem="tuX-y5-JJt" secondAttribute="trailing" constant="15" id="bti-AX-OWm"/>
                                             <constraint firstAttribute="trailing" secondItem="wXY-17-pXR" secondAttribute="trailing" constant="10" id="h6d-ci-BqQ"/>
                                             <constraint firstItem="fFV-g7-xwY" firstAttribute="bottom" secondItem="Zgg-wr-cOh" secondAttribute="bottom" id="nij-GD-jy6"/>
                                             <constraint firstItem="Nbv-ms-SBQ" firstAttribute="leading" secondItem="XkA-71-bxL" secondAttribute="leading" constant="10" id="uiq-uh-W6s"/>
@@ -336,32 +336,32 @@
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="Bwd-8r-12y" id="lvs-tz-nkt"/>
-                        <outlet property="controlButton" destination="tuX-y5-JJt" id="RBM-jA-m8i"/>
+                        <outlet property="controlButton" destination="tuX-y5-JJt" id="zx3-8N-mjX"/>
                         <outlet property="currentTimeLabel" destination="Hlb-s4-6cd" id="AcU-IH-yuc"/>
-                        <outlet property="cycleButton" destination="Nbv-ms-SBQ" id="Ilu-iR-I8I"/>
-                        <outlet property="downloadButton" destination="ogJ-DY-Fph" id="h0Y-es-d61"/>
+                        <outlet property="downloadButton" destination="ogJ-DY-Fph" id="L9B-DP-wi2"/>
                         <outlet property="durationTimeLabel" destination="2O5-yw-xLd" id="Ur6-vv-VWa"/>
                         <outlet property="lastButton" destination="Zgg-wr-cOh" id="Ft1-KY-RsK"/>
                         <outlet property="listButton" destination="wXY-17-pXR" id="HmB-oe-nve"/>
                         <outlet property="loveButton" destination="nBC-NB-0Nk" id="Cpw-wu-ezJ"/>
                         <outlet property="nextButton" destination="fFV-g7-xwY" id="ffb-cg-Jyw"/>
+                        <outlet property="playModeButton" destination="Nbv-ms-SBQ" id="nW8-r1-gkO"/>
                         <outlet property="timeSlider" destination="TUu-of-1Uc" id="iMR-Ig-DPf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uYm-qV-suX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="73" y="294"/>
+            <point key="canvasLocation" x="-156" y="311"/>
         </scene>
     </scenes>
     <resources>
         <image name="player_backgroundImage" width="320" height="480"/>
-        <image name="player_button_download" width="44" height="44"/>
-        <image name="player_button_last" width="70" height="70"/>
-        <image name="player_button_list" width="44" height="44"/>
-        <image name="player_button_love" width="64" height="64"/>
-        <image name="player_button_next" width="70" height="70"/>
-        <image name="player_button_one" width="44" height="44"/>
-        <image name="player_button_play" width="90" height="90"/>
+        <image name="player_control_download_disable" width="40" height="40"/>
+        <image name="player_control_last" width="49" height="49"/>
+        <image name="player_control_list" width="44" height="44"/>
+        <image name="player_control_love_dis" width="40" height="40"/>
+        <image name="player_control_model_single" width="44" height="44"/>
+        <image name="player_control_next" width="49" height="49"/>
+        <image name="player_control_play" width="83" height="83"/>
         <image name="player_cover" width="212" height="212"/>
     </resources>
 </document>

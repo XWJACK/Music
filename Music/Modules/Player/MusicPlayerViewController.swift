@@ -17,12 +17,13 @@ final class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var timeSlider: MusicPlayerSlider!
     @IBOutlet weak var durationTimeLabel: UILabel!
     
+    @IBOutlet weak var downloadButton: MusicPlayerDownloadButton!
     @IBOutlet weak var loveButton: UIButton!
-    @IBOutlet weak var downloadButton: UIButton!
     
-    @IBOutlet weak var cycleButton: UIButton!
+    @IBOutlet weak var playModeButton: MusicPlayerModeButton!
     @IBOutlet weak var lastButton: UIButton!
-    @IBOutlet weak var controlButton: UIButton!
+
+    @IBOutlet weak var controlButton: MusicPlayerControlButton!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var listButton: UIButton!
     
@@ -31,25 +32,18 @@ final class MusicPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loveButton.setImage(#imageLiteral(resourceName: "player_button_love"), for: .normal)
-//        loveButton.setImage(#imageLiteral(resourceName: "player_button_love_prs"), for: .highlighted)
-        loveButton.setImage(#imageLiteral(resourceName: "player_button_loved"), for: .selected)
-
+        downloadButton.mode = .disable
+        controlButton.mode = .paused
         
-        downloadButton.setImage(#imageLiteral(resourceName: "player_button_download"), for: .normal)
-//        downloadButton.setImage(#imageLiteral(resourceName: "player_button_downloaded_prs"), for: .highlighted)
-        downloadButton.setImage(#imageLiteral(resourceName: "player_button_downloaded"), for: .selected)
-        
-        controlButton.setImage(#imageLiteral(resourceName: "player_button_play"), for: .normal)
-        controlButton.setImage(#imageLiteral(resourceName: "player_button_pause"), for: .selected)
-
+        lastButton.setImage(#imageLiteral(resourceName: "player_control_last_press"), for: .highlighted)
+        nextButton.setImage(#imageLiteral(resourceName: "player_control_next_press"), for: .highlighted)
         
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider"), for: .normal)
         timeSlider.thumbImage(for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs"), for: .highlighted)
         
         
-        listButton.setImage(#imageLiteral(resourceName: "player_button_list_prs"), for: .highlighted)
+        listButton.setImage(#imageLiteral(resourceName: "player_control_list_press"), for: .highlighted)
 //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
 //        addSwipGesture(target: self, action: #selector(right(sender:)), direction: .right)
     }
@@ -59,12 +53,14 @@ final class MusicPlayerViewController: UIViewController {
         player?.delegate = self
     }
     
-    @IBAction func cycleButtonClicked(_ sender: UIButton) {
-        
+    @IBAction func playModeButtonClicked(_ sender: MusicPlayerModeButton) {
+        sender.changePlayMode()
     }
     
-    @IBAction func controlButtonClicked(_ sender: UIButton) {
-        
+    
+    @IBAction func controlButtonClicked(_ sender: MusicPlayerControlButton) {
+        if sender.mode == .paused { sender.mode = .playing }
+        else { sender.mode = .paused }
     }
     
     @IBAction func lastButtonClicked(_ sender: UIButton) {

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Music List View Controller-->
+        <scene sceneID="IFO-Ca-l74">
+            <objects>
+                <viewController storyboardIdentifier="MusicListViewController" id="TaQ-91-k66" customClass="MusicListViewController" customModule="Music" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wLk-lD-eYS"/>
+                        <viewControllerLayoutGuide type="bottom" id="nJQ-zq-BB7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YZy-7S-gd4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="XI5-x6-jEC">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nJQ-zq-BB7" firstAttribute="top" secondItem="XI5-x6-jEC" secondAttribute="bottom" id="92P-yQ-AIy"/>
+                            <constraint firstItem="XI5-x6-jEC" firstAttribute="top" secondItem="YZy-7S-gd4" secondAttribute="top" constant="64" id="KiX-5J-lQm"/>
+                            <constraint firstItem="XI5-x6-jEC" firstAttribute="leading" secondItem="YZy-7S-gd4" secondAttribute="leading" id="X8N-vV-gsY"/>
+                            <constraint firstAttribute="trailing" secondItem="XI5-x6-jEC" secondAttribute="trailing" id="aOj-n6-6H5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="XI5-x6-jEC" id="0kb-Ps-b5A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="53n-3I-5z3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1812" y="430"/>
+        </scene>
+    </scenes>
+</document>

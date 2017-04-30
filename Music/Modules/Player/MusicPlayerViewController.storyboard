@@ -228,6 +228,10 @@
                                                     <constraint firstAttribute="height" constant="50" id="7Ev-9a-v6G"/>
                                                     <constraint firstAttribute="width" constant="50" id="M20-j7-M8a"/>
                                                 </constraints>
+                                                <state key="normal" image="player_button_list"/>
+                                                <connections>
+                                                    <action selector="listButtonClicked:" destination="eVa-CY-Nae" eventType="touchUpInside" id="5DC-US-mjX"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -271,7 +275,7 @@
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="TUu-of-1Uc">
+                                            <slider opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="TUu-of-1Uc" customClass="MusicPlayerSlider" customModule="Music" customModuleProvider="target">
                                                 <rect key="frame" x="43" y="3" width="218" height="31"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -279,8 +283,8 @@
                                                 </constraints>
                                                 <color key="maximumTrackTintColor" red="1" green="1" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
-                                                    <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpOutside" id="4XL-M5-Cux"/>
-                                                    <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpInside" id="Wew-1n-ZUg"/>
+                                                    <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpInside" id="MXJ-TJ-fUe"/>
+                                                    <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpOutside" id="wtM-cg-zOM"/>
                                                 </connections>
                                             </slider>
                                         </subviews>
@@ -331,21 +335,17 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgroudImageView" destination="Bwd-8r-12y" id="e8O-Wn-xg3"/>
-                        <outlet property="backgroudView" destination="WPj-Te-9Dc" id="DC5-EB-1fZ"/>
-                        <outlet property="backgroundImageView" destination="Bwd-8r-12y" id="XZC-uw-BLt"/>
+                        <outlet property="backgroundImageView" destination="Bwd-8r-12y" id="lvs-tz-nkt"/>
                         <outlet property="controlButton" destination="tuX-y5-JJt" id="RBM-jA-m8i"/>
                         <outlet property="currentTimeLabel" destination="Hlb-s4-6cd" id="AcU-IH-yuc"/>
                         <outlet property="cycleButton" destination="Nbv-ms-SBQ" id="Ilu-iR-I8I"/>
-                        <outlet property="downloadButton" destination="ogJ-DY-Fph" id="i0I-Cb-jnG"/>
+                        <outlet property="downloadButton" destination="ogJ-DY-Fph" id="h0Y-es-d61"/>
                         <outlet property="durationTimeLabel" destination="2O5-yw-xLd" id="Ur6-vv-VWa"/>
                         <outlet property="lastButton" destination="Zgg-wr-cOh" id="Ft1-KY-RsK"/>
+                        <outlet property="listButton" destination="wXY-17-pXR" id="HmB-oe-nve"/>
                         <outlet property="loveButton" destination="nBC-NB-0Nk" id="Cpw-wu-ezJ"/>
-                        <outlet property="musicNameLabel" destination="fE4-kx-vCa" id="ka8-XI-GCZ"/>
-                        <outlet property="musicTitleLabel" destination="Rq8-nT-Xoq" id="pn3-Wc-NNs"/>
                         <outlet property="nextButton" destination="fFV-g7-xwY" id="ffb-cg-Jyw"/>
-                        <outlet property="singerLabel" destination="Tl0-TT-dkd" id="ct4-NA-Qm1"/>
-                        <outlet property="timeSlider" destination="TUu-of-1Uc" id="kXc-9G-6vu"/>
+                        <outlet property="timeSlider" destination="TUu-of-1Uc" id="iMR-Ig-DPf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uYm-qV-suX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -357,6 +357,7 @@
         <image name="player_backgroundImage" width="320" height="480"/>
         <image name="player_button_download" width="44" height="44"/>
         <image name="player_button_last" width="70" height="70"/>
+        <image name="player_button_list" width="44" height="44"/>
         <image name="player_button_love" width="64" height="64"/>
         <image name="player_button_next" width="70" height="70"/>
         <image name="player_button_one" width="44" height="44"/>

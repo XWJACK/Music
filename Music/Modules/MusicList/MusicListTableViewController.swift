@@ -1,5 +1,5 @@
 //
-//  MusicListViewController.swift
+//  MusicListTableViewController.swift
 //  Music
 //
 //  Created by Jack on 4/28/17.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class MusicListViewController: UIViewController {
-
+class MusicListTableViewController: UITableViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

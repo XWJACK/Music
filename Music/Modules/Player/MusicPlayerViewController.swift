@@ -45,6 +45,7 @@ final class MusicPlayerViewController: UIViewController {
 
         
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider"), for: .normal)
+        timeSlider.thumbImage(for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs"), for: .highlighted)
         
         

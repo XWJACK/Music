@@ -9,19 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Music Navigation Controller-->
-        <scene sceneID="Bl8-3g-sPH">
-            <objects>
-                <navigationController id="X8k-Rg-e5b" customClass="MusicNavigationController" customModule="Music" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gNZ-6f-3cE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WpU-j0-7Oe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2153" y="-237"/>
-        </scene>
         <!--Music Tab Bar Controller-->
         <scene sceneID="Ne6-8q-E4F">
             <objects>
@@ -35,7 +22,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EaF-JI-5Hh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1359" y="-237"/>
+            <point key="canvasLocation" x="-1156" y="-303"/>
         </scene>
     </scenes>
 </document>

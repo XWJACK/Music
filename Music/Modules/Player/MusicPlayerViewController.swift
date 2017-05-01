@@ -9,7 +9,7 @@
 import UIKit
 import Wave
 
-final class MusicPlayerViewController: UIViewController {
+final class MusicPlayerViewController: MusicViewController {
 
     @IBOutlet weak var backgroundImageView: UIImageView!
     

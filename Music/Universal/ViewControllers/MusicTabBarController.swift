@@ -24,14 +24,17 @@ final class MusicTabBarController: UITabBarController {
                                                image: #imageLiteral(resourceName: "tabBar_music"),
                                                selectedImage: #imageLiteral(resourceName: "tabBar_music_selected"))
         
-        let musicListTableViewController = MusicNavigationController(rootViewController: MusicListViewController.instanseFromStoryboard()!)
-        musicListTableViewController.tabBarItem = musicListTabBarItem
+        let musicSettingTabBarItem = UITabBarItem(title: "Setting",
+                                                  image: #imageLiteral(resourceName: "tabBar_setting"),
+                                                  selectedImage: #imageLiteral(resourceName: "tabBar_setting_selected"))
         
-        viewControllers = [musicListTableViewController]
-    }
-    
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        super.tabBar(tabBar, didSelect: item)
+        let musicListViewController = MusicNavigationController(rootViewController: MusicListViewController.instanseFromStoryboard()!)
+        let musicSettingViewController = MusicNavigationController(rootViewController: MusicSettingViewController.instanseFromStoryboard()!)
         
+        musicListViewController.tabBarItem = musicListTabBarItem
+        musicSettingViewController.tabBarItem = musicSettingTabBarItem
+        
+        viewControllers = [musicListViewController, musicSettingViewController]
     }
+
 }

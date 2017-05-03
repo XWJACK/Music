@@ -27,8 +27,9 @@ class MusicNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-//    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-//        super.pushViewController(viewController, animated: animated)
-//    }
+
+    func push(_ viewController: UIViewController, animated: Bool = true, hiddenTabBar: Bool = true) {
+        viewController.hidesBottomBarWhenPushed = hiddenTabBar
+        pushViewController(viewController, animated: animated)
+    }
 }

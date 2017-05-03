@@ -18,7 +18,7 @@ final class MusicPlayerViewController: MusicViewController {
     @IBOutlet weak var durationTimeLabel: UILabel!
     
     @IBOutlet weak var downloadButton: MusicPlayerDownloadButton!
-    @IBOutlet weak var loveButton: UIButton!
+    @IBOutlet weak var loveButton: MusicLoveButton!
     
     @IBOutlet weak var playModeButton: MusicPlayerModeButton!
     @IBOutlet weak var lastButton: UIButton!
@@ -42,12 +42,14 @@ final class MusicPlayerViewController: MusicViewController {
         timeSlider.thumbImage(for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs"), for: .highlighted)
         
-        
         listButton.setImage(#imageLiteral(resourceName: "player_control_list_press"), for: .highlighted)
 //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
 //        addSwipGesture(target: self, action: #selector(right(sender:)), direction: .right)
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
     fileprivate func createPlayer() {
         player = StreamAudioPlayer()
         player?.delegate = self
@@ -76,6 +78,15 @@ final class MusicPlayerViewController: MusicViewController {
     }
     
     @IBAction func listButtonClicked(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func loveButtonClicked(_ sender: MusicLoveButton) {
+        if sender.mode == .love { sender.mode = .loved }
+        else { sender.mode = .love }
+    }
+    
+    @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
         
     }
 }

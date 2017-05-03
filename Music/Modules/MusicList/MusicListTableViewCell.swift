@@ -42,7 +42,7 @@ class MusicListTableViewCell: MusicTableViewCell {
         musicLabel.font = .font18
         musicLabel.textColor = .white
         
-        detailLabel.font = .font14
+        detailLabel.font = .font10
         detailLabel.textColor = .white
         
         moreButton.setImage(UIImage(cgImage: #imageLiteral(resourceName: "list_cell_more").cgImage!, scale: UIScreen.main.scale, orientation: .left), for: .normal)

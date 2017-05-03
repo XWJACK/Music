@@ -8,27 +8,25 @@
 
 import Foundation
 
-/// 播放器状态
-///
-/// - playing: 正在播放
-/// - paused: 暂停
+/// Music Player Status
 enum MusicPlayerStatus {
     case playing
     case paused
 }
 
-enum LovedStatus: Int {
-    case normal
+/// Music Player Love Mode
+enum MusicPlayerLoveMode {
+    case love
     case loved
 }
 
-/// 音乐播放模式
+/// Music Player Play Mode
 enum MusicPlayerPlayMode {
     case single
     case order
     case random
 }
-/// 下载状态模式
+/// Music Player Download Mode
 enum MusicPlayerDownloadMode {
     case normal
     case downloaded

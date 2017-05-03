@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MusicnavigationBar: UIView {
+class MusicNavigationBar: UIView {
     
     var backButton: UIButton {
         didSet {
@@ -39,8 +39,7 @@ class MusicnavigationBar: UIView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(10)
+            make.center.equalToSuperview()
         }
         
         resetBack()
@@ -58,7 +57,7 @@ class MusicnavigationBar: UIView {
         
         backButton.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
-            make.centerY.equalToSuperview().offset(10)
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -69,7 +68,7 @@ class MusicnavigationBar: UIView {
         
         actionButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
-            make.centerY.equalToSuperview().offset(10)
+            make.centerY.equalToSuperview()
         }
     }
     

@@ -16,6 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = MusicTabBarController()
+        window?.makeKeyAndVisible()
+        
+        let attributesTabBarNormal = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.font10]
+        let attributesTabBarSelected = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.font10]
+        UITabBarItem.appearance().setTitleTextAttributes(attributesTabBarNormal, for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes(attributesTabBarSelected, for: .selected)
+        
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             UIApplication.shared.beginReceivingRemoteControlEvents()

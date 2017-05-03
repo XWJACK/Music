@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_backgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="JJ1-f0-ELp">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="716"/>
                             </imageView>
                             <visualEffectView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DvH-F7-ut6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -36,20 +36,21 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="nJQ-zq-BB7" firstAttribute="top" secondItem="XI5-x6-jEC" secondAttribute="bottom" id="92P-yQ-AIy"/>
-                            <constraint firstItem="DvH-F7-ut6" firstAttribute="width" secondItem="JJ1-f0-ELp" secondAttribute="width" id="CsX-1d-5s7"/>
-                            <constraint firstItem="DvH-F7-ut6" firstAttribute="height" secondItem="JJ1-f0-ELp" secondAttribute="height" id="Fz0-0b-Qxu"/>
-                            <constraint firstItem="XI5-x6-jEC" firstAttribute="top" secondItem="YZy-7S-gd4" secondAttribute="top" constant="64" id="KiX-5J-lQm"/>
-                            <constraint firstItem="XI5-x6-jEC" firstAttribute="leading" secondItem="YZy-7S-gd4" secondAttribute="leading" id="X8N-vV-gsY"/>
-                            <constraint firstAttribute="trailing" secondItem="XI5-x6-jEC" secondAttribute="trailing" id="aOj-n6-6H5"/>
-                            <constraint firstAttribute="trailing" secondItem="JJ1-f0-ELp" secondAttribute="trailing" id="f1L-TB-cfV"/>
-                            <constraint firstItem="nJQ-zq-BB7" firstAttribute="top" secondItem="JJ1-f0-ELp" secondAttribute="bottom" id="k5g-zy-pMx"/>
-                            <constraint firstItem="JJ1-f0-ELp" firstAttribute="leading" secondItem="YZy-7S-gd4" secondAttribute="leading" id="mZF-jp-92k"/>
-                            <constraint firstItem="JJ1-f0-ELp" firstAttribute="top" secondItem="YZy-7S-gd4" secondAttribute="top" id="mbw-Ly-gvl"/>
+                            <constraint firstItem="XI5-x6-jEC" firstAttribute="top" secondItem="YZy-7S-gd4" secondAttribute="top" constant="64" id="6Uc-mK-xgr"/>
+                            <constraint firstItem="JJ1-f0-ELp" firstAttribute="leading" secondItem="YZy-7S-gd4" secondAttribute="leading" id="ETX-1a-v2n"/>
+                            <constraint firstItem="nJQ-zq-BB7" firstAttribute="top" secondItem="XI5-x6-jEC" secondAttribute="bottom" id="F0F-tk-nh2"/>
+                            <constraint firstItem="DvH-F7-ut6" firstAttribute="width" secondItem="JJ1-f0-ELp" secondAttribute="width" id="FHA-Eh-9MI"/>
+                            <constraint firstItem="DvH-F7-ut6" firstAttribute="height" secondItem="JJ1-f0-ELp" secondAttribute="height" id="H5x-S3-uiL"/>
+                            <constraint firstItem="JJ1-f0-ELp" firstAttribute="top" secondItem="YZy-7S-gd4" secondAttribute="top" id="R1m-te-0iZ"/>
+                            <constraint firstAttribute="trailing" secondItem="XI5-x6-jEC" secondAttribute="trailing" id="fqT-XK-8Dd"/>
+                            <constraint firstAttribute="trailing" secondItem="JJ1-f0-ELp" secondAttribute="trailing" id="sGQ-yL-Glf"/>
+                            <constraint firstItem="XI5-x6-jEC" firstAttribute="leading" secondItem="YZy-7S-gd4" secondAttribute="leading" id="wyI-A9-4w6"/>
+                            <constraint firstItem="nJQ-zq-BB7" firstAttribute="top" secondItem="JJ1-f0-ELp" secondAttribute="bottom" constant="-49" id="yxy-80-lxu"/>
                         </constraints>
                     </view>
                     <connections>

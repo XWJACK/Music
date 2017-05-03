@@ -19,7 +19,7 @@ class MusicListViewController: MusicViewController {
         title = "Music"
         let actionButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         actionButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
-        navigationBar.actionButton = actionButton
+        musicNavigationBar.actionButton = actionButton
         
         tableView.dataSource = self
         tableView.delegate = self

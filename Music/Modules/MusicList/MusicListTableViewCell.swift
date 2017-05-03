@@ -12,7 +12,7 @@ protocol MusicListTableViewCellDelegate: class {
     func moreButtonClicked(withIndexPath indexPath: IndexPath)
 }
 
-class MusicListTableViewCell: MusicSeparatorTableViewCell {
+class MusicListTableViewCell: MusicTableViewCell {
     
     var delegate: MusicListTableViewCellDelegate?
     

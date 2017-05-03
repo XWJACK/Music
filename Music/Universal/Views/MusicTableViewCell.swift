@@ -1,5 +1,5 @@
 //
-//  MusicSeparatorTableViewCell.swift
+//  MusicTableViewCell.swift
 //  Music
 //
 //  Created by Jack on 5/1/17.
@@ -8,8 +8,9 @@
 
 import UIKit
 
-class MusicSeparatorTableViewCell: MusicTableViewCell {
+class MusicTableViewCell: UITableViewCell {
     
+    var indexPath: IndexPath = IndexPath(row: 0, section: 0)
     var leftPadding: CGFloat = 0
     var rightPadding: CGFloat = 0
     var lineWidth: CGFloat = 0.5

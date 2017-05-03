@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIFont {
+    static var font10: UIFont { return UIFont.systemFont(ofSize: 10) }
     static var font12: UIFont { return UIFont.systemFont(ofSize: 12) }
     static var font14: UIFont { return UIFont.systemFont(ofSize: 14) }
     static var font16: UIFont { return UIFont.systemFont(ofSize: 16) }

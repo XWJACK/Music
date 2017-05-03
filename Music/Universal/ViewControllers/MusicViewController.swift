@@ -11,7 +11,8 @@ import SnapKit
 
 class MusicViewController: UIViewController {
 
-    let navigationBar = MusicnavigationBar()
+    let musicNavigationBar = MusicNavigationBar(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.width, height: 44))
+    var musicNavigationController: MusicNavigationController? { return navigationController as? MusicNavigationController }
     
     var isShowStatusBar = true {
         didSet {
@@ -22,19 +23,14 @@ class MusicViewController: UIViewController {
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation { return .slide }
     
     override var title: String? {
-        get { return navigationBar.titleLabel.text }
-        set { navigationBar.titleLabel.text = newValue }
+        get { return musicNavigationBar.titleLabel.text }
+        set { musicNavigationBar.titleLabel.text = newValue }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        view.addSubview(navigationBar)
-        
-        navigationBar.snp.makeConstraints { (make) in
-            make.left.top.right.equalToSuperview()
-            make.height.equalTo(64)
-        }
+        view.addSubview(musicNavigationBar)
     }
 }

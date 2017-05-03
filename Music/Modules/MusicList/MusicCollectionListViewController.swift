@@ -1,22 +1,21 @@
 //
-//  MusicListViewController.swift
+//  MusicCollectionListViewController.swift
 //  Music
 //
-//  Created by Jack on 4/28/17.
+//  Created by Jack on 5/3/17.
 //  Copyright © 2017 Jack. All rights reserved.
 //
 
 import UIKit
-import SnapKit
 
-class MusicListViewController: MusicViewController {
-    
+class MusicCollectionListViewController: MusicViewController {
+
     @IBOutlet weak var tableView: UITableView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Music List"
+        title = "My Music"
+        musicNavigationBar.backButton.isHidden = true
         
         let actionButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         actionButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
@@ -24,7 +23,7 @@ class MusicListViewController: MusicViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(MusicListTableViewCell.self, forCellReuseIdentifier: MusicListTableViewCell.reuseIdentifier)
+        tableView.register(MusicCollectionListTableViewCell.self, forCellReuseIdentifier: MusicCollectionListTableViewCell.reuseIdentifier)
         tableView.backgroundColor = .clear
         
         actionButton.snp.makeConstraints { (make) in
@@ -33,13 +32,11 @@ class MusicListViewController: MusicViewController {
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
-//        sender.startAnimation()
-//        sender.isAnimation = !sender.isAnimation
         musicNavigationController?.push(MusicPlayerViewController.instanseFromStoryboard()!)
     }
 }
 
-extension MusicListViewController: UITableViewDataSource, UITableViewDelegate {
+extension MusicCollectionListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
@@ -59,23 +56,12 @@ extension MusicListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        musicNavigationController?.push(MusicListViewController.instanseFromStoryboard()!, hiddenTabBar: false)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicListTableViewCell.reuseIdentifier, for: indexPath) as? MusicListTableViewCell else { return MusicListTableViewCell() }
-        cell.delegate = self
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicCollectionListTableViewCell.reuseIdentifier, for: indexPath) as? MusicCollectionListTableViewCell else { return MusicCollectionListTableViewCell() }
         cell.indexPath = indexPath
-        
-        cell.musicLabel.text = "一生所爱"
-        cell.detailLabel.text = "Jack Sparrow"
         return cell
-    }
-}
-
-
-extension MusicListViewController: MusicListTableViewCellDelegate {
-    
-    func moreButtonClicked(withIndexPath indexPath: IndexPath) {
-        
     }
 }

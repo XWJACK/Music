@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Custom music button for topbar
 class MusicButton: UIButton {
     
     var isAnimation: Bool = false {

@@ -19,6 +19,8 @@ class MusicLoveButton: UIButton {
             case .loved:
                 setImage(#imageLiteral(resourceName: "player_control_loved"), for: .normal)
                 setImage(#imageLiteral(resourceName: "player_control_loved_press"), for: .highlighted)
+            case .disable:
+                setImage(#imageLiteral(resourceName: "player_control_love_dis"), for: .disabled)
             }
         }
     }

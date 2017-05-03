@@ -16,6 +16,7 @@ class MusicSettingViewController: MusicViewController {
         super.viewDidLoad()
 
         title = "Setting"
+        musicNavigationBar.backButton.isHidden = true
         
         tableView.dataSource = self
         tableView.delegate = self

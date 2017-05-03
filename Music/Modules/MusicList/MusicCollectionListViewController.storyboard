@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Music Collection List View Controller-->
+        <scene sceneID="RsN-HG-cG7">
+            <objects>
+                <viewController storyboardIdentifier="MusicCollectionListViewController" id="fj2-sL-kOO" customClass="MusicCollectionListViewController" customModule="Music" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AGX-40-lFQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="HAV-Ry-dEc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cqM-tF-ThI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_backgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="0q2-tM-XjX">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <visualEffectView opaque="NO" alpha="0.60000002384185791" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cII-di-YLh">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="fi3-9f-ehb">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ijH-pP-IsQ">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ijH-pP-IsQ" secondAttribute="trailing" id="AKI-QC-2H0"/>
+                            <constraint firstItem="0q2-tM-XjX" firstAttribute="leading" secondItem="cqM-tF-ThI" secondAttribute="leading" id="O6b-nI-vH1"/>
+                            <constraint firstAttribute="bottom" secondItem="0q2-tM-XjX" secondAttribute="bottom" id="Rem-qP-qqn"/>
+                            <constraint firstItem="ijH-pP-IsQ" firstAttribute="top" secondItem="cqM-tF-ThI" secondAttribute="top" constant="64" id="aFe-px-ZDw"/>
+                            <constraint firstItem="HAV-Ry-dEc" firstAttribute="top" secondItem="ijH-pP-IsQ" secondAttribute="bottom" id="b4F-w9-uh0"/>
+                            <constraint firstItem="cII-di-YLh" firstAttribute="width" secondItem="0q2-tM-XjX" secondAttribute="width" id="brT-ez-RQI"/>
+                            <constraint firstAttribute="trailing" secondItem="0q2-tM-XjX" secondAttribute="trailing" id="h2E-T9-n8t"/>
+                            <constraint firstItem="0q2-tM-XjX" firstAttribute="top" secondItem="cqM-tF-ThI" secondAttribute="top" id="hLc-8a-LDX"/>
+                            <constraint firstItem="cII-di-YLh" firstAttribute="height" secondItem="0q2-tM-XjX" secondAttribute="height" id="xPd-An-DhW"/>
+                            <constraint firstItem="ijH-pP-IsQ" firstAttribute="leading" secondItem="cqM-tF-ThI" secondAttribute="leading" id="zsm-BN-gZl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="ijH-pP-IsQ" id="ZID-Na-UK3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ius-4o-icg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2498" y="444"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="player_backgroundImage" width="320" height="480"/>
+    </resources>
+</document>

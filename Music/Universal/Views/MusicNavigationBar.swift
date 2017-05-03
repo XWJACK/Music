@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol MusicNavigationBarDelegate: class {
+    func backButtonClicked(_ sender: UIButton)
+}
+
+/// Custom music navigation bar
 class MusicNavigationBar: UIView {
+    
+    var delegate: MusicNavigationBarDelegate?
     
     var backButton: UIButton {
         didSet {
@@ -31,6 +38,10 @@ class MusicNavigationBar: UIView {
         separator = UIView()
         
         super.init(frame: frame)
+        
+        backButton.setImage(#imageLiteral(resourceName: "topBar_back"), for: .normal)
+        backButton.setImage(#imageLiteral(resourceName: "topBar_back_press"), for: .highlighted)
+        backButton.addTarget(self, action: #selector(backButtonClicked), for: .touchUpInside)
         
         titleLabel.textColor = .white
         titleLabel.font = .font20
@@ -80,7 +91,11 @@ class MusicNavigationBar: UIView {
         separator.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.height.equalTo(1)
+            make.height.equalTo(0.5)
         }
+    }
+    
+    @objc private func backButtonClicked() {
+        delegate?.backButtonClicked(backButton)
     }
 }

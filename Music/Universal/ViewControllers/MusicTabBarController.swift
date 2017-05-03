@@ -10,9 +10,6 @@ import UIKit
 
 final class MusicTabBarController: UITabBarController {
     
-//    private let musicTabBar = MusicTabBar(frame: CGRect(x: 0, y: UIScreen.main.bounds.height - 113, width: UIScreen.main.bounds.width, height: 49))
-//    private var viewControllers: [UIViewController?] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,7 +17,7 @@ final class MusicTabBarController: UITabBarController {
         tabBar.backgroundImage = UIImage.image(withColor: .clear)
         tabBar.barStyle = .black
         
-        let musicListTabBarItem = UITabBarItem(title: "Music List",
+        let musicListTabBarItem = UITabBarItem(title: "My Music",
                                                image: #imageLiteral(resourceName: "tabBar_music"),
                                                selectedImage: #imageLiteral(resourceName: "tabBar_music_selected"))
         
@@ -28,13 +25,13 @@ final class MusicTabBarController: UITabBarController {
                                                   image: #imageLiteral(resourceName: "tabBar_setting"),
                                                   selectedImage: #imageLiteral(resourceName: "tabBar_setting_selected"))
         
-        let musicListViewController = MusicNavigationController(rootViewController: MusicListViewController.instanseFromStoryboard()!)
+        let musicCollectionListViewController = MusicNavigationController(rootViewController: MusicCollectionListViewController.instanseFromStoryboard()!)
         let musicSettingViewController = MusicNavigationController(rootViewController: MusicSettingViewController.instanseFromStoryboard()!)
         
-        musicListViewController.tabBarItem = musicListTabBarItem
+        musicCollectionListViewController.tabBarItem = musicListTabBarItem
         musicSettingViewController.tabBarItem = musicSettingTabBarItem
         
-        viewControllers = [musicListViewController, musicSettingViewController]
+        viewControllers = [musicCollectionListViewController, musicSettingViewController]
     }
 
 }

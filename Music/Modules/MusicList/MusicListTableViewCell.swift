@@ -36,14 +36,14 @@ class MusicListTableViewCell: MusicTableViewCell {
         backgroundColor = .clear
         leftPadding = 40
         
-        numberLabel.textColor = .white
+        numberLabel.textColor = .black
         numberLabel.font = .font16
         
         musicLabel.font = .font18
         musicLabel.textColor = .white
         
         detailLabel.font = .font10
-        detailLabel.textColor = .white
+        detailLabel.textColor = .darkGray
         
         moreButton.setImage(UIImage(cgImage: #imageLiteral(resourceName: "list_cell_more").cgImage!, scale: UIScreen.main.scale, orientation: .left), for: .normal)
         moreButton.setImage(UIImage(cgImage: #imageLiteral(resourceName: "list_cell_more_press").cgImage!, scale: UIScreen.main.scale, orientation: .left), for: .highlighted)

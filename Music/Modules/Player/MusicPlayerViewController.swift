@@ -33,6 +33,7 @@ final class MusicPlayerViewController: MusicViewController {
         super.viewDidLoad()
         
         downloadButton.mode = .disable
+        loveButton.mode = .love
         controlButton.mode = .paused
         
         lastButton.setImage(#imageLiteral(resourceName: "player_control_last_press"), for: .highlighted)

@@ -18,6 +18,7 @@ enum MusicPlayerStatus {
 enum MusicPlayerLoveMode {
     case love
     case loved
+    case disable
 }
 
 /// Music Player Play Mode
@@ -28,7 +29,7 @@ enum MusicPlayerPlayMode {
 }
 /// Music Player Download Mode
 enum MusicPlayerDownloadMode {
-    case normal
+    case download
     case downloaded
     case disable
 }

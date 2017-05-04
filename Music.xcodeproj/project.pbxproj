@@ -48,6 +48,16 @@
 		6E181F7E8F7051A0B03A3067 /* Pods_Music.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76CC542C45072C07C69D6C01 /* Pods_Music.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		04F770581EBB0ADE00C70507 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04F770541EBB0ADE00C70507 /* MusicAPI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 04F770411EBB0A2D00C70507;
+			remoteInfo = MusicAPI;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		0452BCD91E7B793500DF91A5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -100,6 +110,7 @@
 		04F7701D1EB9FAE400C70507 /* MusicCollectionListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicCollectionListTableViewCell.swift; path = Modules/MusicList/MusicCollectionListTableViewCell.swift; sourceTree = "<group>"; };
 		04F770201EBA20B200C70507 /* PersonalCenterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersonalCenterViewController.swift; path = Modules/Center/PersonalCenterViewController.swift; sourceTree = "<group>"; };
 		04F770221EBA20DC00C70507 /* PersonalCenterViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PersonalCenterViewController.storyboard; path = Modules/Center/PersonalCenterViewController.storyboard; sourceTree = "<group>"; };
+		04F770541EBB0ADE00C70507 /* MusicAPI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MusicAPI.xcodeproj; path = Music/MusicAPI/MusicAPI.xcodeproj; sourceTree = "<group>"; };
 		04FE26421EB58819002CF86C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04FE26431EB58819002CF86C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76CC542C45072C07C69D6C01 /* Pods_Music.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Music.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,6 +286,7 @@
 		04C1883D1E66C6C900432954 = {
 			isa = PBXGroup;
 			children = (
+				04F770541EBB0ADE00C70507 /* MusicAPI.xcodeproj */,
 				044F1ADA1E78F8DA00A8502A /* Music */,
 				04C188471E66C6C900432954 /* Products */,
 				70E8609C8C0066985CA3F73F /* Pods */,
@@ -333,6 +345,14 @@
 			children = (
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		04F770551EBB0ADE00C70507 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04F770591EBB0ADE00C70507 /* MusicAPI.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		04FE26411EB58819002CF86C /* Music */ = {
@@ -418,12 +438,28 @@
 			mainGroup = 04C1883D1E66C6C900432954;
 			productRefGroup = 04C188471E66C6C900432954 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 04F770551EBB0ADE00C70507 /* Products */;
+					ProjectRef = 04F770541EBB0ADE00C70507 /* MusicAPI.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				04C188451E66C6C900432954 /* Music */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		04F770591EBB0ADE00C70507 /* MusicAPI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MusicAPI.framework;
+			remoteRef = 04F770581EBB0ADE00C70507 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		04C188441E66C6C900432954 /* Resources */ = {

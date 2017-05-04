@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 /// Music Player Status
 enum MusicPlayerStatus {
@@ -32,4 +33,10 @@ enum MusicPlayerDownloadMode {
     case download
     case downloaded
     case disable
+}
+
+struct MusicInfo {
+    let id: String
+    let md5: String
+    let format: AudioFileTypeID = kAudioFileMP3Type
 }

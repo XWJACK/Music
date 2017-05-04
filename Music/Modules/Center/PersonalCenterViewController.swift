@@ -50,6 +50,7 @@ extension PersonalCenterViewController: UITableViewDataSource, UITableViewDelega
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicTableViewCell.reuseIdentifier, for: indexPath) as? MusicTableViewCell else { return MusicTableViewCell() }
         
         cell.indexPath = indexPath
+        cell.leftPadding = 50
         cell.textLabel?.text = dataSources[indexPath.row].title
         cell.textLabel?.textColor = .white
         cell.imageView?.image = dataSources[indexPath.row].image

@@ -15,7 +15,11 @@ class MusicCollectionListViewController: MusicViewController {
         super.viewDidLoad()
         
         title = "My Music"
-        musicNavigationBar.backButton.isHidden = true
+        
+        let searchButton = UIButton(type: .custom)
+        searchButton.setImage(#imageLiteral(resourceName: "topBar_search"), for: .normal)
+        searchButton.addTarget(self, action: #selector(searchButtonClicked(_:)), for: .touchUpInside)
+        musicNavigationBar.backButton = searchButton
         
         let actionButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         actionButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
@@ -33,6 +37,10 @@ class MusicCollectionListViewController: MusicViewController {
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
         musicNavigationController?.push(MusicPlayerViewController.instanseFromStoryboard()!)
+    }
+    
+    @objc private func searchButtonClicked(_ sender: UIButton) {
+        musicNavigationController?.push(MusicSearchViewController.instanseFromStoryboard()!)
     }
 }
 

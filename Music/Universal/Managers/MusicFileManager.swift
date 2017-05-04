@@ -8,19 +8,6 @@
 
 import Foundation
 
-struct FileManagerFolderOptions: OptionSet {
-    
-    var rawValue: UInt
-    
-    static let all = FileManagerFolderOptions(rawValue: 1 << 0)
-    static let musicCache = FileManagerFolderOptions(rawValue: 1 << 0)
-    static let musicDownload = FileManagerFolderOptions(rawValue: 1 << 0)
-    
-    init(rawValue: UInt) {
-        self.rawValue = rawValue
-    }
-}
-
 final class MusicFileManager {
     
     static let `default` = MusicFileManager()
@@ -41,7 +28,7 @@ final class MusicFileManager {
         }
     }
     
-    func delete(withOption option: FileManagerFolderOptions) {
+    func clearCache() {
         
     }
 }

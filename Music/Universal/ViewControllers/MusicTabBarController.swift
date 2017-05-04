@@ -21,17 +21,17 @@ final class MusicTabBarController: UITabBarController {
                                                image: #imageLiteral(resourceName: "tabBar_music"),
                                                selectedImage: #imageLiteral(resourceName: "tabBar_music_selected"))
         
-        let musicSettingTabBarItem = UITabBarItem(title: "Setting",
-                                                  image: #imageLiteral(resourceName: "tabBar_setting"),
-                                                  selectedImage: #imageLiteral(resourceName: "tabBar_setting_selected"))
+        let personalCenterTabBarItem = UITabBarItem(title: "Center",
+                                                  image: #imageLiteral(resourceName: "tabBar_center"),
+                                                  selectedImage: #imageLiteral(resourceName: "tabBar_center_selected"))
         
         let musicCollectionListViewController = MusicNavigationController(rootViewController: MusicCollectionListViewController.instanseFromStoryboard()!)
-        let musicSettingViewController = MusicNavigationController(rootViewController: MusicSettingViewController.instanseFromStoryboard()!)
+        let personalCenterViewController = MusicNavigationController(rootViewController: PersonalCenterViewController.instanseFromStoryboard()!)
         
         musicCollectionListViewController.tabBarItem = musicListTabBarItem
-        musicSettingViewController.tabBarItem = musicSettingTabBarItem
+        personalCenterViewController.tabBarItem = personalCenterTabBarItem
         
-        viewControllers = [musicCollectionListViewController, musicSettingViewController]
+        viewControllers = [musicCollectionListViewController, personalCenterViewController]
     }
 
 }

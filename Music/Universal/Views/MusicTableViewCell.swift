@@ -32,6 +32,8 @@ class MusicTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = .clear
+        
         separator.backgroundColor = lineColor
         contentView.addSubview(separator)
     }

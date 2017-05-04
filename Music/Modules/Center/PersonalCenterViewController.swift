@@ -1,5 +1,5 @@
 //
-//  MusicSettingViewController.swift
+//  PersonalCenterViewController.swift
 //  Music
 //
 //  Created by Jack on 5/3/17.
@@ -8,24 +8,27 @@
 
 import UIKit
 
-class MusicSettingViewController: MusicViewController {
 
+class PersonalCenterViewController: MusicViewController {
+    
     @IBOutlet weak var tableView: UITableView!
+    
+    fileprivate var dataSources: [(title: String, image: UIImage)] = [("Clear Cache", #imageLiteral(resourceName: "tabBar_center_delete")), ("About", #imageLiteral(resourceName: "tabBar_center_about"))]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = "Setting"
+        
+        title = "Center"
         musicNavigationBar.backButton.isHidden = true
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(MusicListTableViewCell.self, forCellReuseIdentifier: MusicListTableViewCell.reuseIdentifier)
+        tableView.register(MusicTableViewCell.self, forCellReuseIdentifier: MusicTableViewCell.reuseIdentifier)
         tableView.backgroundColor = .clear
     }
 }
 
-extension MusicSettingViewController: UITableViewDataSource, UITableViewDelegate {
+extension PersonalCenterViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return .leastNonzeroMagnitude
@@ -36,7 +39,7 @@ extension MusicSettingViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 2
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -44,9 +47,13 @@ extension MusicSettingViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicListTableViewCell.reuseIdentifier, for: indexPath) as? MusicListTableViewCell else { return MusicListTableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicTableViewCell.reuseIdentifier, for: indexPath) as? MusicTableViewCell else { return MusicTableViewCell() }
         
         cell.indexPath = indexPath
+        cell.textLabel?.text = dataSources[indexPath.row].title
+        cell.textLabel?.textColor = .white
+        cell.imageView?.image = dataSources[indexPath.row].image
+        cell.imageView?.tintColor = .black
         
         return cell
     }

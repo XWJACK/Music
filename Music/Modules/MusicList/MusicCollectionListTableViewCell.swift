@@ -13,7 +13,6 @@ class MusicCollectionListTableViewCell: MusicTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .clear
         leftPadding = 40
     }
     

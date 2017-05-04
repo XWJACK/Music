@@ -8,9 +8,8 @@
 
 import UIKit
 
-class MusicCollectionListViewController: MusicViewController {
+final class MusicCollectionListViewController: MusicTableViewController {
 
-    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,10 +24,7 @@ class MusicCollectionListViewController: MusicViewController {
         actionButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
         musicNavigationBar.actionButton = actionButton
         
-        tableView.dataSource = self
-        tableView.delegate = self
         tableView.register(MusicCollectionListTableViewCell.self, forCellReuseIdentifier: MusicCollectionListTableViewCell.reuseIdentifier)
-        tableView.backgroundColor = .clear
         
         actionButton.snp.makeConstraints { (make) in
             make.width.height.equalTo(28)
@@ -40,34 +36,23 @@ class MusicCollectionListViewController: MusicViewController {
     }
     
     @objc private func searchButtonClicked(_ sender: UIButton) {
-        musicNavigationController?.push(MusicSearchViewController.instanseFromStoryboard()!)
+        musicNavigationController?.push(MusicSearchViewController())
     }
-}
-
-extension MusicCollectionListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return .leastNonzeroMagnitude
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNonzeroMagnitude
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        musicNavigationController?.push(MusicListViewController.instanseFromStoryboard()!, hiddenTabBar: false)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        super.tableView(tableView, didSelectRowAt: indexPath)
+        musicNavigationController?.push(MusicListViewController(), hiddenTabBar: false)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicCollectionListTableViewCell.reuseIdentifier, for: indexPath) as? MusicCollectionListTableViewCell else { return MusicCollectionListTableViewCell() }
         cell.indexPath = indexPath
         return cell

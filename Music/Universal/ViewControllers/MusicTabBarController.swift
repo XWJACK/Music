@@ -25,7 +25,7 @@ final class MusicTabBarController: UITabBarController {
                                                   image: #imageLiteral(resourceName: "tabBar_center"),
                                                   selectedImage: #imageLiteral(resourceName: "tabBar_center_selected"))
         
-        let musicCollectionListViewController = MusicNavigationController(rootViewController: MusicCollectionListViewController.instanseFromStoryboard()!)
+        let musicCollectionListViewController = MusicNavigationController(rootViewController: MusicCollectionListViewController())
         let personalCenterViewController = MusicNavigationController(rootViewController: PersonalCenterViewController.instanseFromStoryboard()!)
         
         musicCollectionListViewController.tabBarItem = musicListTabBarItem

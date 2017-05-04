@@ -25,7 +25,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WPj-Te-9Dc">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_backgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="Bwd-8r-12y">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="Bwd-8r-12y">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
@@ -316,7 +316,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="player_backgroundImage" width="320" height="480"/>
+        <image name="backgroundImage" width="320" height="480"/>
         <image name="player_control_download" width="40" height="40"/>
         <image name="player_control_last" width="49" height="49"/>
         <image name="player_control_list" width="44" height="44"/>

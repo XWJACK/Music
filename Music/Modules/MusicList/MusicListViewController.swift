@@ -16,13 +16,13 @@ final class MusicListViewController: MusicTableViewController {
         
         title = "Music List"
         
-        let actionButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        actionButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
-        musicNavigationBar.actionButton = actionButton
+        let rightButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        rightButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
+        musicNavigationBar.rightButton = rightButton
         
         tableView.register(MusicListTableViewCell.self, forCellReuseIdentifier: MusicListTableViewCell.reuseIdentifier)
         
-        actionButton.snp.makeConstraints { (make) in
+        rightButton.snp.makeConstraints { (make) in
             make.width.height.equalTo(28)
         }
     }
@@ -33,7 +33,7 @@ final class MusicListViewController: MusicTableViewController {
         musicNavigationController?.push(MusicPlayerViewController.instanseFromStoryboard()!)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
     

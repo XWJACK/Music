@@ -17,31 +17,31 @@ class MusicNavigationBar: UIView {
     
     var delegate: MusicNavigationBarDelegate?
     
-    var backButton: UIButton {
+    var leftButton: UIButton {
         didSet {
-            resetBack(oldValue)
+            resetLeftButton(oldValue)
         }
     }
     let titleLabel: UILabel
-    var actionButton: UIButton {
+    var rightButton: UIButton {
         didSet {
-            resetAction(oldValue)
+            resetRightButton(oldValue)
         }
     }
     var separator: UIView
     
     override init(frame: CGRect) {
         
-        backButton = UIButton(type: .custom)
+        leftButton = UIButton(type: .custom)
         titleLabel = UILabel()
-        actionButton = UIButton(type: .custom)
+        rightButton = UIButton(type: .custom)
         separator = UIView()
         
         super.init(frame: frame)
         
-        backButton.setImage(#imageLiteral(resourceName: "topBar_back"), for: .normal)
-        backButton.setImage(#imageLiteral(resourceName: "topBar_back_press"), for: .highlighted)
-        backButton.addTarget(self, action: #selector(backButtonClicked), for: .touchUpInside)
+        leftButton.setImage(#imageLiteral(resourceName: "topBar_back"), for: .normal)
+        leftButton.setImage(#imageLiteral(resourceName: "topBar_back_press"), for: .highlighted)
+        leftButton.addTarget(self, action: #selector(backButtonClicked), for: .touchUpInside)
         
         titleLabel.textColor = .white
         titleLabel.font = .font20
@@ -53,8 +53,8 @@ class MusicNavigationBar: UIView {
             make.center.equalToSuperview()
         }
         
-        resetBack()
-        resetAction()
+        resetLeftButton()
+        resetRightButton()
         resetSeparator()
     }
     
@@ -62,22 +62,22 @@ class MusicNavigationBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func resetBack(_ oldValue: UIButton? = nil)  {
+    private func resetLeftButton(_ oldValue: UIButton? = nil)  {
         oldValue?.removeFromSuperview()
-        addSubview(backButton)
+        addSubview(leftButton)
         
-        backButton.snp.makeConstraints { (make) in
+        leftButton.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
         }
     }
     
-    private func resetAction(_ oldValue: UIButton? = nil) {
+    private func resetRightButton(_ oldValue: UIButton? = nil) {
         
         oldValue?.removeFromSuperview()
-        addSubview(actionButton)
+        addSubview(rightButton)
         
-        actionButton.snp.makeConstraints { (make) in
+        rightButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
         }
@@ -96,6 +96,6 @@ class MusicNavigationBar: UIView {
     }
     
     @objc private func backButtonClicked() {
-        delegate?.backButtonClicked(backButton)
+        delegate?.backButtonClicked(leftButton)
     }
 }

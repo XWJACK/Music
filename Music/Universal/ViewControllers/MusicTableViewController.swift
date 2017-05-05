@@ -43,6 +43,10 @@ class MusicTableViewController: MusicViewController, UITableViewDataSource, UITa
         super.viewDidLoad()
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 0
     }

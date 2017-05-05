@@ -18,11 +18,11 @@ final class MusicCollectionListViewController: MusicTableViewController {
         let searchButton = UIButton(type: .custom)
         searchButton.setImage(#imageLiteral(resourceName: "topBar_search"), for: .normal)
         searchButton.addTarget(self, action: #selector(searchButtonClicked(_:)), for: .touchUpInside)
-        musicNavigationBar.backButton = searchButton
+        musicNavigationBar.leftButton = searchButton
         
         let actionButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         actionButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
-        musicNavigationBar.actionButton = actionButton
+        musicNavigationBar.rightButton = actionButton
         
         tableView.register(MusicCollectionListTableViewCell.self, forCellReuseIdentifier: MusicCollectionListTableViewCell.reuseIdentifier)
         
@@ -36,10 +36,11 @@ final class MusicCollectionListViewController: MusicTableViewController {
     }
     
     @objc private func searchButtonClicked(_ sender: UIButton) {
-        musicNavigationController?.push(MusicSearchViewController())
+//        musicNavigationController?.push(MusicSearchViewController())
+        present(MusicSearchViewController(), animated: true, completion: nil)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
     

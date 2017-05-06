@@ -40,3 +40,8 @@ struct MusicInfo {
     let md5: String
     let format: AudioFileTypeID = kAudioFileMP3Type
 }
+
+struct PlayerMode {
+    let musicURL: URL
+    let lyricURL: URL
+}

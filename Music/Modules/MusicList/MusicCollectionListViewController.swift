@@ -32,7 +32,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
-        musicNavigationController?.push(MusicPlayerViewController.instanseFromStoryboard()!)
+        musicNavigationController?.push(musicPlayerViewController)
     }
     
     @objc private func searchButtonClicked(_ sender: UIButton) {

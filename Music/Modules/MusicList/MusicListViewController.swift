@@ -30,7 +30,7 @@ final class MusicListViewController: MusicTableViewController {
     @objc private func actionButtonClicked(_ sender: MusicButton) {
 //        sender.startAnimation()
 //        sender.isAnimation = !sender.isAnimation
-        musicNavigationController?.push(MusicPlayerViewController.instanseFromStoryboard()!)
+        musicNavigationController?.push(musicPlayerViewController)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

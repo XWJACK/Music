@@ -32,6 +32,14 @@ enum MusicError: Error {
         case deleted(FileError)
     }
     
+    enum NetworkError {
+        /// Response with empty data
+        case emptyData
+        /// parse data fail
+        case parseFail
+    }
+    
     case resourcesError(ResourcesError)
     case playerError(PlayerError)
+    case networkError(NetworkError)
 }

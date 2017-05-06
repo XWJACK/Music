@@ -8,9 +8,10 @@
 
 import UIKit
 import Wave
+import Alamofire
 
 final class MusicPlayerViewController: MusicViewController {
-
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
     
     @IBOutlet weak var currentTimeLabel: UILabel!
@@ -51,9 +52,23 @@ final class MusicPlayerViewController: MusicViewController {
         super.viewDidAppear(animated)
         
     }
+    
+//    func play(with musicMode: MusicMode) {
+//        destoryPlayer()
+//        createPlayer()
+//        Alamofire.request(musicURL).responseData { (response) in
+//            self.player?.respond(with: response.data!)
+//        }
+//    }
+    
     fileprivate func createPlayer() {
         player = StreamAudioPlayer()
         player?.delegate = self
+    }
+    
+    private func destoryPlayer() {
+        player?.stop()
+        player = nil
     }
     
     @IBAction func playModeButtonClicked(_ sender: MusicPlayerModeButton) {

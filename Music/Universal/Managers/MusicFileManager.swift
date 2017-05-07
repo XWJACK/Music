@@ -28,23 +28,23 @@ final class MusicFileManager {
         createMusicDownloadDirectory()
     }
     
-    func clearCache(_ completed: @escaping () -> ()) {
+    func clearCache(_ completed: (() -> ())? = nil) {
         
         ioQueue.async {
             self.clear(self.musicCacheURL)
             self.clear(self.musicDownloadURL)
             self.createMusicCacheDirectory()
             DispatchQueue.main.async {
-                completed()
+                completed?()
             }
         }
     }
     
-    func calculateCache(_ completed: @escaping (UInt) -> ()) {
+    func calculateCache(_ completed: @escaping (Int64) -> ()) {
         
-        func calculateFileSize(in url: URL) -> UInt {
+        func calculateFileSize(in url: URL) -> Int64 {
             let resourceKeys: Set<URLResourceKey> = [.isDirectoryKey, .totalFileAllocatedSizeKey]
-            var diskCacheSize: UInt = 0
+            var diskCacheSize: Int64 = 0
             
             guard let fileEnumerator = fileManager.enumerator(at: url, includingPropertiesForKeys: Array(resourceKeys), options: .skipsHiddenFiles, errorHandler: nil),
                 let urls = fileEnumerator.allObjects as? [URL] else {
@@ -61,7 +61,7 @@ final class MusicFileManager {
                     }
                     
                     if let fileSize = resourceValues.totalFileAllocatedSize {
-                        diskCacheSize += UInt(fileSize)
+                        diskCacheSize += Int64(fileSize)
                     }
                 } catch _ { }
             }
@@ -75,7 +75,7 @@ final class MusicFileManager {
             let musicDownloadSize = calculateFileSize(in: self.musicDownloadURL)
                 
             DispatchQueue.main.async {
-                completed(musicCacheSize + musicDownloadSize)
+                completed(Int64(musicCacheSize + musicDownloadSize))
             }
         }
     }

@@ -13,6 +13,9 @@ class MusicCenterViewController: MusicTableViewController {
     
     
     private var dataSources: [(title: String, image: UIImage?, clouse: (() -> ())?)] = []
+    private var isCalculating: Bool = false
+    private var cache: String = "0 KB"
+    private let cacheIndexPath: IndexPath = IndexPath(row: 0, section: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,14 +24,29 @@ class MusicCenterViewController: MusicTableViewController {
         musicNavigationBar.leftButton.isHidden = true
         
         tableView.register(MusicTableViewCell.self, forCellReuseIdentifier: MusicTableViewCell.reuseIdentifier)
+        tableView.register(MusicCenterClearCacheTableViewCell.self, forCellReuseIdentifier: MusicCenterClearCacheTableViewCell.reuseIdentifier)
         
         dataSources = [("Clear Cache", #imageLiteral(resourceName: "center_delete"), clearCache),
                        ("About", #imageLiteral(resourceName: "center_about"), about),
                        ("Regist Server", #imageLiteral(resourceName: "center_registe"), registe)]
     }
     
-    private func clearCache() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        guard !isCalculating else { return }
+        isCalculating = true
+        tableView.reloadRows(at: [cacheIndexPath], with: .none)
+        
+        MusicFileManager.default.calculateCache {
+            self.isCalculating = false
+            self.cache = ByteCountFormatter.string(fromByteCount: $0, countStyle: .binary)
+            self.tableView.reloadRows(at: [self.cacheIndexPath], with: .none)
+        }
+    }
+    
+    private func clearCache() {
+        MusicFileManager.default.clearCache()
     }
     
     private func about() {
@@ -61,15 +79,29 @@ class MusicCenterViewController: MusicTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicTableViewCell.reuseIdentifier, for: indexPath) as? MusicTableViewCell else { return MusicTableViewCell() }
         
-        cell.indexPath = indexPath
-        cell.leftPadding = 50
-        cell.textLabel?.text = dataSources[indexPath.row].title
-        cell.textLabel?.textColor = .white
-        cell.imageView?.image = dataSources[indexPath.row].image
-        cell.imageView?.tintColor = .black
+        let block: (MusicTableViewCell) -> () = {
+            $0.indexPath = indexPath
+            $0.leftPadding = 50
+            $0.textLabel?.text = self.dataSources[indexPath.row].title
+            $0.textLabel?.textColor = .white
+            $0.imageView?.image = self.dataSources[indexPath.row].image
+            $0.imageView?.tintColor = .black
+        }
         
-        return cell
+        if indexPath == cacheIndexPath {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MusicCenterClearCacheTableViewCell.reuseIdentifier, for: indexPath) as! MusicCenterClearCacheTableViewCell
+            block(cell)
+            cell.indicator.isHidden = !isCalculating
+            if isCalculating { cell.indicator.startAnimating() }
+            else { cell.indicator.stopAnimating() }
+            cell.cacheLabel.text = cache
+            cell.cacheLabel.isHidden = isCalculating
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MusicTableViewCell.reuseIdentifier, for: indexPath) as! MusicTableViewCell
+            block(cell)
+            return cell
+        }
     }
 }

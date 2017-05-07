@@ -14,27 +14,14 @@ class MusicTableViewCell: UITableViewCell {
     var leftPadding: CGFloat = 0
     var rightPadding: CGFloat = 0
     var lineWidth: CGFloat = 0.5
-    
-    var lineColor: UIColor = .lightGray {
-        didSet {
-            separator.backgroundColor = lineColor
-        }
-    }
-    
-    var isSeparatorHidden: Bool = false {
-        didSet {
-            separator.isHidden = isSeparatorHidden
-        }
-    }
-    
-    private let separator = UIView()
+    let separator = UIView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .clear
         
-        separator.backgroundColor = lineColor
+        separator.backgroundColor = .lightGray
         contentView.addSubview(separator)
     }
     

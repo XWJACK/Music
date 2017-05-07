@@ -28,8 +28,20 @@ class MusicNavigationController: UINavigationController {
         super.viewDidLoad()
     }
 
-    func push(_ viewController: UIViewController, animated: Bool = true, hiddenTabBar: Bool = true) {
+    func push(_ viewController: MusicViewController,
+              animated: Bool = true,
+              hiddenTabBar: Bool = true,
+              hiddenTopBar: Bool = false,
+              hiddenTopBarLeftButton: Bool = false) {
+        
         viewController.hidesBottomBarWhenPushed = hiddenTabBar
+        
+        if hiddenTopBar {
+            viewController.isHiddenNavigationBar = true
+        } else {
+            viewController.musicNavigationBar.leftButton.isHidden = hiddenTopBarLeftButton
+        }
+        
         pushViewController(viewController, animated: animated)
     }
 }

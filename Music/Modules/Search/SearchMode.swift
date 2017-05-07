@@ -21,7 +21,7 @@ struct SearchMode: JSONInitable {
         name = json["name"].stringValue
         mp3URL = json["mp3Url"].url
         
-        artistsName = json["artists"]["name"].stringValue
+        artistsName = json["artists"].array?.first?["name"].stringValue ?? ""
         albumName = json["album"]["name"].stringValue
     }
 }

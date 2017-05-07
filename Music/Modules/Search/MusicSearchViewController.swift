@@ -70,7 +70,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
 //        }
         guard !searchText.isEmpty else { return }
         
-//        LPNetworkManager.request(Router.search(searchText, pageStruct))
+//        NetworkManager.request(Router.search(searchText, pageStruct))
 //            .success{ (datas: LPArray<Account>) in
 //                self.apiDatas = datas
 //            }.fail {
@@ -79,20 +79,32 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
 //            }.response {
 //                self.tableView.endRefreshing(resetToPageZero: false, hasMore: self.apiDatas.hasMore)
 //        }
-        MusicAPI.default.search(keyWords: searchText, offset: offSet - 1).success({ (json) in
-//            self.apiData = json.result["songs"]
+        
+        MusicAPI.default.search(keyWords: searchText, offset: offSet - 1).success(jsonHandler: { (json) in
+            
+            let results = json.result["songs"].arrayValue.map{ SearchMode($0) }
+            
+            if isNewSearch { self.apiDatas = results }
+            else { results.forEach{ self.apiDatas.append($0) } }
+            
+            self.searchViewModes = self.apiDatas.map{ $0.searchViewMode }
+            
             self.tableView.reloadData()
         })
     }
     
     @objc private func cancelButtonClicked() {
-//        musicNavigationController?.popViewController(animated: true)
-        dismiss(animated: true, completion: nil)
+        musicNavigationController?.popViewController(animated: true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard self.searchText != searchText else { return }
         self.searchText = searchText
         request(true, searchText)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar(searchBar, textDidChange: searchText)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -101,6 +113,11 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchViewModes.count
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        super.tableView(tableView, didSelectRowAt: indexPath)
+        musicNavigationController?.push(musicPlayerViewController)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

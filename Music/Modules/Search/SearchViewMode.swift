@@ -9,6 +9,15 @@
 import Foundation
 
 struct SearchViewMode {
-    let name: String = ""
-    let detail: String = ""
+    var name: String = ""
+    var detail: String = ""
+}
+
+extension SearchMode {
+    var searchViewMode: SearchViewMode {
+        var data = SearchViewMode()
+        data.name = name
+        data.detail = artistsName + "-" + albumName
+        return data
+    }
 }

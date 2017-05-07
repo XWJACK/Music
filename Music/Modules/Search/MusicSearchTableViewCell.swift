@@ -28,6 +28,7 @@ class MusicSearchTableViewCell: MusicTableViewCell {
         
         musicLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(leftPadding)
+            make.right.equalToSuperview().offset(-leftPadding)
             make.top.equalToSuperview().offset(5)
         }
         

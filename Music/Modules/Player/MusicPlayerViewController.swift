@@ -75,10 +75,15 @@ final class MusicPlayerViewController: MusicViewController {
         sender.changePlayMode()
     }
     
-    
     @IBAction func controlButtonClicked(_ sender: MusicPlayerControlButton) {
-        if sender.mode == .paused { sender.mode = .playing }
-        else { sender.mode = .paused }
+        if sender.mode == .paused {
+            sender.mode = .playing
+            player?.play()
+        }
+        else {
+            sender.mode = .paused
+            player?.pause()
+        }
     }
     
     @IBAction func lastButtonClicked(_ sender: UIButton) {

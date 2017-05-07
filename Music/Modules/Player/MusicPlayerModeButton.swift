@@ -17,7 +17,8 @@ class MusicPlayerModeButton: UIButton {
     }
     
     /// order -> single -> random -> order -> ....
-    func changePlayMode() {
+    @discardableResult
+    func changePlayMode() -> MusicPlayerPlayMode {
         switch mode {
         case .order:
             mode = .single
@@ -32,5 +33,6 @@ class MusicPlayerModeButton: UIButton {
             setImage(#imageLiteral(resourceName: "player_control_model_order"), for: .normal)
             setImage(#imageLiteral(resourceName: "player_control_model_order_highlighted"), for: .highlighted)
         }
+        return mode
     }
 }

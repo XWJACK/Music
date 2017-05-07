@@ -36,8 +36,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
     }
     
     @objc private func searchButtonClicked(_ sender: UIButton) {
-//        musicNavigationController?.push(MusicSearchViewController())
-        present(MusicSearchViewController(), animated: true, completion: nil)
+        musicNavigationController?.push(MusicSearchViewController(), hiddenTopBarLeftButton: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

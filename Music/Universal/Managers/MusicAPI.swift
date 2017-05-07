@@ -39,7 +39,7 @@ open class MusicAPI {
     
     public static let `default`: MusicAPI = MusicAPI()
     
-    public var baseURLString: String?
+    public var baseURLString: String? //"http://Your API Server Address"
     
     //MARK: - Search
     

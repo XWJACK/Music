@@ -47,6 +47,10 @@ class MusicTableViewController: MusicViewController, UITableViewDataSource, UITa
         return 44
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 0
     }

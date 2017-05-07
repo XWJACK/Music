@@ -33,6 +33,7 @@
 		0456B38A1E7F822800ECAC9F /* MusicFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456B3881E7F822800ECAC9F /* MusicFileManager.swift */; };
 		04606A611EBEBC4800746D9E /* MusicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A5F1EBEBC4800746D9E /* MusicAPI.swift */; };
 		04606A631EBF336800746D9E /* MusicCenterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A621EBF336800746D9E /* MusicCenterTableViewCell.swift */; };
+		04606A651EBF425400746D9E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A641EBF425400746D9E /* StringExtension.swift */; };
 		04645E301EB4924200AF2738 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */; };
 		0484C8F11EB97D3000A2A6A1 /* MusicLoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */; };
 		048E74EE1EBB7ACF00D91224 /* MusicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */; };
@@ -93,6 +94,8 @@
 		04606A5E1EBEBC4800746D9E /* DebugNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugNetwork.swift; sourceTree = "<group>"; };
 		04606A5F1EBEBC4800746D9E /* MusicAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicAPI.swift; sourceTree = "<group>"; };
 		04606A621EBF336800746D9E /* MusicCenterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicCenterTableViewCell.swift; path = Modules/Center/MusicCenterTableViewCell.swift; sourceTree = "<group>"; };
+		04606A641EBF425400746D9E /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtension.swift; path = Extension/StringExtension.swift; sourceTree = "<group>"; };
+		04606A661EBF427200746D9E /* Music-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Music-Bridging-Header.h"; path = "Universal/Music-Bridging-Header.h"; sourceTree = "<group>"; };
 		04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExtension.swift; path = Extension/UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicLoveButton.swift; sourceTree = "<group>"; };
 		048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicTableViewController.swift; path = ViewControllers/MusicTableViewController.swift; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 		044F1AE91E78F8F300A8502A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				04606A661EBF427200746D9E /* Music-Bridging-Header.h */,
 				044F1AEC1E78FA1200A8502A /* Assets.xcassets */,
 				044F1AEA1E78F94B00A8502A /* Info.plist */,
 			);
@@ -242,6 +246,17 @@
 				04AA363D1EBDEA7F00DED541 /* MusicResourcesLoader.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		04606A691EBF42B300746D9E /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				04EB6C891E7A96B400A76240 /* UIViewExtension.swift */,
+				04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */,
+				045145EF1EB7175300D6F08A /* UIFontExtension.swift */,
+				045146081EB87D4D00D6F08A /* UIImageExtension.swift */,
+			);
+			name = UIKit;
 			sourceTree = "<group>";
 		};
 		046F78E01EA6FE3000A0D587 /* Search */ = {
@@ -320,11 +335,9 @@
 		04EB6C811E7A884A00A76240 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				04EB6C891E7A96B400A76240 /* UIViewExtension.swift */,
 				04EB6C871E7A964900A76240 /* IntExtension.swift */,
-				04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */,
-				045145EF1EB7175300D6F08A /* UIFontExtension.swift */,
-				045146081EB87D4D00D6F08A /* UIImageExtension.swift */,
+				04606A641EBF425400746D9E /* StringExtension.swift */,
+				04606A691EBF42B300746D9E /* UIKit */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -417,6 +430,7 @@
 					04C188451E66C6C900432954 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = AWFM3K5AG4;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -521,6 +535,7 @@
 				04606A611EBEBC4800746D9E /* MusicAPI.swift in Sources */,
 				04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */,
 				045146031EB86B6C00D6F08A /* MusicNavigationController.swift in Sources */,
+				04606A651EBF425400746D9E /* StringExtension.swift in Sources */,
 				040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */,
 				045145FE1EB86B4D00D6F08A /* MusicNavigationBar.swift in Sources */,
 				045145F01EB7175300D6F08A /* UIFontExtension.swift in Sources */,
@@ -651,6 +666,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = AWFM3K5AG4;
 				INFOPLIST_FILE = "Music/Supporting Files/Info.plist";
@@ -658,6 +674,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xwjack.Music;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Music/Universal/Music-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -669,6 +687,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = AWFM3K5AG4;
 				INFOPLIST_FILE = "Music/Supporting Files/Info.plist";
@@ -676,6 +695,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xwjack.Music;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Music/Universal/Music-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

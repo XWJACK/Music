@@ -10,7 +10,7 @@ import UIKit
 import Wave
 import Alamofire
 
-final class MusicPlayerViewController: MusicViewController {
+class MusicPlayerViewController: MusicViewController {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     
@@ -53,13 +53,10 @@ final class MusicPlayerViewController: MusicViewController {
         
     }
     
-//    func play(with musicMode: MusicMode) {
-//        destoryPlayer()
-//        createPlayer()
-//        Alamofire.request(musicURL).responseData { (response) in
-//            self.player?.respond(with: response.data!)
-//        }
-//    }
+    func play(withResource resource: MusicResource) {
+        destoryPlayer()
+        createPlayer()
+    }
     
     fileprivate func createPlayer() {
         player = StreamAudioPlayer()

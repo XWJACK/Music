@@ -80,6 +80,24 @@ final class MusicFileManager {
         }
     }
     
+    func cache(by resourceMD5: String) {
+        
+    }
+    
+    func search(fromURL url: URL) -> [MusicResource] {
+        if let contents = try? fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
+            return contents.filter{ $0.pathExtension == "info" }.map {
+                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return MusicResource() }
+                var data = MusicResource(JSON(data: fileContent))
+                data.isCached = url == musicCacheURL
+                data.isDownload = url == musicDownloadURL
+                data.resourceURL = $0
+                return data
+            }
+        }
+        return []
+    }
+    
     private func clear(_ url: URL) {
         /// 删除音乐缓存目录
         if fileManager.fileExists(atPath: url.path) {

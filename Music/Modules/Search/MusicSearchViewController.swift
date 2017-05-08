@@ -79,10 +79,8 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
 //            }.response {
 //                self.tableView.endRefreshing(resetToPageZero: false, hasMore: self.apiDatas.hasMore)
 //        }
-        
-        MusicAPI.default.search(keyWords: searchText, offset: offSet - 1).success(jsonHandler: { (json) in
-            
-            let results = json.result["songs"].arrayValue.map{ SearchMode($0) }
+        MusicNetwork.default.request(MusicAPI.default.search(keyWords: searchText, offset: offSet - 1), success: {
+            let results = $0.result["songs"].arrayValue.map{ SearchMode($0) }
             
             if isNewSearch { self.apiDatas = results }
             else { results.forEach{ self.apiDatas.append($0) } }
@@ -90,7 +88,9 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
             self.searchViewModes = self.apiDatas.map{ $0.searchViewMode }
             
             self.tableView.reloadData()
-        })
+        }) {
+            assertionFailure($0.localizedDescription)
+        }
     }
     
     @objc private func cancelButtonClicked() {

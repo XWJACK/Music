@@ -55,6 +55,19 @@ struct MusicResponse {
     var success: ((Data) -> ())? = nil
     var downloaded: ((URL) -> ())? = nil
     var failed: ((Error) -> ())? = nil
+    
+    init(response: ((Data) -> ())? = nil,
+         progress: ((Progress) -> ())? = nil,
+         success: ((Data) -> ())? = nil,
+         failed: ((Error) -> ())? = nil,
+         downloaded: ((URL) -> ())? = nil) {
+        
+        self.response = response
+        self.progress = progress
+        self.success = success
+        self.failed = failed
+        self.downloaded = downloaded
+    }
 }
 
 class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate {
@@ -83,7 +96,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
         session?.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error { failed?(error); return }
             if let data = data { success?(JSON(data: data)) }
-        }
+        }.resume()
     }
     
     func request(_ url: URL, response: MusicResponse) {

@@ -10,19 +10,19 @@ import UIKit
 
 class MusicPlayerSlider: UISlider {
     
-    let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    let thumbImageSize = CGSize(width: 20, height: 20)
+//    let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        indicator.isHidden = true
-        addSubview(indicator)
+//        indicator.isHidden = true
+//        addSubview(indicator)
     }
     
-//    override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
-//        return CGRect(x: super.thumbRect(forBounds: bounds, trackRect: rect, value: value).origin.x,
-//                      y: rect.origin.y - 10 - rect.height / 2,
-//                      width: 20,
-//                      height: 20)
-//    }
+    override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
+        let superRect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
+//        indicator.frame = superRect
+        return superRect
+    }
 }

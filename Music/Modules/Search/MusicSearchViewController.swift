@@ -86,8 +86,9 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
             else { results.forEach{ self.apiDatas.append($0) } }
             
             self.searchViewModes = self.apiDatas.map{ $0.searchViewMode }
-            
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }) {
             assertionFailure($0.localizedDescription)
         }
@@ -117,6 +118,9 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
+        let resources = apiDatas.map{ $0.resource }
+        MusicResourcesLoader.default.reset(resources, resourceIndex: indexPath.row)
+        musicPlayerViewController.play(withResource: MusicResourcesLoader.default.current())
         musicNavigationController?.push(musicPlayerViewController)
     }
     

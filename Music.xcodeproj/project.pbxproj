@@ -16,6 +16,7 @@
 		0405766F1EB34AA400FE8987 /* MusicPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0405766E1EB34AA400FE8987 /* MusicPlayerSlider.swift */; };
 		040576721EB34B5400FE8987 /* MusicPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */; };
 		040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */; };
+		041E44691EC0B13000EAA621 /* MusicResourceConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041E44681EC0B13000EAA621 /* MusicResourceConversion.swift */; };
 		044F1AED1E78FA1200A8502A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 044F1AEC1E78FA1200A8502A /* Assets.xcassets */; };
 		044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AEE1E79256E00A8502A /* BlurEffect.swift */; };
 		045145E21EB6119F00D6F08A /* MusicPlayerModeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045145E11EB6119F00D6F08A /* MusicPlayerModeButton.swift */; };
@@ -76,6 +77,7 @@
 		0405766E1EB34AA400FE8987 /* MusicPlayerSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerSlider.swift; sourceTree = "<group>"; };
 		040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MusicPlayerViewController.storyboard; path = Music/Modules/Player/MusicPlayerViewController.storyboard; sourceTree = SOURCE_ROOT; };
 		040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerViewController.swift; path = Music/Modules/Player/MusicPlayerViewController.swift; sourceTree = SOURCE_ROOT; };
+		041E44681EC0B13000EAA621 /* MusicResourceConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceConversion.swift; sourceTree = "<group>"; };
 		044F1AEA1E78F94B00A8502A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = "<group>"; };
 		044F1AEC1E78FA1200A8502A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Supporting Files/Assets.xcassets"; sourceTree = "<group>"; };
 		044F1AEE1E79256E00A8502A /* BlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffect.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				04606A5F1EBEBC4800746D9E /* MusicAPI.swift */,
 				0456B3881E7F822800ECAC9F /* MusicFileManager.swift */,
 				04AA363D1EBDEA7F00DED541 /* MusicResourcesLoader.swift */,
+				041E44681EC0B13000EAA621 /* MusicResourceConversion.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -537,6 +540,7 @@
 				04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */,
 				04606A611EBEBC4800746D9E /* MusicAPI.swift in Sources */,
 				04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */,
+				041E44691EC0B13000EAA621 /* MusicResourceConversion.swift in Sources */,
 				045146031EB86B6C00D6F08A /* MusicNavigationController.swift in Sources */,
 				04606A651EBF425400746D9E /* StringExtension.swift in Sources */,
 				040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */,

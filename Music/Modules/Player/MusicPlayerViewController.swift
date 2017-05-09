@@ -40,9 +40,9 @@ class MusicPlayerViewController: MusicViewController {
         lastButton.setImage(#imageLiteral(resourceName: "player_control_last_press"), for: .highlighted)
         nextButton.setImage(#imageLiteral(resourceName: "player_control_next_press"), for: .highlighted)
         
-        timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider"), for: .normal)
+        timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider").scaleToSize(newSize: timeSlider.thumbImageSize), for: .normal)
         timeSlider.thumbImage(for: .normal)
-        timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs"), for: .highlighted)
+        timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs").scaleToSize(newSize: timeSlider.thumbImageSize), for: .highlighted)
         
         listButton.setImage(#imageLiteral(resourceName: "player_control_list_press"), for: .highlighted)
 //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
@@ -56,6 +56,16 @@ class MusicPlayerViewController: MusicViewController {
     func play(withResource resource: MusicResource) {
         destoryPlayer()
         createPlayer()
+        guard let resourceURL = resource.resourceURL else { return }
+//        MusicNetwork.default.request(resourceURL, response: MusicResponse(response: {
+//            self.player?.respond(with: $0)
+//        }, progress: { (<#Progress#>) in
+//            <#code#>
+//        }, success: {
+//            MusicResourcesLoader.default
+//        }, failed: {
+//            assertionFailure($0.localizedDescription)
+//        }))
     }
     
     fileprivate func createPlayer() {
@@ -92,7 +102,7 @@ class MusicPlayerViewController: MusicViewController {
     }
     
     @IBAction func timeSliderSeek(_ sender: MusicPlayerSlider) {
-        
+        player?.seek(toTime: TimeInterval(sender.value))
     }
     
     @IBAction func listButtonClicked(_ sender: UIButton) {
@@ -112,6 +122,6 @@ class MusicPlayerViewController: MusicViewController {
 extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedDuration duration: TimeInterval) {
-        
+        timeSlider.isEnabled = true
     }
 }

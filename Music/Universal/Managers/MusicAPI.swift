@@ -21,14 +21,14 @@ open class MusicAPI {
     //MARK: - Search
     
     public enum SearchType: Int {
-        case 单曲 = 1//: 单曲
-        case 专辑 = 10//: 专辑
-        case 歌手 = 100///: 歌手
-        case 歌单 = 1000//: 歌单
-        case 用户 = 1002//: 用户
-        case MV = 1004//: MV
-        case 歌词 = 1006//: 歌词
-        case 电台 = 1009//: 电台
+        case 单曲 = 1
+        case 专辑 = 10
+        case 歌手 = 100
+        case 歌单 = 1000
+        case 用户 = 1002
+        case MV = 1004
+        case 歌词 = 1006
+        case 电台 = 1009
     }
     
     open func search(keyWords: String, limit: Int? = nil, offset: Int? = nil, type: SearchType? = nil) -> URLRequest {

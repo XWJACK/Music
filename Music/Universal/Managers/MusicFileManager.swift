@@ -84,18 +84,21 @@ final class MusicFileManager {
         
     }
     
-    func search(fromURL url: URL) -> [MusicResource] {
+    func search(fromURL url: URL) -> MusicResourceCollection {
         if let contents = try? fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
-            return contents.filter{ $0.pathExtension == "info" }.map {
-                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return MusicResource() }
+            
+            var results: MusicResourceCollection = [:]
+            for content in contents.filter({ $0.pathExtension == "info" }) {
+                guard let fileContent = FileHandle(forReadingAtPath: content.path)?.readDataToEndOfFile() else { continue }
                 var data = MusicResource(JSON(data: fileContent))
                 data.isCached = url == musicCacheURL
                 data.isDownload = url == musicDownloadURL
-                data.resourceURL = $0
-                return data
+                data.resourceURL = content
+                results[data.resourceID] = data
             }
+            
         }
-        return []
+        return [:]
     }
     
     private func clear(_ url: URL) {

@@ -14,7 +14,7 @@ class MusicCenterViewController: MusicTableViewController {
     
     private var dataSources: [(title: String, image: UIImage?, clouse: (() -> ())?)] = []
     private var isCalculating: Bool = false
-    private var cache: String = "0 KB"
+    private var cache: String = ""
     private let cacheIndexPath: IndexPath = IndexPath(row: 0, section: 0)
     
     override func viewDidLoad() {

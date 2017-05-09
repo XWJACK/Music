@@ -12,7 +12,7 @@ class MusicPlayerDownloadButton: UIButton {
     
     var mode: MusicPlayerDownloadMode = .disable {
         didSet {
-            changeModel()
+            changeMode()
         }
     }
     
@@ -20,7 +20,7 @@ class MusicPlayerDownloadButton: UIButton {
         super.init(coder: aDecoder)
     }
     
-    private func changeModel() {
+    private func changeMode() {
         switch mode {
         case .download:
             setImage(#imageLiteral(resourceName: "player_control_download"), for: .normal)

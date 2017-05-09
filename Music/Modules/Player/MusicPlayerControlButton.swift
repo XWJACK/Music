@@ -12,7 +12,7 @@ class MusicPlayerControlButton: UIButton {
 
     var mode: MusicPlayerStatus = .paused {
         didSet {
-            changeModel()
+            changeMode()
         }
     }
     
@@ -20,7 +20,7 @@ class MusicPlayerControlButton: UIButton {
         super.init(coder: aDecoder)
     }
     
-    private func changeModel() {
+    private func changeMode() {
         switch mode {
         case .playing:
             setImage(#imageLiteral(resourceName: "player_control_pause"), for: .normal)

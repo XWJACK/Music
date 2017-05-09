@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-let musicPlayerViewController: MusicPlayerViewController = MusicPlayerViewController.instanseFromStoryboard() as! MusicPlayerViewController
+let musicPlayerViewController: MusicPlayerViewController = MusicPlayerViewController.instanseFromStoryboard()! as! MusicPlayerViewController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

@@ -10,7 +10,7 @@ import UIKit
 import Wave
 import Alamofire
 
-class MusicPlayerViewController: MusicViewController {
+class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     
@@ -56,16 +56,17 @@ class MusicPlayerViewController: MusicViewController {
     func play(withResource resource: MusicResource) {
         destoryPlayer()
         createPlayer()
-        guard let resourceURL = resource.resourceURL else { return }
-//        MusicNetwork.default.request(resourceURL, response: MusicResponse(response: {
-//            self.player?.respond(with: $0)
-//        }, progress: { (<#Progress#>) in
-//            <#code#>
-//        }, success: {
-//            MusicResourcesLoader.default
-//        }, failed: {
-//            assertionFailure($0.localizedDescription)
-//        }))
+        
+        guard let url = resource.musicUrl else { return }
+        MusicNetwork.default.request(url, response: MusicResponse(response: {
+            self.player?.respond(with: $0)
+        }, progress: {
+            print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
+        }, success: { _ in
+            //TODO: Cache Music
+        }, failed: {
+            assertionFailure($0.localizedDescription)
+        }))
     }
     
     fileprivate func createPlayer() {
@@ -80,25 +81,25 @@ class MusicPlayerViewController: MusicViewController {
     
     @IBAction func playModeButtonClicked(_ sender: MusicPlayerModeButton) {
         sender.changePlayMode()
+        MusicResourcesLoader.default.resourceLoadMode = sender.mode
     }
     
     @IBAction func controlButtonClicked(_ sender: MusicPlayerControlButton) {
         if sender.mode == .paused {
             sender.mode = .playing
             player?.play()
-        }
-        else {
+        } else {
             sender.mode = .paused
             player?.pause()
         }
     }
     
     @IBAction func lastButtonClicked(_ sender: UIButton) {
-        
+        play(withResource: MusicResourcesLoader.default.last())
     }
     
     @IBAction func nextButtonClicked(_ sender: UIButton) {
-        
+        play(withResource: MusicResourcesLoader.default.next())
     }
     
     @IBAction func timeSliderSeek(_ sender: MusicPlayerSlider) {
@@ -117,9 +118,8 @@ class MusicPlayerViewController: MusicViewController {
     @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
         
     }
-}
-
-extension MusicPlayerViewController: StreamAudioPlayerDelegate {
+    
+    //MARK - StreamAudioPlayerDelegate
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedDuration duration: TimeInterval) {
         timeSlider.isEnabled = true

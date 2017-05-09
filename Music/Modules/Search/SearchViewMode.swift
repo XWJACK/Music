@@ -8,16 +8,16 @@
 
 import Foundation
 
-struct SearchViewMode {
+struct SearchViewModel {
     var name: String = ""
     var detail: String = ""
 }
 
-extension SearchMode {
-    var searchViewMode: SearchViewMode {
-        var data = SearchViewMode()
+extension SearchModel {
+    var searchViewMode: SearchViewModel {
+        var data = SearchViewModel()
         data.name = name
-        data.detail = artistsName + "-" + albumName
+        data.detail = (artists.first?.name ?? "") + "-" + album.name
         return data
     }
 }

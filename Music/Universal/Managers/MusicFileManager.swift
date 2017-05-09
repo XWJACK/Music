@@ -89,12 +89,15 @@ final class MusicFileManager {
             
             var results: MusicResourceCollection = [:]
             for content in contents.filter({ $0.pathExtension == "info" }) {
+                
                 guard let fileContent = FileHandle(forReadingAtPath: content.path)?.readDataToEndOfFile() else { continue }
-                var data = MusicResource(JSON(data: fileContent))
-                data.isCached = url == musicCacheURL
-                data.isDownload = url == musicDownloadURL
-                data.resourceURL = content
-                results[data.resourceID] = data
+                var resource = MusicResource(JSON(data: fileContent))
+                guard let md5 = resource.md5 else { continue }
+                
+                resource.isCached = url == musicCacheURL
+                resource.isDownload = url == musicDownloadURL
+                resource.musicUrl = content.deletingLastPathComponent().appendingPathComponent(md5)
+                results[resource.id] = resource
             }
             
         }

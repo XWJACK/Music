@@ -8,10 +8,6 @@
 
 import Foundation
 
-extension URLRequest {
-    static var api: MusicAPI { return MusicAPI.default }
-}
-
 open class MusicAPI {
     
     public static let `default`: MusicAPI = MusicAPI()
@@ -41,5 +37,21 @@ open class MusicAPI {
         if let type = type { parameters["type"] = type }
         
         return try! URLEncoding.default.encode(URLRequest(url: requestURL, method: .get), with: parameters)
+    }
+    
+    //MARK: - Login
+    
+    public enum LoginType {
+        case phone
+        case email
+    }
+    
+    open func login(userName: String, password: String, type: LoginType = .phone) -> URLRequest {
+        
+        var requestURL = URL(string: "/login", relativeTo: URL(string: baseURLString ?? ""))
+        let parameters: Parameters = ["userName": userName, "password": password]
+        if type == .phone { requestURL?.appendPathComponent("cellphone") }
+        
+        return try! URLEncoding.default.encode(URLRequest(url: requestURL!, method: .get), with: parameters)
     }
 }

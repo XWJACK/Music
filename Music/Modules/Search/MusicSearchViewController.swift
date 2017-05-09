@@ -17,8 +17,8 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     
     private var searchText: String = ""
     private var offSet: Int = 1
-    private var apiDatas: [SearchMode] = []
-    private var searchViewModes: [SearchViewMode] = []
+    private var apiDatas: [SearchModel] = []
+    private var searchViewModels: [SearchViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,12 +80,12 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
 //                self.tableView.endRefreshing(resetToPageZero: false, hasMore: self.apiDatas.hasMore)
 //        }
         MusicNetwork.default.request(MusicAPI.default.search(keyWords: searchText, offset: offSet - 1), success: {
-            let results = $0.result["songs"].arrayValue.map{ SearchMode($0) }
+            let results = $0.result["songs"].arrayValue.map{ SearchModel($0) }
             
             if isNewSearch { self.apiDatas = results }
             else { results.forEach{ self.apiDatas.append($0) } }
             
-            self.searchViewModes = self.apiDatas.map{ $0.searchViewMode }
+            self.searchViewModels = self.apiDatas.map{ $0.searchViewMode }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -113,7 +113,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchViewModes.count
+        return searchViewModels.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -126,10 +126,10 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicSearchTableViewCell.reuseIdentifier, for: indexPath) as? MusicSearchTableViewCell else { return MusicSearchTableViewCell() }
-        let viewMode = searchViewModes[indexPath.row]
+        let viewModel = searchViewModels[indexPath.row]
         cell.indexPath = indexPath
-        cell.musicLabel.text = viewMode.name
-        cell.detailLabel.text = viewMode.detail
+        cell.musicLabel.text = viewModel.name
+        cell.detailLabel.text = viewModel.detail
         return cell
     }
 }

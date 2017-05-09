@@ -8,11 +8,12 @@
 
 import Foundation
 
-extension SearchMode {
+// MARK: - SearchModel -> MusicResource
+extension SearchModel {
     var resource: MusicResource {
         var resource = MusicResource()
-        resource.resourceID = id
-        resource.resourceURL = mp3URL
+        resource.id = id
+        resource.musicUrl = mp3URL
         return resource
     }
 }

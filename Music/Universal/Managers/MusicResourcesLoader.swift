@@ -8,21 +8,29 @@
 
 import Foundation
 
+
+/// Music Resource
 struct MusicResource: JSONInitable {
     var isCached: Bool = false
     var isDownload: Bool = false
-    var resourceID: String = ""
-    var resourceMD5: String? = nil
-    var resourceURL: URL? = nil
+    var id: String = ""
+    var md5: String? = nil
+    var musicUrl: URL? = nil
+    var lyric: String? = nil
     
     init(){}
     
     init(_ json: JSON) {
-        resourceID = json["resourceID"].stringValue
-        resourceMD5 = json["resourceMD5"].stringValue
+        id = json["id"].stringValue
+        md5 = json["md5"].stringValue
+        lyric = json["lyric"].string
     }
     
-    var codeing: String { return JSON(["resourceID": resourceID, "resourceMD5": resourceMD5!]).stringValue }
+    var codeing: String {
+        var code = ["id": id, "md5": md5 ?? { assertionFailure("Codeing with MD5 Error"); return "Error MD5" }()]
+        if let lyric = lyric { code["lyric"] = lyric }
+        return JSON(code).stringValue
+    }
 }
 
 typealias MusicResourceCollection = [String: MusicResource]
@@ -33,11 +41,11 @@ class MusicResourcesLoader {
     
     var resourceLoadMode: MusicPlayerPlayMode = .order
     
-    private(set) var resources: [MusicResource] = []
-    private(set) var resourcesIndexs: [Int] = []
-    private(set) var currentResourceIndex: Int = 0
-    private(set) var cachedResourceList: MusicResourceCollection = [:]
-    private(set) var downloadedResouceList: MusicResourceCollection = [:]
+    private var resources: [MusicResource] = []
+    private var resourcesIndexs: [Int] = []
+    private var currentResourceIndex: Int = 0
+    private var cachedResourceList: MusicResourceCollection = [:]
+    private var downloadedResouceList: MusicResourceCollection = [:]
     
     private init() {
         DispatchQueue.global().async {
@@ -56,14 +64,14 @@ class MusicResourcesLoader {
     func cache(_ resource: MusicResource) {
         var resource = resource
         resource.isCached = true
-        resource.resourceMD5 = resource.resourceID.md5()
+        resource.md5 = resource.id.md5()
 //        cachedResourceList.append(resource)
     }
     
     func save(_ resource: MusicResource) {
         var resource = resource
         resource.isDownload = true
-        resource.resourceMD5 = resource.resourceID.md5()
+        resource.md5 = resource.id.md5()
 //        cachedResourceList.append(resource)
     }
     

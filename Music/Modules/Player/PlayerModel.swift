@@ -28,6 +28,7 @@ enum MusicPlayerPlayMode {
     case order
     case random
 }
+
 /// Music Player Download Mode
 enum MusicPlayerDownloadMode {
     case download
@@ -35,13 +36,12 @@ enum MusicPlayerDownloadMode {
     case disable
 }
 
-struct MusicInfo {
-    let id: String
-    let md5: String
-    let format: AudioFileTypeID = kAudioFileMP3Type
-}
-
-struct PlayerMode {
-    let musicURL: URL
-    let lyricURL: URL
+struct MusicPlayerModel {
+    var isDownloaded: Bool = false
+    var isLoved: Bool = false
+    let musicName: String = ""
+    let musicURL: URL?
+    let lyricURL: URL?
+    let avaterURL: URL?
+    let backgroundImageURL: URL?
 }

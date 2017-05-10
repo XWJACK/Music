@@ -12,14 +12,22 @@ import UIKit
 enum MusicPlayerStatus {
     case playing
     case paused
+    prefix public static func !(a: MusicPlayerStatus) -> MusicPlayerStatus {
+        return a == .playing ? .paused : .playing
+    }
 }
 
 /// Music Player Love Mode
 enum MusicPlayerLoveMode {
     case love
     case loved
-    case disable
+//    case disable
+    prefix public static func !(a: MusicPlayerLoveMode) -> MusicPlayerLoveMode {
+        return a == .love ? .loved : .love
+    }
 }
+
+
 
 /// Music Player Play Mode
 enum MusicPlayerPlayMode {

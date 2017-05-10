@@ -29,6 +29,8 @@ extension JSON {
     var code: Int { return self["code"].intValue }
     /// Parse Data
     var result: JSON { return self["result"] }
+    /// Is Success for response
+    var isSuccess: Bool { return code == 200 }
 }
 
 protocol JSONInitable {
@@ -91,7 +93,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     /// New session for MusicNetwork by default session config
     private override init() {
         super.init()
-        session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
     }
     
     /// Request by URLRequest
@@ -101,10 +103,12 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     ///   - success: Success
     ///   - failed: Failed
     func request(_ urlRequest: URLRequest,
+                 response: ((Data?, URLResponse?, Error?) -> ())? = nil,
                  success: ((JSON) -> ())? = nil,
                  failed: ((Error) -> ())? = nil) {
         
-        session?.dataTask(with: urlRequest) { (data, response, error) in
+        session?.dataTask(with: urlRequest) { (data, urlResponse, error) in
+            response?(data, urlResponse, error)
             if let error = error { failed?(error); return }
             if let data = data { success?(JSON(data: data)) }
         }.resume()

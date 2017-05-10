@@ -8,6 +8,30 @@
 
 import Foundation
 
+struct MusicAccount: JSONInitable {
+    let id: String
+    let userName: String
+    
+    init(_ json: JSON) {
+        id = json["id"].stringValue
+        userName = json["userName"].stringValue
+    }
+}
+
+struct MusicProfile: JSONInitable {
+    let userId: String
+    let nickname: String
+    let avatarUrl: URL?
+    let backgroundUrl: URL?
+    
+    init(_ json: JSON) {
+        userId = json["userId"].stringValue
+        nickname = json["nickname"].stringValue
+        avatarUrl = json["avatarUrl"].url
+        backgroundUrl = json["backgroundUrl"].url
+    }
+}
+
 struct MusicArtist: JSONInitable {
     let name: String
 //    let picUrl: URL?
@@ -82,11 +106,21 @@ struct PlayListModel: JSONInitable {
     let name: String
     let coverImgUrl: URL?
     let creator: CreatorModel
+    let trackCount: Int
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
         coverImgUrl = json["coverImgUrl"].url
         creator = CreatorModel(json["creator"])
+        trackCount = json["trackCount"].intValue
+    }
+    
+    var musicCollectionListViewModel: MusicCollectionListViewModel {
+        var data = MusicCollectionListViewModel()
+        data.coverImageUrl = coverImgUrl
+        data.name = name
+        data.detail = trackCount.description + " songs"
+        return data
     }
 }

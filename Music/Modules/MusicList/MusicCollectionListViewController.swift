@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import MJRefresh
+
+struct MusicCollectionListViewModel {
+    var coverImageUrl: URL? = nil
+    var name: String = ""
+    var detail: String = ""
+}
 
 final class MusicCollectionListViewController: MusicTableViewController {
 
+    private var apiDatas: [PlayListModel] = []
+    private var viewModels: [MusicCollectionListViewModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +39,26 @@ final class MusicCollectionListViewController: MusicTableViewController {
         actionButton.snp.makeConstraints { (make) in
             make.width.height.equalTo(28)
         }
+        
+        tableView.mj_header = MJRefreshNormalHeader { [unowned self] in
+            self.request()
+        }
+        
+        request()
+    }
+    
+    private func request() {
+        guard let userId = AccountManager.default.account?.id else { tableView.mj_header.endRefreshing(); return }
+        MusicNetwork.default.request(MusicAPI.default.playList(userId: userId), response: { (_, _, _) in
+            self.tableView.mj_header.endRefreshing()
+        }, success: {
+            guard $0.isSuccess else { return }
+            self.apiDatas = $0["playlist"].array?.map{ PlayListModel($0) } ?? []
+            self.viewModels = self.apiDatas.map{ $0.musicCollectionListViewModel }
+            self.tableView.reloadData()
+        }) {
+            print($0)
+        }
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
@@ -44,7 +74,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return viewModels.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -55,6 +85,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicCollectionListTableViewCell.reuseIdentifier, for: indexPath) as? MusicCollectionListTableViewCell else { return MusicCollectionListTableViewCell() }
         cell.indexPath = indexPath
+        cell.update(viewModels[indexPath.row])
         return cell
     }
 }

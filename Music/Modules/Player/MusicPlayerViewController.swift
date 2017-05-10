@@ -110,13 +110,12 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     }
     
     @IBAction func controlButtonClicked(_ sender: MusicPlayerControlButton) {
-        if sender.mode == .paused {
-            sender.mode = .playing
-            player?.play()
-        } else {
-            sender.mode = .paused
-            player?.pause()
-        }
+        
+        guard let player = player else { return }
+        
+        if sender.mode == .paused { player.play() }
+        else { player.pause() }
+        sender.mode = !sender.mode
     }
     
     @IBAction func lastButtonClicked(_ sender: UIButton) {
@@ -136,12 +135,16 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     }
     
     @IBAction func loveButtonClicked(_ sender: MusicLoveButton) {
-        if sender.mode == .love { sender.mode = .loved }
-        else { sender.mode = .love }
+        guard let id = resource?.id else { return }
+        MusicNetwork.default.request(MusicAPI.default.like(musicID: id, isLike: sender.mode == .love), success: {
+            if $0.isSuccess { sender.mode = !sender.mode }
+        }) {
+            print($0)
+        }
     }
     
     @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
-        MusicResourceManager.default
+//        MusicResourceManager.default
     }
     
     //MARK - StreamAudioPlayerDelegate

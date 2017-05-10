@@ -16,6 +16,8 @@
 		0405766F1EB34AA400FE8987 /* MusicPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0405766E1EB34AA400FE8987 /* MusicPlayerSlider.swift */; };
 		040576721EB34B5400FE8987 /* MusicPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */; };
 		040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */; };
+		044A1C3E1EC33DFD00179379 /* ThirdFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044A1C3D1EC33DFD00179379 /* ThirdFramework.swift */; };
+		044A1C401EC33EC500179379 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044A1C3F1EC33EC500179379 /* AccountManager.swift */; };
 		044F1AED1E78FA1200A8502A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 044F1AEC1E78FA1200A8502A /* Assets.xcassets */; };
 		044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044F1AEE1E79256E00A8502A /* BlurEffect.swift */; };
 		045145E21EB6119F00D6F08A /* MusicPlayerModeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045145E11EB6119F00D6F08A /* MusicPlayerModeButton.swift */; };
@@ -76,6 +78,8 @@
 		0405766E1EB34AA400FE8987 /* MusicPlayerSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerSlider.swift; sourceTree = "<group>"; };
 		040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MusicPlayerViewController.storyboard; path = Music/Modules/Player/MusicPlayerViewController.storyboard; sourceTree = SOURCE_ROOT; };
 		040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerViewController.swift; path = Music/Modules/Player/MusicPlayerViewController.swift; sourceTree = SOURCE_ROOT; };
+		044A1C3D1EC33DFD00179379 /* ThirdFramework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdFramework.swift; sourceTree = "<group>"; };
+		044A1C3F1EC33EC500179379 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		044F1AEA1E78F94B00A8502A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = "<group>"; };
 		044F1AEC1E78FA1200A8502A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Supporting Files/Assets.xcassets"; sourceTree = "<group>"; };
 		044F1AEE1E79256E00A8502A /* BlurEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffect.swift; sourceTree = "<group>"; };
@@ -197,6 +201,7 @@
 				0456B3871E7F822800ECAC9F /* Managers */,
 				04F42F951EC1F38800BC057D /* Model.swift */,
 				04BCF4A51EC2074D005E456B /* MusicResourceConversion.swift */,
+				044A1C3D1EC33DFD00179379 /* ThirdFramework.swift */,
 			);
 			path = Universal;
 			sourceTree = "<group>";
@@ -249,6 +254,7 @@
 				04606A5F1EBEBC4800746D9E /* MusicAPI.swift */,
 				0456B3881E7F822800ECAC9F /* MusicFileManager.swift */,
 				04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */,
+				044A1C3F1EC33EC500179379 /* AccountManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -556,6 +562,7 @@
 				04606A631EBF336800746D9E /* MusicCenterTableViewCell.swift in Sources */,
 				045145FD1EB86B4D00D6F08A /* MusicButton.swift in Sources */,
 				040576591EB343CC00FE8987 /* MusicSearchViewController.swift in Sources */,
+				044A1C401EC33EC500179379 /* AccountManager.swift in Sources */,
 				04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */,
 				045146091EB87D4D00D6F08A /* UIImageExtension.swift in Sources */,
 				04606A6B1EBFF25F00746D9E /* MusicNetwork.swift in Sources */,
@@ -567,6 +574,7 @@
 				045145E21EB6119F00D6F08A /* MusicPlayerModeButton.swift in Sources */,
 				044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */,
 				040300461EB9E39B0023021F /* MusicCollectionListViewController.swift in Sources */,
+				044A1C3E1EC33DFD00179379 /* ThirdFramework.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

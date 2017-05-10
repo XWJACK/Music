@@ -10,15 +10,52 @@ import UIKit
 
 class MusicCollectionListTableViewCell: MusicTableViewCell {
 
+    let coverImageView = UIImageView()
+    let titleLabel = UILabel()
+    let detailLabel = UILabel()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        leftPadding = 40
+        leftPadding = 55
+        
+        titleLabel.textColor = .white
+        titleLabel.text = ""
+        titleLabel.font = .font14
+        
+        detailLabel.textColor = .lightGray
+        detailLabel.font = .font10
+        detailLabel.text = ""
+        
+        contentView.addSubview(coverImageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(detailLabel)
+        
+        coverImageView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(5)
+            make.top.equalToSuperview().offset(3)
+            make.bottom.equalToSuperview().offset(-3)
+            make.width.equalTo(coverImageView.snp.height)
+        }
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(coverImageView.snp.right).offset(10)
+            make.top.equalToSuperview().offset(5)
+            make.right.greaterThanOrEqualToSuperview().offset(-50)
+        }
+        
+        detailLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(titleLabel)
+            make.bottom.equalToSuperview().offset(-5)
+        }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func update(_ viewModel: MusicCollectionListViewModel) {
+        titleLabel.text = viewModel.name
+        detailLabel.text = viewModel.detail
+        coverImageView.kf.setImage(with: viewModel.coverImageUrl,
+                                   placeholder: coverImageView.image,
+                                   options: [.transition(.fade(1))])
     }
     
     required init?(coder aDecoder: NSCoder) {

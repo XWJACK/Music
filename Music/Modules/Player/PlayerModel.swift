@@ -6,8 +6,7 @@
 //  Copyright © 2017 Jack. All rights reserved.
 //
 
-import Foundation
-import AVFoundation
+import UIKit
 
 /// Music Player Status
 enum MusicPlayerStatus {
@@ -36,12 +35,45 @@ enum MusicPlayerDownloadMode {
     case disable
 }
 
-struct MusicPlayerModel {
-    var isDownloaded: Bool = false
-    var isLoved: Bool = false
-    let musicName: String = ""
-    let musicURL: URL?
-    let lyricURL: URL?
-    let avaterURL: URL?
-    let backgroundImageURL: URL?
+struct MusicPlayerResource {
+    var id: String
+    let name: String = ""
+    let isDownload: Bool = false
+    let isLoved: Bool = false
+    let pictureImageURL: URL? = nil
+    let backgroundImageURL: URL? = nil
+}
+
+struct MusicPlayerResponse {
+    
+    struct Music {
+//        var data = Data()
+        var response: ((Data) -> ())? = nil
+        var progress: ((Progress) -> ())? = nil
+        
+        init(response: ((Data) -> ())? = nil,
+             progress: ((Progress) -> ())? = nil) {
+            
+            self.response = response
+            self.progress = progress
+        }
+    }
+    
+    struct Lyric {
+        var success: ((String) -> ())? = nil
+        init(success: ((String) -> ())? = nil) {
+            
+            self.success = success
+        }
+    }
+    
+    var music: Music
+    var lyric: Lyric
+    
+    var failed: ((Error) -> ())? = nil
+    
+    init(music: Music, lyric: Lyric) {
+        self.music = music
+        self.lyric = lyric
+    }
 }

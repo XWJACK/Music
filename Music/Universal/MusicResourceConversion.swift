@@ -11,9 +11,9 @@ import Foundation
 // MARK: - SearchModel -> MusicResource
 extension SearchModel {
     var resource: MusicResource {
-        var resource = MusicResource()
-        resource.id = id
-        resource.musicUrl = mp3URL
+        var resource = MusicResource(id: id)
+        resource.musicUrl = mp3Url
+        resource.resourceSource = .network
         return resource
     }
 }

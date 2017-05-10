@@ -1,27 +1,29 @@
 PODS:
   - Alamofire (4.4.0)
+  - Kingfisher (3.7.2)
   - MJRefresh (3.1.12)
   - PageKit (0.1.1)
   - Reveal-SDK (4)
-  - SnapKit (3.0.2)
+  - SnapKit (3.2.0)
   - SwiftyJSON (3.1.4)
   - Wave (0.1.0)
 
 DEPENDENCIES:
   - Alamofire
+  - Kingfisher
   - MJRefresh
   - PageKit (from `git@github.com:XWJACK/PageKit.git`, commit `8538ac0`)
   - Reveal-SDK (~> 4)
   - SnapKit
   - SwiftyJSON
-  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `4d64562`)
+  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `09d1bdb`)
 
 EXTERNAL SOURCES:
   PageKit:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
-    :commit: 4d64562
+    :commit: 09d1bdb
     :git: git@github.com:XWJACK/Wave.git
 
 CHECKOUT OPTIONS:
@@ -29,18 +31,19 @@ CHECKOUT OPTIONS:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
-    :commit: 4d64562
+    :commit: 09d1bdb
     :git: git@github.com:XWJACK/Wave.git
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  Kingfisher: 5ddc4ac715615cc200de9fdc54ab1511061ea650
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   PageKit: a3aa5403687a1c7a3608501597c0859eec43d160
   Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
-  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Wave: 26f0e8b65d29d53202408b4dd997653f519dabe9
 
-PODFILE CHECKSUM: 8612b73439616594f6ff2e7ea1c8756352c3fec0
+PODFILE CHECKSUM: 9eec388e2c54b7893b5b829bb508dd5d81dfa963
 
 COCOAPODS: 1.2.1

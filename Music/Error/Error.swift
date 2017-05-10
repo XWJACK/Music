@@ -13,6 +13,8 @@ enum MusicError: Error {
     enum ResourcesError {
         case invalidURL
         case invalidData
+        case noResource
+        case invalidInfo
     }
     
     enum PlayerError {

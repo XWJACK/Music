@@ -42,31 +42,31 @@ extension JSONInitable {
 }
 
 struct MusicResponse {
-    fileprivate var progressInstance = Progress() {
+    var progressInstance = Progress() {
         didSet {
             progress?(progressInstance)
         }
     }
-    fileprivate var data = Data()
+    var data = Data()
     
     var response: ((Data) -> ())? = nil
     var progress: ((Progress) -> ())? = nil
     
     var success: ((Data) -> ())? = nil
-    var downloaded: ((URL) -> ())? = nil
+    var download: ((URL) -> ())? = nil
     var failed: ((Error) -> ())? = nil
     
     init(response: ((Data) -> ())? = nil,
          progress: ((Progress) -> ())? = nil,
          success: ((Data) -> ())? = nil,
          failed: ((Error) -> ())? = nil,
-         downloaded: ((URL) -> ())? = nil) {
+         download: ((URL) -> ())? = nil) {
         
         self.response = response
         self.progress = progress
         self.success = success
         self.failed = failed
-        self.downloaded = downloaded
+        self.download = download
     }
 }
 
@@ -76,6 +76,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     private var session: URLSession?
     private var requests: [Int: MusicResponse] = [:]
     private let lock = NSLock()
+    
     private subscript(task: URLSessionTask) -> MusicResponse? {
         get {
             lock.lock() ; defer { lock.unlock() }
@@ -87,29 +88,51 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
         }
     }
     
+    /// New session for MusicNetwork by default session config
     private override init() {
         super.init()
         session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     }
     
-    func request(_ urlRequest: URLRequest, success: ((JSON) -> ())? = nil, failed: ((Error) -> ())? = nil) {
+    /// Request by URLRequest
+    ///
+    /// - Parameters:
+    ///   - urlRequest: URLRequest
+    ///   - success: Success
+    ///   - failed: Failed
+    func request(_ urlRequest: URLRequest,
+                 success: ((JSON) -> ())? = nil,
+                 failed: ((Error) -> ())? = nil) {
+        
         session?.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error { failed?(error); return }
             if let data = data { success?(JSON(data: data)) }
         }.resume()
     }
     
-    func request(_ url: URL, response: MusicResponse) {
+    /// Request by url
+    ///
+    /// - Parameters:
+    ///   - url: URL
+    ///   - response: MusicResponse
+    func request(_ url: URL, response: MusicResponse? = nil) {
         guard let dataTask = session?.dataTask(with: url) else { return }
-        self[dataTask] = response
+        self[dataTask] = response == nil ? MusicResponse() : response
         dataTask.resume()
     }
     
-    func download(_ url: URL, response: MusicResponse) {
+    /// Download by url
+    ///
+    /// - Parameters:
+    ///   - url: URL
+    ///   - response: MusicResponse
+    func download(_ url: URL, response: MusicResponse? = nil) {
         guard let dataTask = session?.downloadTask(with: url) else { return }
-        self[dataTask] = response
+        self[dataTask] = response == nil ? MusicResponse() : response
         dataTask.resume()
     }
+    
+    //MARK: - URLSessionTaskDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {
@@ -118,6 +141,8 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
             successBlock(self[task]!.data)
         }
     }
+    
+    //MARK - URLSessionDataDelegate
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
@@ -131,8 +156,10 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
         self[dataTask]?.progressInstance = progress
     }
     
+    //MARK - URLSessionDownloadDelegate
+    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        self[downloadTask]?.downloaded?(location)
+        self[downloadTask]?.download?(location)
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {

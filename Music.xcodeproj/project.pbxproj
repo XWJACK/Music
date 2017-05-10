@@ -33,17 +33,16 @@
 		0456B38A1E7F822800ECAC9F /* MusicFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456B3881E7F822800ECAC9F /* MusicFileManager.swift */; };
 		04606A611EBEBC4800746D9E /* MusicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A5F1EBEBC4800746D9E /* MusicAPI.swift */; };
 		04606A631EBF336800746D9E /* MusicCenterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A621EBF336800746D9E /* MusicCenterTableViewCell.swift */; };
-		04606A651EBF425400746D9E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A641EBF425400746D9E /* StringExtension.swift */; };
 		04606A6B1EBFF25F00746D9E /* MusicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A6A1EBFF25F00746D9E /* MusicNetwork.swift */; };
 		04645E301EB4924200AF2738 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */; };
 		0484C8F11EB97D3000A2A6A1 /* MusicLoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */; };
 		048E74EE1EBB7ACF00D91224 /* MusicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */; };
 		04AA36301EBCA56F00DED541 /* MusicSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */; };
 		04AA363A1EBDB34D00DED541 /* SearchViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA36391EBDB34D00DED541 /* SearchViewMode.swift */; };
-		04AA363E1EBDEA7F00DED541 /* MusicResourcesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA363D1EBDEA7F00DED541 /* MusicResourcesLoader.swift */; };
+		04AA363E1EBDEA7F00DED541 /* MusicResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */; };
 		04BCF4A61EC2074D005E456B /* MusicResourceConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCF4A51EC2074D005E456B /* MusicResourceConversion.swift */; };
+		04BCF4A91EC22491005E456B /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCF4A81EC22491005E456B /* FoundationExtension.swift */; };
 		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
-		04EB6C881E7A964900A76240 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB6C871E7A964900A76240 /* IntExtension.swift */; };
 		04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB6C891E7A96B400A76240 /* UIViewExtension.swift */; };
 		04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB6C8B1E7AA10200A76240 /* Gesture.swift */; };
 		04F42F961EC1F38800BC057D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F42F951EC1F38800BC057D /* Model.swift */; };
@@ -96,19 +95,18 @@
 		04606A5E1EBEBC4800746D9E /* DebugNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugNetwork.swift; sourceTree = "<group>"; };
 		04606A5F1EBEBC4800746D9E /* MusicAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicAPI.swift; sourceTree = "<group>"; };
 		04606A621EBF336800746D9E /* MusicCenterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicCenterTableViewCell.swift; path = Modules/Center/MusicCenterTableViewCell.swift; sourceTree = "<group>"; };
-		04606A641EBF425400746D9E /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtension.swift; path = Extension/StringExtension.swift; sourceTree = "<group>"; };
 		04606A6A1EBFF25F00746D9E /* MusicNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicNetwork.swift; sourceTree = "<group>"; };
 		04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExtension.swift; path = Extension/UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicLoveButton.swift; sourceTree = "<group>"; };
 		048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicTableViewController.swift; path = ViewControllers/MusicTableViewController.swift; sourceTree = "<group>"; };
 		04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicSearchTableViewCell.swift; path = Modules/Search/MusicSearchTableViewCell.swift; sourceTree = "<group>"; };
 		04AA36391EBDB34D00DED541 /* SearchViewMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewMode.swift; path = Modules/Search/SearchViewMode.swift; sourceTree = "<group>"; };
-		04AA363D1EBDEA7F00DED541 /* MusicResourcesLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourcesLoader.swift; sourceTree = "<group>"; };
+		04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceManager.swift; sourceTree = "<group>"; };
 		04BCF4A51EC2074D005E456B /* MusicResourceConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceConversion.swift; sourceTree = "<group>"; };
 		04BCF4A71EC207DD005E456B /* Music-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Music-Bridging-Header.h"; path = "Supporting Files/Music-Bridging-Header.h"; sourceTree = "<group>"; };
+		04BCF4A81EC22491005E456B /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FoundationExtension.swift; path = Extension/FoundationExtension.swift; sourceTree = "<group>"; };
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
-		04EB6C871E7A964900A76240 /* IntExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IntExtension.swift; path = Extension/IntExtension.swift; sourceTree = "<group>"; };
 		04EB6C891E7A96B400A76240 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewExtension.swift; path = Extension/UIViewExtension.swift; sourceTree = "<group>"; };
 		04EB6C8B1E7AA10200A76240 /* Gesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture.swift; sourceTree = "<group>"; };
 		04F42F951EC1F38800BC057D /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
@@ -250,7 +248,7 @@
 				04606A6A1EBFF25F00746D9E /* MusicNetwork.swift */,
 				04606A5F1EBEBC4800746D9E /* MusicAPI.swift */,
 				0456B3881E7F822800ECAC9F /* MusicFileManager.swift */,
-				04AA363D1EBDEA7F00DED541 /* MusicResourcesLoader.swift */,
+				04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -341,8 +339,7 @@
 		04EB6C811E7A884A00A76240 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				04EB6C871E7A964900A76240 /* IntExtension.swift */,
-				04606A641EBF425400746D9E /* StringExtension.swift */,
+				04BCF4A81EC22491005E456B /* FoundationExtension.swift */,
 				04606A691EBF42B300746D9E /* UIKit */,
 			);
 			name = Extension;
@@ -542,7 +539,6 @@
 				04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */,
 				04BCF4A61EC2074D005E456B /* MusicResourceConversion.swift in Sources */,
 				045146031EB86B6C00D6F08A /* MusicNavigationController.swift in Sources */,
-				04606A651EBF425400746D9E /* StringExtension.swift in Sources */,
 				040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */,
 				045145FE1EB86B4D00D6F08A /* MusicNavigationBar.swift in Sources */,
 				045145F01EB7175300D6F08A /* UIFontExtension.swift in Sources */,
@@ -551,12 +547,11 @@
 				04F770211EBA20B200C70507 /* MusicCenterViewController.swift in Sources */,
 				045146041EB86B6C00D6F08A /* MusicTabBarController.swift in Sources */,
 				04F42F961EC1F38800BC057D /* Model.swift in Sources */,
-				04AA363E1EBDEA7F00DED541 /* MusicResourcesLoader.swift in Sources */,
+				04AA363E1EBDEA7F00DED541 /* MusicResourceManager.swift in Sources */,
 				045145E91EB6C94300D6F08A /* MusicListTableViewCell.swift in Sources */,
 				0405766C1EB347D900FE8987 /* MusicListViewController.swift in Sources */,
 				04FE26601EB58819002CF86C /* AppDelegate.swift in Sources */,
 				045145F61EB8571700D6F08A /* MusicTableViewCell.swift in Sources */,
-				04EB6C881E7A964900A76240 /* IntExtension.swift in Sources */,
 				045145E61EB61E5A00D6F08A /* MusicPlayerControlButton.swift in Sources */,
 				04606A631EBF336800746D9E /* MusicCenterTableViewCell.swift in Sources */,
 				045145FD1EB86B4D00D6F08A /* MusicButton.swift in Sources */,
@@ -564,6 +559,7 @@
 				04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */,
 				045146091EB87D4D00D6F08A /* UIImageExtension.swift in Sources */,
 				04606A6B1EBFF25F00746D9E /* MusicNetwork.swift in Sources */,
+				04BCF4A91EC22491005E456B /* FoundationExtension.swift in Sources */,
 				04AA363A1EBDB34D00DED541 /* SearchViewMode.swift in Sources */,
 				045146051EB86B6C00D6F08A /* MusicViewController.swift in Sources */,
 				040300441EB9BB990023021F /* Notification.swift in Sources */,

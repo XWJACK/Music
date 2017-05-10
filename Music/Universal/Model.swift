@@ -10,25 +10,39 @@ import Foundation
 
 struct MusicArtist: JSONInitable {
     let name: String
-    let picUrl: URL?
-    let img1v1Url: URL?
+//    let picUrl: URL?
+//    let imageUrl: URL?
     
     init(_ json: JSON) {
         name = json["name"].stringValue
-        picUrl = json["picUrl"].url
-        img1v1Url = json["img1v1Url"].url
+//        picUrl = json["picUrl"].url
+//        imageUrl = json["img1v1Url"].url
     }
 }
 
 struct MusicAlbum: JSONInitable {
     let name: String
-    let blurPicUrl: URL?
-    let picURL: URL?
+//    let blurPicUrl: URL?
+    let picUrl: URL?
     
     init(_ json: JSON) {
         name = json["name"].stringValue
-        blurPicUrl = json["blurPicUrl"].url
-        picURL = json["picURL"].url
+//        blurPicUrl = json["blurPicUrl"].url
+        picUrl = json["picUrl"].url
+    }
+}
+
+struct CreatorModel: JSONInitable {
+    let userId: String
+    let nickname: String
+    let avatarUrl: URL?
+    let backgroundUrl: URL?
+    
+    init(_ json: JSON) {
+        userId = json["userId"].stringValue
+        nickname = json["nickname"].stringValue
+        avatarUrl = json["avatarUrl"].url
+        backgroundUrl = json["backgroundUrl"].url
     }
 }
 
@@ -40,12 +54,12 @@ struct SearchModel: JSONInitable {
     let name: String
     let artists: [MusicArtist]
     let album: MusicAlbum
-    let mp3URL: URL?
+    let mp3Url: URL?
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
-        mp3URL = json["mp3Url"].url
+        mp3Url = json["mp3Url"].url
         
         artists = json["artists"].arrayValue.map{ MusicArtist($0) }
         album = MusicAlbum(json["album"])
@@ -58,5 +72,21 @@ struct LyricModel: JSONInitable {
     let lyric: String
     init(_ json: JSON) {
         lyric = json["lrc"]["lyric"].stringValue
+    }
+}
+
+//MARK: - Play List
+
+struct PlayListModel: JSONInitable {
+    let id: String
+    let name: String
+    let coverImgUrl: URL?
+    let creator: CreatorModel
+    
+    init(_ json: JSON) {
+        id = json["id"].stringValue
+        name = json["name"].stringValue
+        coverImgUrl = json["coverImgUrl"].url
+        creator = CreatorModel(json["creator"])
     }
 }

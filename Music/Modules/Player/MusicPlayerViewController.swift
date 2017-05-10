@@ -8,6 +8,7 @@
 
 import UIKit
 import Wave
+import Kingfisher
 import Alamofire
 
 class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate {
@@ -28,7 +29,10 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var listButton: UIButton!
     
+    private var isUserInteraction: Bool = false
     private var player: StreamAudioPlayer? = nil
+    private var timer: Timer? = nil
+    private var resource: MusicPlayerResource? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +47,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider").scaleToSize(newSize: timeSlider.thumbImageSize), for: .normal)
         timeSlider.thumbImage(for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs").scaleToSize(newSize: timeSlider.thumbImageSize), for: .highlighted)
+        timeSlider.isEnabled = false
         
         listButton.setImage(#imageLiteral(resourceName: "player_control_list_press"), for: .highlighted)
 //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
@@ -53,35 +58,55 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         
     }
     
-    func play(withResource resource: MusicResource) {
-        destoryPlayer()
-        createPlayer()
+    func play(withResourceID id: String) {
         
-        guard let url = resource.musicUrl else { return }
-        MusicNetwork.default.request(url, response: MusicResponse(response: {
-            self.player?.respond(with: $0)
-        }, progress: {
-            print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
-        }, success: { _ in
-            //TODO: Cache Music
-        }, failed: {
-            assertionFailure($0.localizedDescription)
-        }))
+        self.resource?.id = id
+        
+        destory()
+        create()
+
+        MusicResourceManager.default.request(id,
+                                             response: MusicPlayerResponse(
+                                                music: MusicPlayerResponse.Music(response: {
+                                                self.player?.respond(with: $0)
+                                             }, progress: {
+                                                print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
+                                             }),
+                                                lyric: MusicPlayerResponse.Lyric(success: {
+                                                    print($0)
+                                                })))
+        
+        backgroundImageView.kf.setImage(with: resource?.backgroundImageURL,
+                                        placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
+                                        options: [.transition(.fade(1))])
+        //TODO: 封面图
     }
     
-    fileprivate func createPlayer() {
+    fileprivate func create() {
         player = StreamAudioPlayer()
         player?.delegate = self
+        
+        timer = Timer(timeInterval: 0.1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+        RunLoop.main.add(timer!, forMode: .commonModes)
     }
     
-    private func destoryPlayer() {
+    private func destory() {
         player?.stop()
+        timer?.invalidate()
+        
         player = nil
+        timer = nil
+    }
+    
+    @objc private func refresh() {
+        guard !isUserInteraction, let currentTime = player?.currentTime else { return }
+        currentTimeLabel.text = currentTime.musicTime
+        timeSlider.value = currentTime.float
     }
     
     @IBAction func playModeButtonClicked(_ sender: MusicPlayerModeButton) {
         sender.changePlayMode()
-        MusicResourcesLoader.default.resourceLoadMode = sender.mode
+        MusicResourceManager.default.resourceLoadMode = sender.mode
     }
     
     @IBAction func controlButtonClicked(_ sender: MusicPlayerControlButton) {
@@ -95,11 +120,11 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     }
     
     @IBAction func lastButtonClicked(_ sender: UIButton) {
-        play(withResource: MusicResourcesLoader.default.last())
+//        play(withResource: MusicResourceManager.default.last())
     }
     
     @IBAction func nextButtonClicked(_ sender: UIButton) {
-        play(withResource: MusicResourcesLoader.default.next())
+//        play(withResource: MusicResourceManager.default.next())
     }
     
     @IBAction func timeSliderSeek(_ sender: MusicPlayerSlider) {
@@ -116,12 +141,13 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     }
     
     @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
-        
+        MusicResourceManager.default
     }
     
     //MARK - StreamAudioPlayerDelegate
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedDuration duration: TimeInterval) {
         timeSlider.isEnabled = true
+        durationTimeLabel.text = duration.musicTime
     }
 }

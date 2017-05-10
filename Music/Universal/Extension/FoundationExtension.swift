@@ -1,8 +1,8 @@
 //
-//  StringExtension.swift
+//  FoundationExtension.swift
 //  Music
 //
-//  Created by Jack on 5/7/17.
+//  Created by Jack on 5/10/17.
 //  Copyright © 2017 Jack. All rights reserved.
 //
 
@@ -26,5 +26,19 @@ extension String {
             }
         }
         return digestData.map { String(format: "%02hhx", $0) }.joined()
+    }
+}
+
+extension Double {
+    var float: Float { return Float(self) }
+}
+
+extension TimeInterval {
+    var musicTime: String {
+        let date = Date(timeIntervalSinceReferenceDate: self)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm:ss"
+        return dateFormatter.string(from: date)
     }
 }

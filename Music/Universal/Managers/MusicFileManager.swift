@@ -80,10 +80,6 @@ final class MusicFileManager {
         }
     }
     
-    func cache(by resourceMD5: String) {
-        
-    }
-    
     func search(fromURL url: URL) -> MusicResourceCollection {
         if let contents = try? fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
             
@@ -94,8 +90,7 @@ final class MusicFileManager {
                 var resource = MusicResource(JSON(data: fileContent))
                 guard let md5 = resource.md5 else { continue }
                 
-                resource.isCached = url == musicCacheURL
-                resource.isDownload = url == musicDownloadURL
+                resource.resourceSource = url == musicCacheURL ? .cache : .download
                 resource.musicUrl = content.deletingLastPathComponent().appendingPathComponent(md5)
                 results[resource.id] = resource
             }

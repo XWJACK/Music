@@ -70,6 +70,27 @@ struct CreatorModel: JSONInitable {
     }
 }
 
+struct MusicDetail: JSONInitable {
+    let id: String
+    let name: String
+    let artists: [MusicArtist]
+    let album: MusicAlbum
+    
+    init(_ json: JSON) {
+        id = json["id"].stringValue
+        name = json["name"].stringValue
+        artists = json["ar"].array?.map{ MusicArtist($0) } ?? []
+        album = MusicAlbum(json["al"])
+    }
+    
+    var playListDetailViewModel: PlayListDetailViewModel {
+        var data = PlayListDetailViewModel()
+        data.name = name
+        data.detail = (artists.first?.name ?? "") + "-" + album.name
+        return data
+    }
+}
+
 //MARK: - Search
 
 struct SearchModel: JSONInitable {
@@ -88,6 +109,13 @@ struct SearchModel: JSONInitable {
         artists = json["artists"].arrayValue.map{ MusicArtist($0) }
         album = MusicAlbum(json["album"])
     }
+    
+    var searchViewMode: SearchViewModel {
+        var data = SearchViewModel()
+        data.name = name
+        data.detail = (artists.first?.name ?? "") + "-" + album.name
+        return data
+    }
 }
 
 //MARK: - Lyric
@@ -101,14 +129,14 @@ struct LyricModel: JSONInitable {
 
 //MARK: - Play List
 
-struct PlayListModel: JSONInitable {
+class PlayListModel: JSONInitable {
     let id: String
     let name: String
     let coverImgUrl: URL?
     let creator: CreatorModel
     let trackCount: Int
     
-    init(_ json: JSON) {
+    required init(_ json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
         coverImgUrl = json["coverImgUrl"].url
@@ -122,5 +150,15 @@ struct PlayListModel: JSONInitable {
         data.name = name
         data.detail = trackCount.description + " songs"
         return data
+    }
+}
+
+class PlayListDetailModel: PlayListModel {
+    
+    var musicDetail: [MusicDetail] = []
+    
+    required init(_ json: JSON) {
+        super.init(json)
+        musicDetail = json["tracks"].array?.map{ MusicDetail($0) } ?? []
     }
 }

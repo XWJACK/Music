@@ -40,7 +40,6 @@
 		0484C8F11EB97D3000A2A6A1 /* MusicLoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */; };
 		048E74EE1EBB7ACF00D91224 /* MusicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */; };
 		04AA36301EBCA56F00DED541 /* MusicSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */; };
-		04AA363A1EBDB34D00DED541 /* SearchViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA36391EBDB34D00DED541 /* SearchViewMode.swift */; };
 		04AA363E1EBDEA7F00DED541 /* MusicResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */; };
 		04BCF4A61EC2074D005E456B /* MusicResourceConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCF4A51EC2074D005E456B /* MusicResourceConversion.swift */; };
 		04BCF4A91EC22491005E456B /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCF4A81EC22491005E456B /* FoundationExtension.swift */; };
@@ -104,7 +103,6 @@
 		0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicLoveButton.swift; sourceTree = "<group>"; };
 		048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicTableViewController.swift; path = ViewControllers/MusicTableViewController.swift; sourceTree = "<group>"; };
 		04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicSearchTableViewCell.swift; path = Modules/Search/MusicSearchTableViewCell.swift; sourceTree = "<group>"; };
-		04AA36391EBDB34D00DED541 /* SearchViewMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewMode.swift; path = Modules/Search/SearchViewMode.swift; sourceTree = "<group>"; };
 		04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceManager.swift; sourceTree = "<group>"; };
 		04BCF4A51EC2074D005E456B /* MusicResourceConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceConversion.swift; sourceTree = "<group>"; };
 		04BCF4A71EC207DD005E456B /* Music-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Music-Bridging-Header.h"; path = "Supporting Files/Music-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -273,7 +271,6 @@
 		046F78E01EA6FE3000A0D587 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				04AA36391EBDB34D00DED541 /* SearchViewMode.swift */,
 				04AA362E1EBCA55400DED541 /* Views */,
 				046F78E11EA6FE3700A0D587 /* ViewControllers */,
 			);
@@ -567,7 +564,6 @@
 				045146091EB87D4D00D6F08A /* UIImageExtension.swift in Sources */,
 				04606A6B1EBFF25F00746D9E /* MusicNetwork.swift in Sources */,
 				04BCF4A91EC22491005E456B /* FoundationExtension.swift in Sources */,
-				04AA363A1EBDB34D00DED541 /* SearchViewMode.swift in Sources */,
 				045146051EB86B6C00D6F08A /* MusicViewController.swift in Sources */,
 				040300441EB9BB990023021F /* Notification.swift in Sources */,
 				040576651EB3441A00FE8987 /* PlayerViewModel.swift in Sources */,

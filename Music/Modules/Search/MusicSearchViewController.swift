@@ -10,6 +10,11 @@ import UIKit
 import SnapKit
 import MJRefresh
 
+struct SearchViewModel {
+    var name: String = ""
+    var detail: String = ""
+}
+
 final class MusicSearchViewController: MusicTableViewController, UISearchBarDelegate {
     
     private let searchBar = UISearchBar()

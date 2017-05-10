@@ -8,8 +8,18 @@
 
 import UIKit
 import SnapKit
+import MJRefresh
+
+struct PlayListDetailViewModel {
+    var name: String = ""
+    var detail: String = ""
+}
 
 final class MusicListViewController: MusicTableViewController {
+    
+    var listId: String?
+    private var apiDatas: PlayListDetailModel?
+    private var viewModels: [PlayListDetailViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,8 +35,27 @@ final class MusicListViewController: MusicTableViewController {
         rightButton.snp.makeConstraints { (make) in
             make.width.height.equalTo(28)
         }
+        
+        tableView.mj_header = MJRefreshNormalHeader { [unowned self] in
+            self.request()
+        }
+        
+        request()
     }
     
+    private func request() {
+        guard let listId = listId else { tableView.mj_header.endRefreshing(); return }
+        MusicNetwork.default.request(MusicAPI.default.detail(listId: listId), response: { (_, _, _) in
+            self.tableView.mj_header.endRefreshing()
+        }, success: {
+            guard $0.isSuccess else { return }
+            self.apiDatas = PlayListDetailModel($0["playlist"])
+            self.viewModels = self.apiDatas?.musicDetail.map{ $0.playListDetailViewModel } ?? []
+            self.tableView.reloadData()
+        }) {
+            print($0)
+        }
+    }
     @objc private func actionButtonClicked(_ sender: MusicButton) {
 //        sender.startAnimation()
 //        sender.isAnimation = !sender.isAnimation
@@ -38,7 +67,7 @@ final class MusicListViewController: MusicTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return viewModels.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -50,8 +79,8 @@ final class MusicListViewController: MusicTableViewController {
         cell.delegate = self
         cell.indexPath = indexPath
         
-        cell.musicLabel.text = "一生所爱"
-        cell.detailLabel.text = "Jack Sparrow"
+        cell.musicLabel.text = viewModels[indexPath.row].name
+        cell.detailLabel.text = viewModels[indexPath.row].detail
         return cell
     }
 }

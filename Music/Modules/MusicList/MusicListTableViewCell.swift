@@ -18,7 +18,7 @@ class MusicListTableViewCell: MusicTableViewCell {
     
     override var indexPath: IndexPath {
         didSet {
-            numberLabel.text = indexPath.row.description
+            numberLabel.text = (indexPath.row + 1).description
         }
     }
     
@@ -38,7 +38,7 @@ class MusicListTableViewCell: MusicTableViewCell {
         numberLabel.textColor = .black
         numberLabel.font = .font16
         
-        musicLabel.font = .font18
+        musicLabel.font = .font14
         musicLabel.textColor = .white
         
         detailLabel.font = .font10
@@ -70,21 +70,16 @@ class MusicListTableViewCell: MusicTableViewCell {
         }
         
         musicLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(leftPadding)
-            make.top.equalToSuperview().offset(5)
+            make.left.equalTo(leftContentView.snp.right)
+            make.top.equalToSuperview().offset(8)
             make.right.equalToSuperview().offset(-70)
         }
         
         detailLabel.snp.makeConstraints { (make) in
             make.left.equalTo(musicLabel)
-            make.bottom.equalToSuperview().offset(-5)
+            make.bottom.equalToSuperview().offset(-8)
             make.right.equalTo(musicLabel).offset(-20)
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

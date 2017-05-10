@@ -23,7 +23,7 @@ class MusicCollectionListTableViewCell: MusicTableViewCell {
         titleLabel.text = ""
         titleLabel.font = .font14
         
-        detailLabel.textColor = .lightGray
+        detailLabel.textColor = .darkGray
         detailLabel.font = .font10
         detailLabel.text = ""
         
@@ -40,13 +40,13 @@ class MusicCollectionListTableViewCell: MusicTableViewCell {
         
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(coverImageView.snp.right).offset(10)
-            make.top.equalToSuperview().offset(5)
+            make.top.equalToSuperview().offset(8)
             make.right.greaterThanOrEqualToSuperview().offset(-50)
         }
         
         detailLabel.snp.makeConstraints { (make) in
             make.left.equalTo(titleLabel)
-            make.bottom.equalToSuperview().offset(-5)
+            make.bottom.equalToSuperview().offset(-8)
         }
     }
     

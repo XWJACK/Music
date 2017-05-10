@@ -79,7 +79,9 @@ final class MusicCollectionListViewController: MusicTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
-        musicNavigationController?.push(MusicListViewController(), hiddenTabBar: false)
+        let controller = MusicListViewController()
+        controller.listId = apiDatas[indexPath.row].id
+        musicNavigationController?.push(controller, hiddenTabBar: false)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -144,9 +144,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         isUserInteraction = false
         player?.seek(toTime: TimeInterval(sender.value))
         player?.play()
-        
         controlButton.mode = .playing
-        controlButtonClicked(controlButton)
     }
     
     @IBAction func listButtonClicked(_ sender: UIButton) {

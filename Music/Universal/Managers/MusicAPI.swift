@@ -124,7 +124,7 @@ open class MusicAPI {
     ///   - isLike: 喜欢／不喜欢
     /// - Returns: URLRequest
     open func like(musicID id: String, isLike: Bool = true) -> URLRequest {
-        let parameters: Parameters = ["id": id, "like": isLike]
+        let parameters: Parameters = ["id": id, "like": isLike.description]
         return request(path: "/like", parameters: parameters)
     }
     

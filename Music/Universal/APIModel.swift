@@ -1,5 +1,5 @@
 //
-//  Model.swift
+//  APIModel.swift
 //  Music
 //
 //  Created by Jack on 5/9/17.
@@ -8,7 +8,9 @@
 
 import Foundation
 
-struct MusicAccount: JSONInitable {
+//MARK: - Music Account
+
+struct MusicAccountModel: JSONInitable {
     let id: String
     let userName: String
     
@@ -18,7 +20,9 @@ struct MusicAccount: JSONInitable {
     }
 }
 
-struct MusicProfile: JSONInitable {
+//MARK: - Music Profile
+
+struct MusicProfileModel: JSONInitable {
     let userId: String
     let nickname: String
     let avatarUrl: URL?
@@ -32,7 +36,9 @@ struct MusicProfile: JSONInitable {
     }
 }
 
-struct MusicArtist: JSONInitable {
+//MARK: - Music Artist
+
+struct MusicArtistModel: JSONInitable {
     let name: String
 //    let picUrl: URL?
 //    let imageUrl: URL?
@@ -44,7 +50,9 @@ struct MusicArtist: JSONInitable {
     }
 }
 
-struct MusicAlbum: JSONInitable {
+//MARK: - Music Album
+
+struct MusicAlbumModel: JSONInitable {
     let name: String
 //    let blurPicUrl: URL?
     let picUrl: URL?
@@ -56,7 +64,9 @@ struct MusicAlbum: JSONInitable {
     }
 }
 
-struct CreatorModel: JSONInitable {
+//MARK: - Music Creator
+
+struct MusicCreatorModel: JSONInitable {
     let userId: String
     let nickname: String
     let avatarUrl: URL?
@@ -70,35 +80,54 @@ struct CreatorModel: JSONInitable {
     }
 }
 
-struct MusicDetail: JSONInitable {
+//MARK: - Music Detail
+
+struct MusicDetailModel: JSONInitable {
     let id: String
     let name: String
-    let artists: [MusicArtist]
-    let album: MusicAlbum
+    let artists: [MusicArtistModel]
+    let album: MusicAlbumModel
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
-        artists = json["ar"].array?.map{ MusicArtist($0) } ?? []
-        album = MusicAlbum(json["al"])
+        artists = json["ar"].array?.map{ MusicArtistModel($0) } ?? []
+        album = MusicAlbumModel(json["al"])
     }
     
-    var playListDetailViewModel: PlayListDetailViewModel {
-        var data = PlayListDetailViewModel()
+    var musicPlayListDetailViewModel: MusicPlayListDetailViewModel {
+        var data = MusicPlayListDetailViewModel()
         data.name = name
         data.detail = (artists.first?.name ?? "") + "-" + album.name
         return data
     }
 }
 
-//MARK: - Search
+//MARK: - Music URL
 
-struct SearchModel: JSONInitable {
+struct MusicURLModel: JSONInitable {
+    
+    let id: String
+    let url: URL?
+    let md5: String
+    let size: Int64
+    
+    init(_ json: JSON) {
+        id = json["id"].stringValue
+        url = json["url"].url
+        md5 = json["md5"].stringValue
+        size = json["size"].int64Value
+    }
+}
+
+//MARK: - Music Search
+
+struct MusicSearchModel: JSONInitable {
     
     let id: String
     let name: String
-    let artists: [MusicArtist]
-    let album: MusicAlbum
+    let artists: [MusicArtistModel]
+    let album: MusicAlbumModel
     let mp3Url: URL?
     
     init(_ json: JSON) {
@@ -106,21 +135,30 @@ struct SearchModel: JSONInitable {
         name = json["name"].stringValue
         mp3Url = json["mp3Url"].url
         
-        artists = json["artists"].arrayValue.map{ MusicArtist($0) }
-        album = MusicAlbum(json["album"])
+        artists = json["artists"].arrayValue.map{ MusicArtistModel($0) }
+        album = MusicAlbumModel(json["album"])
     }
     
-    var searchViewMode: SearchViewModel {
-        var data = SearchViewModel()
+    var musicSearchViewMode: MusicSearchViewModel {
+        var data = MusicSearchViewModel()
         data.name = name
         data.detail = (artists.first?.name ?? "") + "-" + album.name
         return data
+    }
+    
+    var resource: MusicResource {
+        var resource = MusicResource(id: id)
+        resource.name = name
+        resource.musicUrl = mp3Url
+        resource.resourceSource = .network
+        resource.picUrl = album.picUrl
+        return resource
     }
 }
 
 //MARK: - Lyric
 
-struct LyricModel: JSONInitable {
+struct MusicLyricModel: JSONInitable {
     let lyric: String
     init(_ json: JSON) {
         lyric = json["lrc"]["lyric"].stringValue
@@ -129,18 +167,18 @@ struct LyricModel: JSONInitable {
 
 //MARK: - Play List
 
-class PlayListModel: JSONInitable {
+class MusicPlayListModel: JSONInitable {
     let id: String
     let name: String
     let coverImgUrl: URL?
-    let creator: CreatorModel
+    let creator: MusicCreatorModel
     let trackCount: Int
     
     required init(_ json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
         coverImgUrl = json["coverImgUrl"].url
-        creator = CreatorModel(json["creator"])
+        creator = MusicCreatorModel(json["creator"])
         trackCount = json["trackCount"].intValue
     }
     
@@ -153,12 +191,14 @@ class PlayListModel: JSONInitable {
     }
 }
 
-class PlayListDetailModel: PlayListModel {
+//MARK: - Play List Detail
+
+class MusicPlayListDetailModel: MusicPlayListModel {
     
-    var musicDetail: [MusicDetail] = []
+    var musicDetail: [MusicDetailModel] = []
     
     required init(_ json: JSON) {
         super.init(json)
-        musicDetail = json["tracks"].array?.map{ MusicDetail($0) } ?? []
+        musicDetail = json["tracks"].array?.map{ MusicDetailModel($0) } ?? []
     }
 }

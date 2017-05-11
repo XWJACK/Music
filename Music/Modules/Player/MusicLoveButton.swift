@@ -8,6 +8,16 @@
 
 import UIKit
 
+/// Music Player Love Mode
+enum MusicPlayerLoveMode {
+    case love
+    case loved
+    //    case disable
+    prefix public static func !(a: MusicPlayerLoveMode) -> MusicPlayerLoveMode {
+        return a == .love ? .loved : .love
+    }
+}
+
 class MusicLoveButton: UIButton {
 
     var mode: MusicPlayerLoveMode = .love {

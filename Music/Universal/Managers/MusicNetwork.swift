@@ -51,21 +51,24 @@ struct MusicResponse {
     }
     var data = Data()
     
-    var response: ((Data) -> ())? = nil
+    var responseData: ((Data) -> ())? = nil
     var progress: ((Progress) -> ())? = nil
     
     var success: ((Data) -> ())? = nil
+    var response: (() -> ())? = nil
     var download: ((URL) -> ())? = nil
     var failed: ((Error) -> ())? = nil
     
-    init(response: ((Data) -> ())? = nil,
+    init(responseData: ((Data) -> ())? = nil,
          progress: ((Progress) -> ())? = nil,
+         response: (() -> ())? = nil,
          success: ((Data) -> ())? = nil,
          failed: ((Error) -> ())? = nil,
          download: ((URL) -> ())? = nil) {
         
-        self.response = response
+        self.responseData = responseData
         self.progress = progress
+        self.response = response
         self.success = success
         self.failed = failed
         self.download = download
@@ -75,6 +78,7 @@ struct MusicResponse {
 class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate {
     
     static let `default`: MusicNetwork = MusicNetwork()
+    var timeOutInterval: TimeInterval = 60
     private var session: URLSession?
     private var requests: [Int: MusicResponse] = [:]
     private let lock = NSLock()
@@ -93,7 +97,12 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     /// New session for MusicNetwork by default session config
     private override init() {
         super.init()
-        session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+        
+        let configuration: URLSessionConfiguration = .default
+        configuration.timeoutIntervalForRequest = timeOutInterval
+        session = URLSession(configuration: configuration,
+                             delegate: self,
+                             delegateQueue: .main)
     }
     
     /// Request by URLRequest
@@ -139,11 +148,13 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     //MARK: - URLSessionTaskDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        
         if let error = error {
             self[task]?.failed?(error)
         } else if let successBlock = self[task]?.success {
             successBlock(self[task]!.data)
         }
+        self[task]?.response?()
     }
     
     //MARK - URLSessionDataDelegate
@@ -151,7 +162,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
         self[dataTask]?.data.append(data)
-        self[dataTask]?.response?(data)
+        self[dataTask]?.responseData?(data)
         
         guard let response = self[dataTask] else { return }
         let totalBytesExpected = dataTask.response?.expectedContentLength ?? NSURLSessionTransferSizeUnknown

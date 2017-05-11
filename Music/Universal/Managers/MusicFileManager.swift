@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Kingfisher
 
 final class MusicFileManager {
     
@@ -28,18 +29,26 @@ final class MusicFileManager {
         createMusicDownloadDirectory()
     }
     
+    /// Clear Cache
+    ///
+    /// - Parameter completed: Completed clear
     func clearCache(_ completed: (() -> ())? = nil) {
-        
-        ioQueue.async {
-            self.clear(self.musicCacheURL)
-            self.clear(self.musicDownloadURL)
-            self.createMusicCacheDirectory()
-            DispatchQueue.main.async {
-                completed?()
+        KingfisherManager.shared.cache.clearDiskCache { 
+            self.ioQueue.async {
+                self.clear(self.musicCacheURL)
+                self.clear(self.musicDownloadURL)
+                self.createMusicCacheDirectory()
+                self.createMusicDownloadDirectory()
+                DispatchQueue.main.async {
+                    completed?()
+                }
             }
         }
     }
     
+    /// Calculate Cahe size
+    ///
+    /// - Parameter completed: Completed calculate
     func calculateCache(_ completed: @escaping (Int64) -> ()) {
         
         func calculateFileSize(in url: URL) -> Int64 {
@@ -69,52 +78,58 @@ final class MusicFileManager {
             return diskCacheSize
         }
         
-        ioQueue.async {
-            
-            let musicCacheSize = calculateFileSize(in: self.musicCacheURL)
-            let musicDownloadSize = calculateFileSize(in: self.musicDownloadURL)
+        KingfisherManager.shared.cache.calculateDiskCacheSize { (kingfisherSize) in
+            self.ioQueue.async {
                 
-            DispatchQueue.main.async {
-                completed(Int64(musicCacheSize + musicDownloadSize))
+                let musicCacheSize = calculateFileSize(in: self.musicCacheURL)
+                let musicDownloadSize = calculateFileSize(in: self.musicDownloadURL)
+                
+                DispatchQueue.main.async {
+                    completed(Int64(kingfisherSize) + musicCacheSize + musicDownloadSize)
+                }
             }
         }
     }
     
+    /// Search MusicResourceCollection by url
+    ///
+    /// - Parameter url: URL
+    /// - Returns: MusicResourceCollection
     func search(fromURL url: URL) -> MusicResourceCollection {
+        var results: MusicResourceCollection = [:]
+        
         if let contents = try? fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
-            
-            var results: MusicResourceCollection = [:]
-            for content in contents.filter({ $0.pathExtension == "info" }) {
+            contents.filter({ $0.pathExtension == "info" }).forEach {
                 
-                guard let fileContent = FileHandle(forReadingAtPath: content.path)?.readDataToEndOfFile() else { continue }
+                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
                 var resource = MusicResource(JSON(data: fileContent))
-                guard let md5 = resource.md5 else { continue }
-                
                 resource.resourceSource = url == musicCacheURL ? .cache : .download
-                resource.musicUrl = content.deletingLastPathComponent().appendingPathComponent(md5)
+                resource.musicUrl = $0.deletingPathExtension()
                 results[resource.id] = resource
             }
             
         }
-        return [:]
+        return results
     }
     
+    /// Delete from url is exist
+    ///
+    /// - Parameter url: URL
     private func clear(_ url: URL) {
-        /// 删除音乐缓存目录
         if fileManager.fileExists(atPath: url.path) {
             try? fileManager.removeItem(at: url)
         }
     }
     
+    /// Create Music Cache Directory if not exist
     private func createMusicCacheDirectory() {
-        /// 创建音乐缓存目录
         if !fileManager.fileExists(atPath: musicCacheURL.path) {
             try? fileManager.createDirectory(at: musicCacheURL, withIntermediateDirectories: true, attributes: nil)
         }
     }
     
+    /// Create Music Download Directory if not exist
     private func createMusicDownloadDirectory() {
-        /// 创建音乐下载目录
         if !fileManager.fileExists(atPath: musicDownloadURL.path) {
             try? fileManager.createDirectory(at: musicDownloadURL, withIntermediateDirectories: true, attributes: nil)
         }

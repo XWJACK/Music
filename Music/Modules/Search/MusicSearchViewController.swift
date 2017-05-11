@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import MJRefresh
 
-struct SearchViewModel {
+struct MusicSearchViewModel {
     var name: String = ""
     var detail: String = ""
 }
@@ -22,8 +22,8 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     
     private var searchText: String = ""
     private var offSet: Int = 1
-    private var apiDatas: [SearchModel] = []
-    private var searchViewModels: [SearchViewModel] = []
+    private var apiDatas: [MusicSearchModel] = []
+    private var searchViewModels: [MusicSearchViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,17 +85,17 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
 //                self.tableView.endRefreshing(resetToPageZero: false, hasMore: self.apiDatas.hasMore)
 //        }
         MusicNetwork.default.request(MusicAPI.default.search(keyWords: searchText, offset: offSet - 1), success: {
-            let results = $0.result["songs"].arrayValue.map{ SearchModel($0) }
+            let results = $0.result["songs"].arrayValue.map{ MusicSearchModel($0) }
             
             if isNewSearch { self.apiDatas = results }
             else { results.forEach{ self.apiDatas.append($0) } }
             
-            self.searchViewModels = self.apiDatas.map{ $0.searchViewMode }
+            self.searchViewModels = self.apiDatas.map{ $0.musicSearchViewMode }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }) {
-            assertionFailure($0.localizedDescription)
+            print($0)
         }
     }
     
@@ -125,7 +125,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
         super.tableView(tableView, didSelectRowAt: indexPath)
         let resources = apiDatas.map{ $0.resource }
         MusicResourceManager.default.reset(resources, resourceIndex: indexPath.row)
-        musicPlayerViewController.play(withResourceID: MusicResourceManager.default.current())
+        musicPlayerViewController.play(withResourceId: MusicResourceManager.default.current())
         musicNavigationController?.push(musicPlayerViewController)
     }
     

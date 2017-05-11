@@ -250,6 +250,7 @@
                                                 <connections>
                                                     <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpInside" id="MXJ-TJ-fUe"/>
                                                     <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpOutside" id="wtM-cg-zOM"/>
+                                                    <action selector="timeSliderValueChange:" destination="eVa-CY-Nae" eventType="valueChanged" id="dfW-bG-eLD"/>
                                                 </connections>
                                             </slider>
                                         </subviews>
@@ -312,7 +313,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uYm-qV-suX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-157.5" y="310.56338028169017"/>
+            <point key="canvasLocation" x="-883" y="252"/>
         </scene>
     </scenes>
     <resources>

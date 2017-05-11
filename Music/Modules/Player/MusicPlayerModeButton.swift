@@ -8,6 +8,14 @@
 
 import UIKit
 
+/// Music Player Play Mode
+enum MusicPlayerPlayMode {
+    case single
+    case order
+    case random
+}
+
+
 class MusicPlayerModeButton: UIButton {
     
     private(set) var mode: MusicPlayerPlayMode = .order

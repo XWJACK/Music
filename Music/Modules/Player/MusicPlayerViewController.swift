@@ -11,6 +11,15 @@ import Wave
 import Kingfisher
 import Alamofire
 
+/// Music Player Status
+enum MusicPlayerStatus {
+    case playing
+    case paused
+    prefix public static func !(a: MusicPlayerStatus) -> MusicPlayerStatus {
+        return a == .playing ? .paused : .playing
+    }
+}
+
 class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -32,7 +41,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     private var isUserInteraction: Bool = false
     private var player: StreamAudioPlayer? = nil
     private var timer: Timer? = nil
-    private var resource: MusicPlayerResource? = nil
+    private var resourceId: String? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,31 +67,32 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         
     }
     
-    func play(withResourceID id: String) {
+    func play(withResourceId id: String) {
         
-        self.resource?.id = id
+        self.resourceId = id
         
-        destory()
-        create()
+        reset()
 
-        MusicResourceManager.default.request(id,
-                                             response: MusicPlayerResponse(
-                                                music: MusicPlayerResponse.Music(response: {
-                                                self.player?.respond(with: $0)
-                                             }, progress: {
-                                                print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
-                                             }),
-                                                lyric: MusicPlayerResponse.Lyric(success: {
-                                                    print($0)
-                                                })))
-        
-        backgroundImageView.kf.setImage(with: resource?.backgroundImageURL,
-                                        placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
-                                        options: [.transition(.fade(1))])
+        MusicResourceManager.default.request(id, responseBlock: {
+            self.player?.respond(with: $0)
+        }, progressBlock: {
+            print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
+        }, resourceBlock: { (resource) in
+            self.backgroundImageView.kf.setImage(with: resource.picUrl,
+                                                 placeholder: self.backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
+                                                 options: [.transition(.fade(1))])
+        }) {
+            print($0)
+        }
         //TODO: 封面图
     }
     
-    fileprivate func create() {
+    private func reset() {
+        player?.stop()
+        player = nil
+        
+        destoryTimer()
+        
         player = StreamAudioPlayer()
         player?.delegate = self
         
@@ -90,16 +100,15 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         RunLoop.main.add(timer!, forMode: .commonModes)
     }
     
-    private func destory() {
-        player?.stop()
+    private func destoryTimer() {
         timer?.invalidate()
-        
-        player = nil
         timer = nil
     }
     
     @objc private func refresh() {
-        guard !isUserInteraction, let currentTime = player?.currentTime else { return }
+        guard !isUserInteraction,
+            let currentTime = player?.currentTime else { return }
+//        if player!.currentTime >= player!.duration { destoryTimer() }
         currentTimeLabel.text = currentTime.musicTime
         timeSlider.value = currentTime.float
     }
@@ -126,8 +135,18 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
 //        play(withResource: MusicResourceManager.default.next())
     }
     
+    @IBAction func timeSliderValueChange(_ sender: MusicPlayerSlider) {
+        isUserInteraction = true
+        currentTimeLabel.text = TimeInterval(sender.value).musicTime
+    }
+    
     @IBAction func timeSliderSeek(_ sender: MusicPlayerSlider) {
+        isUserInteraction = false
         player?.seek(toTime: TimeInterval(sender.value))
+        player?.play()
+        
+        controlButton.mode = .playing
+        controlButtonClicked(controlButton)
     }
     
     @IBAction func listButtonClicked(_ sender: UIButton) {
@@ -135,7 +154,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     }
     
     @IBAction func loveButtonClicked(_ sender: MusicLoveButton) {
-        guard let id = resource?.id else { return }
+        guard let id = resourceId else { return }
         MusicNetwork.default.request(MusicAPI.default.like(musicID: id, isLike: sender.mode == .love), success: {
             if $0.isSuccess { sender.mode = !sender.mode }
         }) {
@@ -151,6 +170,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedDuration duration: TimeInterval) {
         timeSlider.isEnabled = true
+        timeSlider.maximumValue = duration.float
         durationTimeLabel.text = duration.musicTime
     }
 }

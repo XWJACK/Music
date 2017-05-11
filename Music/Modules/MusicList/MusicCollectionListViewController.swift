@@ -17,7 +17,7 @@ struct MusicCollectionListViewModel {
 
 final class MusicCollectionListViewController: MusicTableViewController {
 
-    private var apiDatas: [PlayListModel] = []
+    private var apiDatas: [MusicPlayListModel] = []
     private var viewModels: [MusicCollectionListViewModel] = []
     
     override func viewDidLoad() {
@@ -53,7 +53,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
             self.tableView.mj_header.endRefreshing()
         }, success: {
             guard $0.isSuccess else { return }
-            self.apiDatas = $0["playlist"].array?.map{ PlayListModel($0) } ?? []
+            self.apiDatas = $0["playlist"].array?.map{ MusicPlayListModel($0) } ?? []
             self.viewModels = self.apiDatas.map{ $0.musicCollectionListViewModel }
             self.tableView.reloadData()
         }) {

@@ -8,6 +8,13 @@
 
 import UIKit
 
+/// Music Player Download Mode
+enum MusicPlayerDownloadMode {
+    case download
+    case downloaded
+    case disable
+}
+
 class MusicPlayerDownloadButton: UIButton {
     
     var mode: MusicPlayerDownloadMode = .disable {

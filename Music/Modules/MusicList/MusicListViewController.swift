@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import MJRefresh
 
-struct PlayListDetailViewModel {
+struct MusicPlayListDetailViewModel {
     var name: String = ""
     var detail: String = ""
 }
@@ -18,8 +18,8 @@ struct PlayListDetailViewModel {
 final class MusicListViewController: MusicTableViewController {
     
     var listId: String?
-    private var apiDatas: PlayListDetailModel?
-    private var viewModels: [PlayListDetailViewModel] = []
+    private var apiDatas: MusicPlayListDetailModel?
+    private var viewModels: [MusicPlayListDetailViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +49,8 @@ final class MusicListViewController: MusicTableViewController {
             self.tableView.mj_header.endRefreshing()
         }, success: {
             guard $0.isSuccess else { return }
-            self.apiDatas = PlayListDetailModel($0["playlist"])
-            self.viewModels = self.apiDatas?.musicDetail.map{ $0.playListDetailViewModel } ?? []
+            self.apiDatas = MusicPlayListDetailModel($0["playlist"])
+            self.viewModels = self.apiDatas?.musicDetail.map{ $0.musicPlayListDetailViewModel } ?? []
             self.tableView.reloadData()
         }) {
             print($0)

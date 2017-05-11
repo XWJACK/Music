@@ -11,8 +11,7 @@ import UIKit
 
 class MusicCenterViewController: MusicTableViewController {
     
-    
-    private var dataSources: [(title: String, image: UIImage?, clouse: (() -> ())?)] = []
+    private var dataSources: [(title: String, image: UIImage?, clouse: ((IndexPath) -> ())?)] = []
     private var isCalculating: Bool = false
     private var cache: String = ""
     private let cacheIndexPath: IndexPath = IndexPath(row: 0, section: 0)
@@ -45,15 +44,20 @@ class MusicCenterViewController: MusicTableViewController {
         }
     }
     
-    private func clearCache() {
-        MusicFileManager.default.clearCache()
+    private func clearCache(_ indexPath: IndexPath) {
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? MusicCenterClearCacheTableViewCell else { return }
+        cell.indicator.isHidden = false
+        MusicFileManager.default.clearCache { 
+            cell.indicator.isHidden = true
+            cell.cacheLabel.text = "Zero KB"
+        }
     }
     
-    private func about() {
+    private func about(_ indexPath: IndexPath) {
         
     }
     
-    private func registe() {
+    private func registe(_ indexPath: IndexPath) {
         let controller = UIAlertController(title: "Register", message: nil, preferredStyle: .alert)
         controller.addTextField { (textField) in
             textField.placeholder = "Your server Address"
@@ -75,7 +79,7 @@ class MusicCenterViewController: MusicTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
-        dataSources[indexPath.row].clouse?()
+        dataSources[indexPath.row].clouse?(indexPath)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

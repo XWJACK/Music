@@ -12,6 +12,6 @@ class AccountManager {
     
     static let `default` = AccountManager()
     
-    var account: MusicAccount?
-    var profile: MusicProfile?
+    var account: MusicAccountModel?
+    var profile: MusicProfileModel?
 }

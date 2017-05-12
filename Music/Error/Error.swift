@@ -13,8 +13,8 @@ enum MusicError: Error {
     enum ResourcesError {
         case invalidURL
         case invalidData
-        case noResource
         case invalidInfo
+        case noResource
     }
     
     enum PlayerError {
@@ -22,26 +22,17 @@ enum MusicError: Error {
     }
     
     enum FileError {
-        case fileExist
-        case fileNotExist
-        case floderExist
-        case floderNotExist
-        case floderIsNotEmpty
-    }
-    
-    enum CacheError {
-        case created(FileError)
-        case deleted(FileError)
+        case readingError
     }
     
     enum NetworkError {
-        /// Response with empty data
         case emptyData
-        /// parse data fail
         case parseFail
+        case code(Int)
     }
     
     case resourcesError(ResourcesError)
+    case fileError(FileError)
     case playerError(PlayerError)
     case networkError(NetworkError)
 }

@@ -104,6 +104,14 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard self.searchText != searchText else { return }
         self.searchText = searchText
+        
+        if searchText.isEmpty {
+            apiDatas = []
+            searchViewModels = []
+            tableView.reloadData()
+            return
+        }
+        
         request(true, searchText)
     }
     
@@ -122,7 +130,9 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
         let resources = apiDatas.map{ $0.resource }
-        MusicResourceManager.default.reset(resources, resourceIndex: indexPath.row)
+        MusicResourceManager.default.reset(resources,
+                                           withIdentifier: "Search" + searchText + resources.count.description,
+                                           resourceIndex: indexPath.row)
         musicPlayerViewController.play(withResourceId: MusicResourceManager.default.current())
         musicNavigationController?.push(musicPlayerViewController)
     }

@@ -63,13 +63,25 @@ class MusicResourceManager {
     
     var resourceLoadMode: MusicPlayerPlayMode = .order
     
+    private var currentResourceIdentifier: String = ""
+    
     private var resources: [MusicResource] = []
-    private var resourcesIndexs: [Int] = []
+    private var randomResourceIndexs: [Int] = []
+    
     private var currentResourceIndex: Int = 0
+    private var currentRandomResourceIndex: Int = 0
+    
     private var cachedResourceList: MusicResourceCollection = [:]
     private var downloadedResouceList: MusicResourceCollection = [:]
     
+    /// Background serial cache queue
+    private var cacheQueue: DispatchQueue
+    
     private init() {
+        cacheQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.cacheQueue",
+                                   qos: .background,
+                                   target: .global())
+        
         DispatchQueue.global().async {
             self.cachedResourceList = MusicFileManager.default.search(fromURL: MusicFileManager.default.musicCacheURL)
             self.downloadedResouceList = MusicFileManager.default.search(fromURL: MusicFileManager.default.musicDownloadURL)
@@ -83,13 +95,23 @@ class MusicResourceManager {
     ///   - resourceIndex: Begin music resource index
     ///   - mode: MusicPlayerPlayMode
     func reset(_ resources: [MusicResource],
+               withIdentifier identifier: String,
                resourceIndex: Int,
                withMode mode: MusicPlayerPlayMode? = nil) {
         
         if let mode = mode { self.resourceLoadMode = mode }
-        self.resources = resources
-        self.resourcesIndexs = uniqueRandom(0...resources.count - 1)
         self.currentResourceIndex = resourceIndex
+        self.currentRandomResourceIndex = randomResourceIndexs.index(of: resourceIndex) ?? 0
+        
+        guard self.currentResourceIdentifier != identifier else { return }
+        
+        self.currentResourceIdentifier = identifier
+        self.resources = resources
+        self.randomResourceIndexs = uniqueRandom(0...resources.count - 1)
+        self.currentRandomResourceIndex = randomResourceIndexs.index(of: resourceIndex)!
+        
+//        self.resources.filter{ cachedResourceList[$0.id] != nil }
+//        self.resources.sor
     }
     
     /// Get Current MusicResourceIdentifier
@@ -103,17 +125,33 @@ class MusicResourceManager {
     ///
     /// - Returns: MusicResourceIdentifier
     func last() -> MusicResourceIdentifier {
-        if currentResourceIndex == 0 { currentResourceIndex = resources.count - 1 }
-        else { currentResourceIndex -= 1 }
-        return resources[currentResourceIndex].id
+        
+        switch resourceLoadMode {
+        case .order:
+            if currentResourceIndex == 0 { currentResourceIndex = resources.count - 1 }
+            else { currentResourceIndex -= 1 }
+        case .random:
+            if currentResourceIndex == 0 { currentResourceIndex = randomResourceIndexs.count - 1 }
+            else { currentResourceIndex -= 1 }
+            currentResourceIndex = randomResourceIndexs[currentRandomResourceIndex]
+        default: break
+        }
+        return current()
     }
     
     /// Next MusicResourceIdentifier
     ///
     /// - Returns: MusicResourceIdentifier
     func next() -> MusicResourceIdentifier {
-        currentResourceIndex = (currentResourceIndex + 1) % resources.count
-        return resources[currentResourceIndex].id
+        switch resourceLoadMode {
+        case .order:
+            currentResourceIndex = (currentResourceIndex + 1) % resources.count
+        case .random:
+            currentRandomResourceIndex = (currentRandomResourceIndex + 1) % randomResourceIndexs.count
+            currentResourceIndex = randomResourceIndexs[currentRandomResourceIndex]
+        default: break
+        }
+        return current()
     }
     
     /// Request Music by resource id
@@ -134,28 +172,25 @@ class MusicResourceManager {
             guard let musicUrl = originResource.musicUrl else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
             
             var data: Data?
-            let group = DispatchGroup()
-            let queue = DispatchQueue(label: "com.xwjack.music.musicResourceManager.request",
-                                      qos: .background,
-                                      attributes: .concurrent,
-                                      target: .global())
+            let cacheGroup = DispatchGroup()
+            let resourceGroup = DispatchGroup()
             
             //Reading Music Data
             if originResource.resourceSource == .network {
-                group.enter()
+                cacheGroup.enter()
                 // Request Music Source
                 MusicNetwork.default.request(musicUrl,
                                              response: MusicResponse(responseData: responseBlock,
                                                                      progress: progressBlock,
                                                                      response: {
-                                                                        group.leave()
+                                                                        cacheGroup.leave()
                                              }, success: {
                                                 data = $0
                                              }, failed: failedBlock))
                 
             } else {
                 //Reading Music File
-                guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else { failedBlock?(MusicError.resourcesError(.invalidData)); return  }
+                guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else { failedBlock?(MusicError.fileError(.readingError)); return  }
                 let progress = Progress(totalUnitCount: Int64(data.count))
                 progress.completedUnitCount = Int64(data.count)
                 
@@ -165,10 +200,11 @@ class MusicResourceManager {
             
             //Request Lyric
             if originResource.lyric == nil {
-                group.enter()
-                
+                cacheGroup.enter()
+                resourceGroup.enter()
                 MusicNetwork.default.request(MusicAPI.default.lyric(musicID: originResource.id), response: { (_, _, _) in
-                    group.leave()
+                    cacheGroup.leave()
+                    resourceGroup.leave()
                 }, success: {
                     guard let lyric = $0["lrc"]["lyric"].string else { return }
                     self.resources[index].lyric = lyric
@@ -196,9 +232,13 @@ class MusicResourceManager {
             //        })
             //
             
-            group.notify(queue: queue, execute: {
+            cacheGroup.notify(queue: self.cacheQueue, execute: {
                 guard let validData = data else { return }
                 self.cache(&self.resources[index], data: validData)
+            })
+            
+            resourceGroup.notify(queue: .main, execute: {
+                resourceBlock?(self.resources[index])
             })
         }
     }
@@ -216,8 +256,10 @@ class MusicResourceManager {
         guard let md5 = resource.md5 else { assertionFailure("MD5 error for resource"); return }
         do {
             ConsoleLog.verbose("Cache music: " + md5)
-            try data.write(to: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5))
+            let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
+            try data.write(to: musicUrl)
             try resource.codeing.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
+            resource.musicUrl = musicUrl
             cachedResourceList[resource.id] = resource
         } catch {
             ConsoleLog.error(error.localizedDescription)

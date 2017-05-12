@@ -80,6 +80,8 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     
     static let `default`: MusicNetwork = MusicNetwork()
     var timeOutInterval: TimeInterval = 60
+    
+    private let configuration: URLSessionConfiguration = .default
     private var session: URLSession?
     private var requests: [Int: MusicResponse] = [:]
     private let lock = NSLock()
@@ -99,7 +101,6 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     private override init() {
         super.init()
         
-        let configuration: URLSessionConfiguration = .default
         configuration.timeoutIntervalForRequest = timeOutInterval
         session = URLSession(configuration: configuration,
                              delegate: self,
@@ -116,7 +117,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
                  response: ((Data?, URLResponse?, Error?) -> ())? = nil,
                  success: ((JSON) -> ())? = nil,
                  failed: ((Error) -> ())? = { ConsoleLog.error($0) }) {
-        
+
         session?.dataTask(with: urlRequest) { (data, urlResponse, error) in
             response?(data, urlResponse, error)
             if let error = error { failed?(error); return }

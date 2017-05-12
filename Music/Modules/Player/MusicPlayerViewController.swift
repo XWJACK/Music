@@ -82,7 +82,6 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
                                                  placeholder: self.backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
                                                  options: [.transition(.fade(1))])
         })
-        //TODO: 封面图
     }
     
     private func reset() {
@@ -126,11 +125,11 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     }
     
     @IBAction func lastButtonClicked(_ sender: UIButton) {
-//        play(withResource: MusicResourceManager.default.last())
+        play(withResourceId: MusicResourceManager.default.last())
     }
     
     @IBAction func nextButtonClicked(_ sender: UIButton) {
-//        play(withResource: MusicResourceManager.default.next())
+        play(withResourceId: MusicResourceManager.default.next())
     }
     
     @IBAction func timeSliderValueChange(_ sender: MusicPlayerSlider) {

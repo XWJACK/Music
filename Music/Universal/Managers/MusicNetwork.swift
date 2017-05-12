@@ -168,7 +168,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
         guard let response = self[dataTask] else { return }
         let totalBytesExpected = dataTask.response?.expectedContentLength ?? NSURLSessionTransferSizeUnknown
         let progress = Progress(totalUnitCount: totalBytesExpected)
-        progress.completedUnitCount = response.progressInstance.totalUnitCount + Int64(data.count)
+        progress.completedUnitCount = Int64(response.data.count)
         self[dataTask]?.progressInstance = progress
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Log
 
 let musicPlayerViewController: MusicPlayerViewController = MusicPlayerViewController.instanseFromStoryboard()! as! MusicPlayerViewController
 
@@ -33,6 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             
         }
+        
+        #if DEBUG
+            ConsoleLog.isDebug = true
+        #endif
         
         return true
     }

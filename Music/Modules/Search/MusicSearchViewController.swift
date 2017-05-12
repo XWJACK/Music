@@ -94,9 +94,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }) {
-            print($0)
-        }
+        })
     }
     
     @objc private func cancelButtonClicked() {

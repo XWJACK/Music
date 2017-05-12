@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import Log
 
 typealias Parameters = Alamofire.Parameters
 typealias JSON = SwiftyJSON.JSON
@@ -57,13 +58,13 @@ struct MusicResponse {
     var success: ((Data) -> ())? = nil
     var response: (() -> ())? = nil
     var download: ((URL) -> ())? = nil
-    var failed: ((Error) -> ())? = nil
+    var failed: ((Error) -> ())? = { ConsoleLog.error($0) }
     
     init(responseData: ((Data) -> ())? = nil,
          progress: ((Progress) -> ())? = nil,
          response: (() -> ())? = nil,
          success: ((Data) -> ())? = nil,
-         failed: ((Error) -> ())? = nil,
+         failed: ((Error) -> ())? = { ConsoleLog.error($0) },
          download: ((URL) -> ())? = nil) {
         
         self.responseData = responseData
@@ -114,7 +115,7 @@ class MusicNetwork: NSObject, URLSessionDataDelegate, URLSessionDownloadDelegate
     func request(_ urlRequest: URLRequest,
                  response: ((Data?, URLResponse?, Error?) -> ())? = nil,
                  success: ((JSON) -> ())? = nil,
-                 failed: ((Error) -> ())? = nil) {
+                 failed: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         
         session?.dataTask(with: urlRequest) { (data, urlResponse, error) in
             response?(data, urlResponse, error)

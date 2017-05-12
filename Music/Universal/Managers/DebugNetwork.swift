@@ -35,9 +35,12 @@ public class DebugNetwork: CustomDebugStringConvertible {
             "\n"
     }
     
-    init(_ request: MusicDataRequest) {
-        debugRequest = DebugRequest(request)
-        debugResponse = DebugResponse(request)
+    init(_ request: URLRequest) {
+        
+    }
+    
+    init(_ url: URL, method: HTTPMethod) {
+        
     }
 }
 

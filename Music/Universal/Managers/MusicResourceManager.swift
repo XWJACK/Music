@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Log
 
 typealias MusicResourceIdentifier = String
 
@@ -124,7 +125,7 @@ class MusicResourceManager {
                  responseBlock: ((Data) -> ())? = nil,
                  progressBlock: ((Progress) -> ())? = nil,
                  resourceBlock: ((MusicResource) -> ())? = nil,
-                 failedBlock: ((Error) -> ())? = nil) {
+                 failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         
         DispatchQueue.global().async {
             
@@ -141,7 +142,6 @@ class MusicResourceManager {
             
             //Reading Music Data
             if originResource.resourceSource == .network {
-                
                 group.enter()
                 // Request Music Source
                 MusicNetwork.default.request(musicUrl,
@@ -154,7 +154,6 @@ class MusicResourceManager {
                                              }, failed: failedBlock))
                 
             } else {
-                
                 //Reading Music File
                 guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else { failedBlock?(MusicError.resourcesError(.invalidData)); return  }
                 let progress = Progress(totalUnitCount: Int64(data.count))
@@ -216,11 +215,12 @@ class MusicResourceManager {
         
         guard let md5 = resource.md5 else { assertionFailure("MD5 error for resource"); return }
         do {
+            ConsoleLog.verbose("Cache music: " + md5)
             try data.write(to: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5))
             try resource.codeing.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
             cachedResourceList[resource.id] = resource
         } catch {
-            print(error)
+            ConsoleLog.error(error.localizedDescription)
         }
         
     }

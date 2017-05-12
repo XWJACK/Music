@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Log
 
 /// Music API
 open class MusicAPI {
@@ -21,7 +22,9 @@ open class MusicAPI {
         
         let requestURL = URL(string: path, relativeTo: URL(string: baseURLString ?? ""))
         
-        return try! URLEncoding.default.encode(URLRequest(url: requestURL!, method: method), with: parameters)
+        let request = try! URLEncoding.default.encode(URLRequest(url: requestURL!, method: method), with: parameters)
+        ConsoleLog.verbose(request)
+        return request
     }
     
     //MARK: - Search

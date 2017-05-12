@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.4.0)
   - Kingfisher (3.7.2)
+  - Log (0.1.0)
   - MJRefresh (3.1.12)
   - PageKit (0.1.1)
   - Reveal-SDK (4)
@@ -11,6 +12,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - Kingfisher
+  - Log (from `git@github.com:XWJACK/Log.git`, commit `f44457e`)
   - MJRefresh
   - PageKit (from `git@github.com:XWJACK/PageKit.git`, commit `8538ac0`)
   - Reveal-SDK (~> 4)
@@ -19,6 +21,9 @@ DEPENDENCIES:
   - Wave (from `git@github.com:XWJACK/Wave.git`, commit `09d1bdb`)
 
 EXTERNAL SOURCES:
+  Log:
+    :commit: f44457e
+    :git: git@github.com:XWJACK/Log.git
   PageKit:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
@@ -27,6 +32,9 @@ EXTERNAL SOURCES:
     :git: git@github.com:XWJACK/Wave.git
 
 CHECKOUT OPTIONS:
+  Log:
+    :commit: f44457e
+    :git: git@github.com:XWJACK/Log.git
   PageKit:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
@@ -37,6 +45,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   Kingfisher: 5ddc4ac715615cc200de9fdc54ab1511061ea650
+  Log: 4407c86602c728b84b42a4f862a4a450df304553
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   PageKit: a3aa5403687a1c7a3608501597c0859eec43d160
   Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
@@ -44,6 +53,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Wave: 26f0e8b65d29d53202408b4dd997653f519dabe9
 
-PODFILE CHECKSUM: 9eec388e2c54b7893b5b829bb508dd5d81dfa963
+PODFILE CHECKSUM: dba5ab16bac05d9415d4ed36ba2fa83f06c81494
 
 COCOAPODS: 1.2.1

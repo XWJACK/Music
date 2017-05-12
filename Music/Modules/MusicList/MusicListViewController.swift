@@ -52,9 +52,7 @@ final class MusicListViewController: MusicTableViewController {
             self.apiDatas = MusicPlayListDetailModel($0["playlist"])
             self.viewModels = self.apiDatas?.musicDetail.map{ $0.musicPlayListDetailViewModel } ?? []
             self.tableView.reloadData()
-        }) {
-            print($0)
-        }
+        })
     }
     @objc private func actionButtonClicked(_ sender: MusicButton) {
 //        sender.startAnimation()

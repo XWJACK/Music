@@ -81,9 +81,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
             self.backgroundImageView.kf.setImage(with: resource.picUrl,
                                                  placeholder: self.backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
                                                  options: [.transition(.fade(1))])
-        }) {
-            print($0)
-        }
+        })
         //TODO: 封面图
     }
     
@@ -155,9 +153,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         guard let id = resourceId else { return }
         MusicNetwork.default.request(MusicAPI.default.like(musicID: id, isLike: sender.mode == .love), success: {
             if $0.isSuccess { sender.mode = !sender.mode }
-        }) {
-            print($0)
-        }
+        })
     }
     
     @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {

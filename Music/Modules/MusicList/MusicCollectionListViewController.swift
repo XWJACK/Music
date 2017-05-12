@@ -56,9 +56,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
             self.apiDatas = $0["playlist"].array?.map{ MusicPlayListModel($0) } ?? []
             self.viewModels = self.apiDatas.map{ $0.musicCollectionListViewModel }
             self.tableView.reloadData()
-        }) {
-            print($0)
-        }
+        })
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {

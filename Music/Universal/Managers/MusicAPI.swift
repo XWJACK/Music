@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Log
 
 /// Music API
 open class MusicAPI {

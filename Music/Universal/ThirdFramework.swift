@@ -6,8 +6,35 @@
 //  Copyright © 2017 Jack. All rights reserved.
 //
 
-import Foundation
+//MARK: - Alamofire
+import Alamofire
+typealias Parameters = Alamofire.Parameters
+typealias HTTPMethod = Alamofire.HTTPMethod
+typealias URLEncoding = Alamofire.URLEncoding
+
+//MARK: - Kingfisher
+import Kingfisher
+typealias ThirdFileManager = KingfisherManager
+
+//MARK: - SwiftyJSON
+import SwiftyJSON
+typealias JSON = SwiftyJSON.JSON
 
 //MARK: - MJRefresh
-
 import MJRefresh
+typealias RefreshNormalHeader = MJRefresh.MJRefreshNormalHeader
+
+//MARK: - SnapKit
+import SnapKit
+
+//MARK: - Log
+import Log
+typealias ConsoleLog = Log.ConsoleLog
+
+//MARK: - Wave
+import Wave
+typealias AudioPlayer = Wave.StreamAudioPlayer
+typealias AudioPlayerDelegate = Wave.StreamAudioPlayerDelegate
+
+//MARK: - PageKit
+import PageKit

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import SnapKit
-import MJRefresh
 
 struct MusicPlayListDetailViewModel {
     var name: String = ""
@@ -36,7 +34,7 @@ final class MusicListViewController: MusicTableViewController {
             make.width.height.equalTo(28)
         }
         
-        tableView.mj_header = MJRefreshNormalHeader { [unowned self] in
+        tableView.mj_header = RefreshNormalHeader { [unowned self] in
             self.request()
         }
         

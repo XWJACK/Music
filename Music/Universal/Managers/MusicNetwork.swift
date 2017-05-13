@@ -7,17 +7,6 @@
 //
 
 import Foundation
-import Alamofire
-import SwiftyJSON
-import Log
-
-typealias Parameters = Alamofire.Parameters
-typealias JSON = SwiftyJSON.JSON
-typealias URLConvertible = Alamofire.URLConvertible
-typealias HTTPMethod = Alamofire.HTTPMethod
-typealias ParameterEncoding = Alamofire.ParameterEncoding
-typealias HTTPHeaders = Alamofire.HTTPHeaders
-typealias URLEncoding = Alamofire.URLEncoding
 
 /// Result for Response formatter
 struct MusicAPIResult {

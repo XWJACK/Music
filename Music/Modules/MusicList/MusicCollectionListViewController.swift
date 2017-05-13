@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MJRefresh
 
 struct MusicCollectionListViewModel {
     var coverImageUrl: URL? = nil
@@ -40,7 +39,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
             make.width.height.equalTo(28)
         }
         
-        tableView.mj_header = MJRefreshNormalHeader { [unowned self] in
+        tableView.mj_header = RefreshNormalHeader { [unowned self] in
             self.request()
         }
         

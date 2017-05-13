@@ -7,9 +7,6 @@
 //
 
 import UIKit
-import Wave
-import Kingfisher
-import Alamofire
 
 /// Music Player Status
 enum MusicPlayerStatus {
@@ -20,7 +17,7 @@ enum MusicPlayerStatus {
     }
 }
 
-class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate {
+class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     
@@ -39,7 +36,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     @IBOutlet weak var listButton: UIButton!
     
     private var isUserInteraction: Bool = false
-    private var player: StreamAudioPlayer? = nil
+    private var player: AudioPlayer? = nil
     private var timer: Timer? = nil
     private var resourceId: String? = nil
     
@@ -90,7 +87,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         
         destoryTimer()
         
-        player = StreamAudioPlayer()
+        player = AudioPlayer()
         player?.delegate = self
         
         timer = Timer(timeInterval: 0.1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
@@ -161,7 +158,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     
     //MARK - StreamAudioPlayerDelegate
     
-    func streamAudioPlayer(_ player: StreamAudioPlayer, parsedDuration duration: TimeInterval) {
+    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval) {
         timeSlider.isEnabled = true
         timeSlider.maximumValue = duration.float
         durationTimeLabel.text = duration.musicTime

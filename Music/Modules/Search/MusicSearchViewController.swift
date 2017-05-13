@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import SnapKit
-import MJRefresh
 
 struct MusicSearchViewModel {
     var name: String = ""

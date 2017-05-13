@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import Log
 
 let musicPlayerViewController: MusicPlayerViewController = MusicPlayerViewController.instanseFromStoryboard()! as! MusicPlayerViewController
 

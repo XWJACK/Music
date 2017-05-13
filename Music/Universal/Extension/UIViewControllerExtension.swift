@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import PageKit
 
 extension UIViewController {
     static func instanseFromStoryboard<T: UIViewController>() -> T? {

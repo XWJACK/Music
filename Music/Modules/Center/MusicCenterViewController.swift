@@ -47,9 +47,10 @@ class MusicCenterViewController: MusicTableViewController {
     private func clearCache(_ indexPath: IndexPath) {
         guard let cell = self.tableView.cellForRow(at: indexPath) as? MusicCenterClearCacheTableViewCell else { return }
         cell.indicator.isHidden = false
-        MusicFileManager.default.clearCache { 
+        MusicFileManager.default.clearCache {
+            self.cache = "Zero KB"
             cell.indicator.isHidden = true
-            cell.cacheLabel.text = "Zero KB"
+            cell.cacheLabel.text = self.cache
         }
     }
     

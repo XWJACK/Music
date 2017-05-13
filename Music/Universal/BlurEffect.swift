@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 /// BlurEffect for UIView
 protocol BlurEffect {

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Log
 
 typealias MusicResourceIdentifier = String
 
@@ -110,8 +109,13 @@ class MusicResourceManager {
         self.randomResourceIndexs = uniqueRandom(0...resources.count - 1)
         self.currentRandomResourceIndex = randomResourceIndexs.index(of: resourceIndex)!
         
-//        self.resources.filter{ cachedResourceList[$0.id] != nil }
-//        self.resources.sor
+        for (index, resource) in self.resources.enumerated() where cachedResourceList[resource.id] != nil {
+            self.resources[index] = cachedResourceList[resource.id]!
+        }
+        
+        for (index, resource) in self.resources.enumerated() where downloadedResouceList[resource.id] != nil {
+            self.resources[index] = downloadedResouceList[resource.id]!
+        }
     }
     
     /// Get Current MusicResourceIdentifier
@@ -179,16 +183,21 @@ class MusicResourceManager {
             if originResource.resourceSource == .network {
                 cacheGroup.enter()
                 // Request Music Source
-                MusicNetwork.default.request(musicUrl,
-                                             response: MusicResponse(responseData: responseBlock,
-                                                                     progress: progressBlock,
-                                                                     response: {
-                                                                        cacheGroup.leave()
-                                             }, success: {
-                                                data = $0
-                                             }, failed: failedBlock))
+                MusicNetwork.default.request(MusicAPI.default.musicUrl(musicID: originResource.id),
+                                             success: { (json) in
+                    guard let firstJson = json["data"].array?.first else { return }
+                    let model = MusicURLModel(firstJson)
+                    guard let url = model.url else { return }
+                    MusicNetwork.default.request(url, response: MusicResponse(responseData: responseBlock, progress: progressBlock, response: { 
+                        cacheGroup.leave()
+                    }, success: {
+                        data = $0
+                    }, failed: failedBlock))
+                                                
+                }, failed: failedBlock)
                 
             } else {
+                ConsoleLog.verbose("Reading: " + originResource.id + " music from local")
                 //Reading Music File
                 guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else { failedBlock?(MusicError.fileError(.readingError)); return  }
                 let progress = Progress(totalUnitCount: Int64(data.count))
@@ -264,7 +273,6 @@ class MusicResourceManager {
         } catch {
             ConsoleLog.error(error.localizedDescription)
         }
-        
     }
     
     private func save(_ resource: MusicResource) {

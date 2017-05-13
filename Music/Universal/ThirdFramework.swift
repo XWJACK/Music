@@ -27,6 +27,11 @@ typealias RefreshNormalHeader = MJRefresh.MJRefreshNormalHeader
 //MARK: - SnapKit
 import SnapKit
 
+//MARK: - Toast_Swift
+import Toast_Swift
+
+
+
 //MARK: - Log
 import Log
 typealias ConsoleLog = Log.ConsoleLog

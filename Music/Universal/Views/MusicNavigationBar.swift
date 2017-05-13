@@ -44,6 +44,7 @@ class MusicNavigationBar: UIView {
         leftButton.addTarget(self, action: #selector(backButtonClicked), for: .touchUpInside)
         
         titleLabel.textColor = .white
+        titleLabel.textAlignment = .center
         titleLabel.font = .font20
         separator.backgroundColor = .lightGray
         
@@ -51,6 +52,8 @@ class MusicNavigationBar: UIView {
         
         titleLabel.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
+            make.left.equalToSuperview().offset(75)
+            make.right.equalToSuperview().offset(-75)
         }
         
         resetLeftButton()

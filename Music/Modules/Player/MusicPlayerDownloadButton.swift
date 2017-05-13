@@ -37,6 +37,7 @@ class MusicPlayerDownloadButton: UIButton {
             setImage(#imageLiteral(resourceName: "player_control_downloaded_press"), for: .highlighted)
         case .disable:
             setImage(#imageLiteral(resourceName: "player_control_download_disable"), for: .disabled)
+            isEnabled = false
         }
     }
 }

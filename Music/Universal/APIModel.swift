@@ -128,12 +128,12 @@ struct MusicSearchModel: JSONInitable {
     let name: String
     let artists: [MusicArtistModel]
     let album: MusicAlbumModel
-    let mp3Url: URL?
+//    let mp3Url: URL?
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
-        mp3Url = json["mp3Url"].url
+//        mp3Url = json["mp3Url"].url
         
         artists = json["artists"].arrayValue.map{ MusicArtistModel($0) }
         album = MusicAlbumModel(json["album"])
@@ -147,9 +147,9 @@ struct MusicSearchModel: JSONInitable {
     }
     
     var resource: MusicResource {
-        var resource = MusicResource(id: id)
+        let resource = MusicResource(id: id)
         resource.name = name
-        resource.musicUrl = mp3Url
+//        resource.musicUrl = mp3Url
         resource.resourceSource = .network
         resource.picUrl = album.picUrl
         return resource

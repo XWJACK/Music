@@ -13,7 +13,7 @@ typealias MusicResourceIdentifier = String
 typealias MusicResourceCollection = [MusicResourceIdentifier: MusicResource]
 
 /// Music Resource
-struct MusicResource: JSONInitable {
+class MusicResource: JSONInitable {
     
     /// Source of Resource
     ///
@@ -38,7 +38,7 @@ struct MusicResource: JSONInitable {
         self.id = id
     }
     
-    init(_ json: JSON) {
+    required init(_ json: JSON) {
         id = json["id"].string ?? { assertionFailure("Error Music Id"); return "Error Id" }()
         md5 = json["md5"].string
         name = json["name"].stringValue
@@ -81,10 +81,10 @@ class MusicResourceManager {
                                    qos: .background,
                                    target: .global())
         
-        DispatchQueue.global().async {
-            self.cachedResourceList = MusicFileManager.default.search(fromURL: MusicFileManager.default.musicCacheURL)
-            self.downloadedResouceList = MusicFileManager.default.search(fromURL: MusicFileManager.default.musicDownloadURL)
-        }
+//        DispatchQueue.global().async {
+            cachedResourceList = search(fromURL: MusicFileManager.default.musicCacheURL)
+            downloadedResouceList = search(fromURL: MusicFileManager.default.musicDownloadURL)
+//        }
     }
     
     /// Rest Resources
@@ -161,6 +161,7 @@ class MusicResourceManager {
     /// Request Music by resource id
     ///
     /// - Parameters:
+    
     ///   - resourceId: Resource id
     ///   - response: MusicPlayerResponse
     func request(_ resourceId: String,
@@ -171,23 +172,25 @@ class MusicResourceManager {
         
         DispatchQueue.global().async {
             
+            /// Find resource by id
             guard let index = self.resources.index(where: { $0.id == resourceId }) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
             let originResource = self.resources[index]
-            guard let musicUrl = originResource.musicUrl else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
             
             var data: Data?
             let cacheGroup = DispatchGroup()
             let resourceGroup = DispatchGroup()
             
-            //Reading Music Data
+            //Reading music data from network
             if originResource.resourceSource == .network {
                 cacheGroup.enter()
                 // Request Music Source
-                MusicNetwork.default.request(MusicAPI.default.musicUrl(musicID: originResource.id),
-                                             success: { (json) in
+                MusicNetwork.default.request(MusicAPI.default.musicUrl(musicID: originResource.id), success: { (json) in
+                    
                     guard let firstJson = json["data"].array?.first else { return }
                     let model = MusicURLModel(firstJson)
-                    guard let url = model.url else { return }
+                    guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
+                    originResource.musicUrl = url
+                    
                     MusicNetwork.default.request(url, response: MusicResponse(responseData: responseBlock, progress: progressBlock, response: { 
                         cacheGroup.leave()
                     }, success: {
@@ -196,8 +199,9 @@ class MusicResourceManager {
                                                 
                 }, failed: failedBlock)
                 
-            } else {
+            } else {// Reading music data from local
                 ConsoleLog.verbose("Reading: " + originResource.id + " music from local")
+                guard let musicUrl = originResource.musicUrl else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
                 //Reading Music File
                 guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else { failedBlock?(MusicError.fileError(.readingError)); return  }
                 let progress = Progress(totalUnitCount: Int64(data.count))
@@ -207,7 +211,7 @@ class MusicResourceManager {
                 progressBlock?(progress)
             }
             
-            //Request Lyric
+            //Request Lyric if not exist
             if originResource.lyric == nil {
                 cacheGroup.enter()
                 resourceGroup.enter()
@@ -216,7 +220,7 @@ class MusicResourceManager {
                     resourceGroup.leave()
                 }, success: {
                     guard let lyric = $0["lrc"]["lyric"].string else { return }
-                    self.resources[index].lyric = lyric
+                    originResource.lyric = lyric
                 }, failed: failedBlock)
             }
             
@@ -241,45 +245,67 @@ class MusicResourceManager {
             //        })
             //
             
+            /// Completed request data, and now it can be cache to file
             cacheGroup.notify(queue: self.cacheQueue, execute: {
                 guard let validData = data else { return }
-                self.cache(&self.resources[index], data: validData)
+                self.cache(originResource, data: validData)
             })
             
+            /// Completed request resource
             resourceGroup.notify(queue: .main, execute: {
-                resourceBlock?(self.resources[index])
+                resourceBlock?(originResource)
             })
         }
     }
     
-//    func download(_ resourceId: MusicResourceIdentifier, response: MusicResponse? = nil) {
-//        guard let index = resources.index(where: { $0.id == resourceId }) else { response?.failed?(MusicError.resourcesError(.noResource)); return }
-//        let resource = resources[index]
-//        //TODO:
+//    func download(_ resourceId: MusicResourceIdentifier, successBlock: (() -> ())? = nil) {
+//        
+//        if let index = resources.index(where: { $0.id == resourceId }) {
+//            let originResource = resources[index]
+//        }
 //    }
-    
-    private func cache(_ resource: inout MusicResource, data: Data) {
+
+    private func cache(_ resource: MusicResource, data: Data) {
         resource.resourceSource = .cache
         resource.md5 = resource.id.md5()
         
-        guard let md5 = resource.md5 else { assertionFailure("MD5 error for resource"); return }
+        guard let md5 = resource.md5 else { ConsoleLog.error("MD5 Error for resource: " + resource.id); return }
         do {
             ConsoleLog.verbose("Cache music: " + md5)
             let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
             try data.write(to: musicUrl)
             try resource.codeing.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
             resource.musicUrl = musicUrl
-            cachedResourceList[resource.id] = resource
         } catch {
             ConsoleLog.error(error.localizedDescription)
         }
     }
     
     private func save(_ resource: MusicResource) {
-        var resource = resource
 //        resource.isCached = false
 //        resource.isDownload = true
-        resource.md5 = resource.id.md5()
+//        resource.md5 = resource.id.md5()
+    }
+    
+    /// Search MusicResourceCollection by url
+    ///
+    /// - Parameter url: URL
+    /// - Returns: MusicResourceCollection
+    private func search(fromURL url: URL) -> MusicResourceCollection {
+        var results: MusicResourceCollection = [:]
+        
+        if let contents = try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
+            contents.filter({ $0.pathExtension == "info" }).forEach {
+                
+                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
+                let resource = MusicResource(JSON(data: fileContent))
+                resource.resourceSource = url == MusicFileManager.default.musicCacheURL ? .cache : .download
+                resource.musicUrl = $0.deletingPathExtension()
+                results[resource.id] = resource
+                
+            }
+        }
+        return results
     }
     
     private func uniqueRandom(_ range: ClosedRange<Int>) -> [Int] {

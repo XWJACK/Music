@@ -90,28 +90,6 @@ final class MusicFileManager {
         }
     }
     
-    /// Search MusicResourceCollection by url
-    ///
-    /// - Parameter url: URL
-    /// - Returns: MusicResourceCollection
-    func search(fromURL url: URL) -> MusicResourceCollection {
-        var results: MusicResourceCollection = [:]
-        
-        if let contents = try? fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
-            contents.filter({ $0.pathExtension == "info" }).forEach {
-                
-                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
-                var resource = MusicResource(JSON(data: fileContent))
-                resource.resourceSource = url == musicCacheURL ? .cache : .download
-                resource.musicUrl = $0.deletingPathExtension()
-                results[resource.id] = resource
-                
-            }
-            
-        }
-        return results
-    }
-    
     /// Delete from url is exist
     ///
     /// - Parameter url: URL

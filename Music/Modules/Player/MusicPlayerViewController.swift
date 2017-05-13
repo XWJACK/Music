@@ -43,6 +43,8 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        musicNavigationBar.titleLabel.font = .font18
+        
         downloadButton.mode = .disable
         loveButton.mode = .love
         controlButton.mode = .paused
@@ -61,7 +63,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     func play(withResourceId id: String) {
@@ -75,9 +76,11 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }, progressBlock: {
             print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
         }, resourceBlock: { (resource) in
+            self.title = resource.name
             self.backgroundImageView.kf.setImage(with: resource.picUrl,
                                                  placeholder: self.backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
-                                                 options: [.transition(.fade(1))])
+                                                 options: [.forceTransition, .transition(.fade(1))])
+            self.downloadButton.mode = .downloaded
         })
     }
     
@@ -153,14 +156,16 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
-//        MusicResourceManager.default
+        MusicResourceManager.default
     }
     
     //MARK - StreamAudioPlayerDelegate
     
     func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval) {
-        timeSlider.isEnabled = true
-        timeSlider.maximumValue = duration.float
-        durationTimeLabel.text = duration.musicTime
+        DispatchQueue.main.async {
+            self.timeSlider.isEnabled = true
+            self.timeSlider.maximumValue = duration.float
+            self.durationTimeLabel.text = duration.musicTime
+        }
     }
 }

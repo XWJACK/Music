@@ -114,7 +114,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar(searchBar, textDidChange: searchText)
+        request(true, searchText)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

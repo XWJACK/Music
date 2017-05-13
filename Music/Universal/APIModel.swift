@@ -111,12 +111,14 @@ struct MusicURLModel: JSONInitable {
     let url: URL?
     let md5: String
     let size: Int64
+    let bitRate: UInt32
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         url = json["url"].url
         md5 = json["md5"].stringValue
         size = json["size"].int64Value
+        bitRate = json["br"].uInt32 ?? 320000
     }
 }
 

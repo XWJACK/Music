@@ -61,9 +61,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
 //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
 //        addSwipGesture(target: self, action: #selector(right(sender:)), direction: .right)
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     
     func play(withResourceId id: String) {
         
@@ -167,5 +164,9 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             self.timeSlider.maximumValue = duration.float
             self.durationTimeLabel.text = duration.musicTime
         }
+    }
+    
+    func didCompletedPlayAudio(_ player: AudioPlayer) {
+        nextButtonClicked(nextButton)
     }
 }

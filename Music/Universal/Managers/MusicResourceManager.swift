@@ -203,7 +203,13 @@ class MusicResourceManager {
                 ConsoleLog.verbose("Reading: " + originResource.id + " music from local")
                 guard let musicUrl = originResource.musicUrl else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
                 //Reading Music File
-                guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else { failedBlock?(MusicError.fileError(.readingError)); return  }
+                guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else {
+                    failedBlock?(MusicError.fileError(.readingError))
+                    /// Then request from network
+                    originResource.resourceSource = .network
+                    self.request(originResource.id, responseBlock: responseBlock, progressBlock: progressBlock, resourceBlock: resourceBlock, failedBlock: failedBlock)
+                    return
+                }
                 let progress = Progress(totalUnitCount: Int64(data.count))
                 progress.completedUnitCount = Int64(data.count)
                 

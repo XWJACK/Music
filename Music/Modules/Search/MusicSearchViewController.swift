@@ -82,7 +82,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
 //            }.response {
 //                self.tableView.endRefreshing(resetToPageZero: false, hasMore: self.apiDatas.hasMore)
 //        }
-        MusicNetwork.default.request(MusicAPI.default.search(keyWords: searchText, offset: offSet - 1), success: {
+        MusicNetwork.default.request(API.default.search(keyWords: searchText, offset: offSet - 1), success: {
             let results = $0.result["songs"].arrayValue.map{ MusicSearchModel($0) }
             
             if isNewSearch { self.apiDatas = results }

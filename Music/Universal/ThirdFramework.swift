@@ -43,3 +43,8 @@ typealias AudioPlayerDelegate = Wave.StreamAudioPlayerDelegate
 
 //MARK: - PageKit
 import PageKit
+
+//MARK: - Music API
+
+import MusicAPI
+typealias API = MusicAPI

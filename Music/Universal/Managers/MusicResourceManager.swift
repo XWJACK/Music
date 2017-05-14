@@ -184,7 +184,7 @@ class MusicResourceManager {
             if originResource.resourceSource == .network {
                 cacheGroup.enter()
                 // Request Music Source
-                MusicNetwork.default.request(MusicAPI.default.musicUrl(musicID: originResource.id), success: { (json) in
+                MusicNetwork.default.request(API.default.musicUrl(musicID: originResource.id), success: { (json) in
                     
                     guard let firstJson = json["data"].array?.first else { return }
                     let model = MusicResouceInfoModel(firstJson)
@@ -221,7 +221,7 @@ class MusicResourceManager {
             if originResource.lyric == nil {
                 cacheGroup.enter()
                 resourceGroup.enter()
-                MusicNetwork.default.request(MusicAPI.default.lyric(musicID: originResource.id), response: { (_, _, _) in
+                MusicNetwork.default.request(API.default.lyric(musicID: originResource.id), response: { (_, _, _) in
                     cacheGroup.leave()
                     resourceGroup.leave()
                 }, success: {
@@ -239,7 +239,7 @@ class MusicResourceManager {
             
             //        group.enter()
             //        // Request Music Lyric
-            //        MusicNetwork.default.request(MusicAPI.default.lyric(musicID: resourceID), success: {
+            //        MusicNetwork.default.request(API.default.lyric(musicID: resourceID), success: {
             //
             //            let lyricModel = MusicLyricModel($0)
             //            self.resources[index].lyric = lyricModel.lyric

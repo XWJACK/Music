@@ -145,7 +145,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     @IBAction func loveButtonClicked(_ sender: MusicLoveButton) {
 //        guard let id = resourceId else { return }
-//        MusicNetwork.default.request(MusicAPI.default.like(musicID: id, isLike: sender.mode == .love), success: {
+//        MusicNetwork.default.request(API.default.like(musicID: id, isLike: sender.mode == .love), success: {
 //            if $0.isSuccess { sender.mode = !sender.mode }
 //        })
     }

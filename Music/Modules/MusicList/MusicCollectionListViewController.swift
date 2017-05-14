@@ -48,7 +48,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
     
     private func request() {
         guard let userId = AccountManager.default.account?.id else { tableView.mj_header.endRefreshing(); return }
-        MusicNetwork.default.request(MusicAPI.default.playList(userId: userId), response: { (_, _, _) in
+        MusicNetwork.default.request(API.default.playList(userId: userId), response: { (_, _, _) in
             self.tableView.mj_header.endRefreshing()
         }, success: {
             guard $0.isSuccess else { return }

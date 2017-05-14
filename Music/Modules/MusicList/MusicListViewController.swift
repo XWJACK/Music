@@ -43,7 +43,7 @@ final class MusicListViewController: MusicTableViewController {
     
     private func request() {
         guard let listId = listId else { tableView.mj_header.endRefreshing(); return }
-        MusicNetwork.default.request(MusicAPI.default.detail(listId: listId), response: { (_, _, _) in
+        MusicNetwork.default.request(API.default.detail(listId: listId), response: { (_, _, _) in
             self.tableView.mj_header.endRefreshing()
         }, success: {
             guard $0.isSuccess else { return }

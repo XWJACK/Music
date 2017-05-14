@@ -7,7 +7,7 @@ target 'Music' do
 
 #pod 'PageKit', path: '/Users/Jack/Documents/Development/Personal/Framework/Swift/PageKit'
 pod 'PageKit', :git => 'git@github.com:XWJACK/PageKit.git', :commit => '8538ac0'
-pod 'Wave', :git => 'git@github.com:XWJACK/Wave.git', :commit => '954e641'
+pod 'Wave', :git => 'git@github.com:XWJACK/Wave.git', :commit => '20b7869'
 pod 'Log', :git => 'git@github.com:XWJACK/Log.git', :commit => 'f44457e'
 
 pod 'SnapKit'

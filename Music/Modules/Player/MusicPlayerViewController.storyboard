@@ -29,7 +29,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <visualEffectView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JGl-rW-JxT">
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JGl-rW-JxT">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="A73-29-m2X">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -222,7 +222,8 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="WSa-Ma-eSy"/>
                                                 </constraints>
-                                                <color key="maximumTrackTintColor" red="1" green="1" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="maximumTrackTintColor" white="1" alpha="0.1017000440140845" colorSpace="calibratedWhite"/>
                                                 <connections>
                                                     <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpInside" id="MXJ-TJ-fUe"/>
                                                     <action selector="timeSliderSeek:" destination="eVa-CY-Nae" eventType="touchUpOutside" id="wtM-cg-zOM"/>
@@ -289,7 +290,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uYm-qV-suX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-883" y="252"/>
+            <point key="canvasLocation" x="-1264" y="249"/>
         </scene>
     </scenes>
     <resources>

@@ -38,7 +38,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     private var isUserInteraction: Bool = false
     private var player: AudioPlayer? = nil
     private var timer: Timer? = nil
-    private var resourceId: String? = nil
+    private var resource: MusicResource? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +53,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         nextButton.setImage(#imageLiteral(resourceName: "player_control_next_press"), for: .highlighted)
         
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider").scaleToSize(newSize: timeSlider.thumbImageSize), for: .normal)
-        timeSlider.thumbImage(for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs").scaleToSize(newSize: timeSlider.thumbImageSize), for: .highlighted)
         timeSlider.isEnabled = false
         
@@ -64,20 +63,19 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     func play(withResourceId id: String) {
         
-        self.resourceId = id
-        
         reset()
 
         MusicResourceManager.default.request(id, responseBlock: {
             self.player?.respond(with: $0)
         }, progressBlock: {
-            print(String(format: "%d%%", Int($0.fractionCompleted * 100)))
+            self.timeSlider.buffProgress($0)
         }, resourceBlock: { (resource) in
             self.title = resource.name
             self.backgroundImageView.kf.setImage(with: resource.picUrl,
                                                  placeholder: self.backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
                                                  options: [.forceTransition, .transition(.fade(1))])
             self.downloadButton.mode = .downloaded
+            self.resource = resource
         })
     }
     
@@ -146,10 +144,10 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     @IBAction func loveButtonClicked(_ sender: MusicLoveButton) {
-        guard let id = resourceId else { return }
-        MusicNetwork.default.request(MusicAPI.default.like(musicID: id, isLike: sender.mode == .love), success: {
-            if $0.isSuccess { sender.mode = !sender.mode }
-        })
+//        guard let id = resourceId else { return }
+//        MusicNetwork.default.request(MusicAPI.default.like(musicID: id, isLike: sender.mode == .love), success: {
+//            if $0.isSuccess { sender.mode = !sender.mode }
+//        })
     }
     
     @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
@@ -158,7 +156,8 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     //MARK - StreamAudioPlayerDelegate
     
-    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval) {
+    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval, isSuccess: Bool) {
+        
         DispatchQueue.main.async {
             self.timeSlider.isEnabled = true
             self.timeSlider.maximumValue = duration.float

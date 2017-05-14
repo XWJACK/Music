@@ -130,7 +130,7 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
         let resources = apiDatas.map{ $0.resource }
         MusicResourceManager.default.reset(resources,
                                            withIdentifier: "Search" + searchText + resources.count.description,
-                                           resourceIndex: indexPath.row)
+                                           currentResourceIndex: indexPath.row)
         musicPlayerViewController.play(withResourceId: MusicResourceManager.default.current())
         musicNavigationController?.push(musicPlayerViewController)
     }

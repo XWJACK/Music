@@ -87,7 +87,7 @@ class MusicResourceManager {
 //        }
     }
     
-    /// Rest Resources
+    /// Rest Resources, only effective if identifier is different
     ///
     /// - Parameters:
     ///   - resources: Collection for MusicResourceIdentifier
@@ -95,27 +95,27 @@ class MusicResourceManager {
     ///   - mode: MusicPlayerPlayMode
     func reset(_ resources: [MusicResource],
                withIdentifier identifier: String,
-               resourceIndex: Int,
+               currentResourceIndex: Int,
                withMode mode: MusicPlayerPlayMode? = nil) {
         
         if let mode = mode { self.resourceLoadMode = mode }
-        self.currentResourceIndex = resourceIndex
-        self.currentRandomResourceIndex = randomResourceIndexs.index(of: resourceIndex) ?? 0
+        self.currentResourceIndex = currentResourceIndex
+        self.currentRandomResourceIndex = randomResourceIndexs.index(of: currentResourceIndex) ?? 0
         
         guard self.currentResourceIdentifier != identifier else { return }
         
         self.currentResourceIdentifier = identifier
         self.resources = resources
         self.randomResourceIndexs = uniqueRandom(0...resources.count - 1)
-        self.currentRandomResourceIndex = randomResourceIndexs.index(of: resourceIndex)!
+        self.currentRandomResourceIndex = randomResourceIndexs.index(of: currentResourceIndex)!
         
-        for (index, resource) in self.resources.enumerated() where cachedResourceList[resource.id] != nil {
-            self.resources[index] = cachedResourceList[resource.id]!
-        }
-        
-        for (index, resource) in self.resources.enumerated() where downloadedResouceList[resource.id] != nil {
-            self.resources[index] = downloadedResouceList[resource.id]!
-        }
+//        for (index, resource) in self.resources.enumerated() where cachedResourceList[resource.id] != nil {
+//            self.resources[index] = cachedResourceList[resource.id]!
+//        }
+//        
+//        for (index, resource) in self.resources.enumerated() where downloadedResouceList[resource.id] != nil {
+//            self.resources[index] = downloadedResouceList[resource.id]!
+//        }
     }
     
     /// Get Current MusicResourceIdentifier
@@ -187,7 +187,7 @@ class MusicResourceManager {
                 MusicNetwork.default.request(MusicAPI.default.musicUrl(musicID: originResource.id), success: { (json) in
                     
                     guard let firstJson = json["data"].array?.first else { return }
-                    let model = MusicURLModel(firstJson)
+                    let model = MusicResouceInfoModel(firstJson)
                     guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
                     originResource.musicUrl = url
                     

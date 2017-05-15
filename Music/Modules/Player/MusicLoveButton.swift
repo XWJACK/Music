@@ -12,7 +12,7 @@ import UIKit
 enum MusicPlayerLoveMode {
     case love
     case loved
-    //    case disable
+    case disable
     prefix public static func !(a: MusicPlayerLoveMode) -> MusicPlayerLoveMode {
         return a == .love ? .loved : .love
     }
@@ -29,8 +29,9 @@ class MusicLoveButton: UIButton {
             case .loved:
                 setImage(#imageLiteral(resourceName: "player_control_loved"), for: .normal)
                 setImage(#imageLiteral(resourceName: "player_control_loved_press"), for: .highlighted)
-//            case .disable:
-//                setImage(#imageLiteral(resourceName: "player_control_love_dis"), for: .disabled)
+            case .disable:
+                setImage(#imageLiteral(resourceName: "player_control_love_dis"), for: .disabled)
+                isEnabled = false
             }
         }
     }

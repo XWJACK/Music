@@ -19,8 +19,8 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
     private let cancelButton = UIButton(type: .custom)
     
     private var searchText: String = ""
-    private var offSet: Int = 1
-    private var apiDatas: [MusicSearchModel] = []
+    private var offSet: Int = 0
+    private var apiDatas: [MusicDetailModel] = []
     private var searchViewModels: [MusicSearchViewModel] = []
     
     override func viewDidLoad() {
@@ -63,36 +63,36 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        
+        tableView.mj_footer = RefreshBackNormalFooter {[unowned self] in
+            self.offSet += 1
+            self.request(false, self.searchText)
+        }
     }
     
     private func request(_ isNewSearch: Bool, _ searchText: String) {
-//        if searchText.isEmpty {
-//            self.tableView.simpleEmptyView(show: false)
-//            tableView.endRefreshing(resetToPageZero: false, hasMore: apiDatas.hasMore)
-//            return
-//        }
+        if isNewSearch { offSet = 0 }
         guard !searchText.isEmpty else { return }
         
-//        NetworkManager.request(Router.search(searchText, pageStruct))
-//            .success{ (datas: LPArray<Account>) in
-//                self.apiDatas = datas
-//            }.fail {
-//                self.tableView.mj_footer.endRefreshing()
-//                self.tableView.simpleEmptyView()
-//            }.response {
-//                self.tableView.endRefreshing(resetToPageZero: false, hasMore: self.apiDatas.hasMore)
-//        }
-        MusicNetwork.default.request(API.default.search(keyWords: searchText, offset: offSet - 1), success: {
-            let results = $0.result["songs"].arrayValue.map{ MusicSearchModel($0) }
-            
-            if isNewSearch { self.apiDatas = results }
-            else { results.forEach{ self.apiDatas.append($0) } }
-            
-            self.searchViewModels = self.apiDatas.map{ $0.musicSearchViewMode }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        })
+        MusicNetwork.send(API.search(keyWords: searchText, offset: offSet))
+            .receive(json: {[weak self] (json) in
+                guard let strongSelf = self,
+                    json.isSuccess else { return }
+                
+                let results = json.result["songs"].arrayValue.map{ MusicDetailModel(searchJSON: $0) }
+                
+                if isNewSearch {
+                    strongSelf.apiDatas = results
+                    strongSelf.searchViewModels = results.map{ $0.musicSearchViewModel }
+                } else {
+                    strongSelf.apiDatas.append(contentsOf: results)
+                    strongSelf.searchViewModels.append(contentsOf: results.map{ $0.musicSearchViewModel })
+                }
+                strongSelf.tableView.endRefreshing(hasMore: json.result["songCount"].intValue > strongSelf.apiDatas.count )
+                strongSelf.tableView.reloadData()
+            }).receive(response: {[weak self] (json) in
+                self?.tableView.mj_footer.endRefreshing()
+            })
     }
     
     @objc private func cancelButtonClicked() {

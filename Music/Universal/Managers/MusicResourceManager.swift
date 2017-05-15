@@ -9,7 +9,7 @@
 import Foundation
 
 typealias MusicResourceIdentifier = String
-
+typealias ResponseData = (Data) -> ()
 typealias MusicResourceCollection = [MusicResourceIdentifier: MusicResource]
 
 /// Music Resource
@@ -19,6 +19,7 @@ class MusicResource: JSONInitable {
     ///
     /// - cache: Cache
     /// - download: Download
+    /// - buffering: In Buffering
     /// - network: Network
     enum ResourceSource {
         case cache
@@ -28,11 +29,13 @@ class MusicResource: JSONInitable {
     
     let id: String
     var name: String = ""
-    var md5: String? = nil
+    var duration: TimeInterval?
+    
     var resourceSource: ResourceSource = .network
-    var musicUrl: URL? = nil
-    var lyric: String? = nil
-    var picUrl: URL? = nil
+    
+    var lyric: MusicLyricModel?
+    var info: MusicResouceInfoModel?
+    var album: MusicAlbumModel?
     
     init(id: String) {
         self.id = id
@@ -40,19 +43,24 @@ class MusicResource: JSONInitable {
     
     required init(_ json: JSON) {
         id = json["id"].string ?? { assertionFailure("Error Music Id"); return "Error Id" }()
-        md5 = json["md5"].string
         name = json["name"].stringValue
-        picUrl = json["picUrl"].url
-        lyric = json["lyric"].string
+        duration = json["duration"].double
+        
+        lyric = MusicLyricModel(json["lyric"])
+        info = MusicResouceInfoModel(json["info"])
+        album = MusicAlbumModel(json["album"])
     }
     
-    var codeing: String {
-        var code: [String: String] = ["id": id, "md5": md5 ?? { assertionFailure("Codeing with MD5 Error"); return "Error MD5" }()]
-        code["lyric"] = lyric
-        code["picUrl"] = picUrl?.absoluteString
-        code["name"] = name
+    var encode: String {
+        var dic: [String: String] = ["id": id]
+        dic["name"] = name
+        dic["duration"] = duration?.description
         
-        return JSON(code).rawString([.jsonSerialization: true]) ?? ""
+        dic["lyric"] = lyric?.encode
+        dic["info"] = info?.encode
+        dic["album"] = album?.encode
+        
+        return JSON(dic).rawString([.jsonSerialization: true]) ?? ""
     }
 }
 
@@ -73,13 +81,13 @@ class MusicResourceManager {
     private var cachedResourceList: MusicResourceCollection = [:]
     private var downloadedResouceList: MusicResourceCollection = [:]
     
+    
     /// Background serial cache queue
-    private var cacheQueue: DispatchQueue
+    private let cacheQueue: DispatchQueue
     
     private init() {
         cacheQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.cacheQueue",
-                                   qos: .background,
-                                   target: .global())
+                                   qos: .background)
         
 //        DispatchQueue.global().async {
             cachedResourceList = search(fromURL: MusicFileManager.default.musicCacheURL)
@@ -183,25 +191,26 @@ class MusicResourceManager {
             //Reading music data from network
             if originResource.resourceSource == .network {
                 cacheGroup.enter()
+                
                 // Request Music Source
-                MusicNetwork.default.request(API.default.musicUrl(musicID: originResource.id), success: { (json) in
-                    
+                MusicNetwork.send(API.musicUrl(musicID: originResource.id))
+                    .receive(queue: .global(), json: { (json) in
+                        
                     guard let firstJson = json["data"].array?.first else { return }
                     let model = MusicResouceInfoModel(firstJson)
                     guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
-                    originResource.musicUrl = url
+                    originResource.info?.url = url
                     
-                    MusicNetwork.default.request(url, response: MusicResponse(responseData: responseBlock, progress: progressBlock, response: { 
-                        cacheGroup.leave()
-                    }, success: {
-                        data = $0
-                    }, failed: failedBlock))
-                                                
-                }, failed: failedBlock)
+                    MusicNetwork.send(url)
+                        .receive(queue: .global(), data: responseBlock)
+                        .receive(progress: progressBlock)
+                        .receive(queue: .global(), response: { cacheGroup.leave() })
+                        .receive(queue: .global(), success: { data = $0 })
+                })
                 
             } else {// Reading music data from local
                 ConsoleLog.verbose("Reading: " + originResource.id + " music from local")
-                guard let musicUrl = originResource.musicUrl else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
+                guard let musicUrl = originResource.info?.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
                 //Reading Music File
                 guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else {
                     failedBlock?(MusicError.fileError(.readingError))
@@ -218,16 +227,18 @@ class MusicResourceManager {
             }
             
             //Request Lyric if not exist
-            if originResource.lyric == nil {
+            if !(originResource.lyric?.hasLyric ?? false) {
                 cacheGroup.enter()
                 resourceGroup.enter()
-                MusicNetwork.default.request(API.default.lyric(musicID: originResource.id), response: { (_, _, _) in
-                    cacheGroup.leave()
-                    resourceGroup.leave()
-                }, success: {
-                    guard let lyric = $0["lrc"]["lyric"].string else { return }
-                    originResource.lyric = lyric
-                }, failed: failedBlock)
+                
+                MusicNetwork.send(API.lyric(musicID: originResource.id))
+                    .receive(queue: .global(), json: { (json) in
+                        originResource.lyric = MusicLyricModel(json)
+                    })
+                    .receive(queue: .global(), response: {
+                        cacheGroup.leave()
+                        resourceGroup.leave()
+                    })
             }
             
             //        if originResource.
@@ -271,19 +282,25 @@ class MusicResourceManager {
 //        }
 //    }
 
+    
+    /// Cache resource to local
+    ///
+    /// - Parameters:
+    ///   - resource: MusicResource
+    ///   - data: Music Data
     private func cache(_ resource: MusicResource, data: Data) {
         resource.resourceSource = .cache
-        resource.md5 = resource.id.md5()
+        resource.info?.md5 = resource.id.md5()
         
-        guard let md5 = resource.md5 else { ConsoleLog.error("MD5 Error for resource: " + resource.id); return }
+        guard let md5 = resource.info?.md5 else { ConsoleLog.error("MD5 Error for resource: " + resource.id); return }
         do {
             ConsoleLog.verbose("Cache music: " + md5)
             let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
             try data.write(to: musicUrl)
-            try resource.codeing.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
-            resource.musicUrl = musicUrl
+            try resource.encode.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
+            resource.info?.url = musicUrl
         } catch {
-            ConsoleLog.error(error.localizedDescription)
+            ConsoleLog.error(error)
         }
     }
     
@@ -306,9 +323,8 @@ class MusicResourceManager {
                 guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
                 let resource = MusicResource(JSON(data: fileContent))
                 resource.resourceSource = url == MusicFileManager.default.musicCacheURL ? .cache : .download
-                resource.musicUrl = $0.deletingPathExtension()
+                resource.info?.url = $0.deletingPathExtension()
                 results[resource.id] = resource
-                
             }
         }
         return results

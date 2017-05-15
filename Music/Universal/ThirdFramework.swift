@@ -23,6 +23,22 @@ typealias JSON = SwiftyJSON.JSON
 //MARK: - MJRefresh
 import MJRefresh
 typealias RefreshNormalHeader = MJRefresh.MJRefreshNormalHeader
+typealias RefreshBackNormalFooter = MJRefresh.MJRefreshBackNormalFooter
+
+extension UIScrollView {
+    
+    func endRefreshing(hasMore: Bool) {
+        guard self.mj_footer != nil else { return }
+        
+        if hasMore  {
+            self.mj_footer.endRefreshing()
+            self.mj_footer.isHidden = false
+        } else {
+            self.mj_footer.endRefreshingWithNoMoreData()
+            self.mj_footer.isHidden = true
+        }
+    }
+}
 
 //MARK: - SnapKit
 import SnapKit
@@ -47,4 +63,26 @@ import PageKit
 //MARK: - Music API
 
 import MusicAPI
-typealias API = MusicAPI
+let API = MusicAPI.default
+
+//MARK: - Lotus
+import Lotus
+let MusicNetwork = Lotus.Session.default
+typealias Client = Lotus.Client
+
+extension JSON {
+    /// Parse Code
+    var code: Int { return self["code"].intValue }
+    /// Parse Data
+    var result: JSON { return self["result"] }
+    /// Is Success for response
+    var isSuccess: Bool { return code == 200 }
+}
+
+extension Client {
+    
+    @discardableResult
+    func receive(queue: DispatchQueue = .main, json block: ((JSON) -> ())? = nil) -> Self {
+        return receive(queue: queue, success: { block?(JSON(data: $0)) })
+    }
+}

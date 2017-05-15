@@ -46,7 +46,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         musicNavigationBar.titleLabel.font = .font18
         
         downloadButton.mode = .disable
-        loveButton.mode = .love
+        loveButton.mode = .disable
         controlButton.mode = .paused
         
         lastButton.setImage(#imageLiteral(resourceName: "player_control_last_press"), for: .highlighted)
@@ -61,22 +61,26 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
 //        addSwipGesture(target: self, action: #selector(right(sender:)), direction: .right)
     }
     
-    func play(withResourceId id: String) {
+    func play(withResourceId id: MusicResourceIdentifier) {
         
         reset()
 
-        MusicResourceManager.default.request(id, responseBlock: {
-            self.player?.respond(with: $0)
-        }, progressBlock: {
-            self.timeSlider.buffProgress($0)
-        }, resourceBlock: { (resource) in
-            self.title = resource.name
-            self.backgroundImageView.kf.setImage(with: resource.picUrl,
-                                                 placeholder: self.backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
-                                                 options: [.forceTransition, .transition(.fade(1))])
-            self.downloadButton.mode = .downloaded
-            self.resource = resource
-        })
+//        title = resource.name
+//        backgroundImageView.kf.setImage(with: resource.picUrl,
+//                                        placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
+//                                        options: [.forceTransition,
+//                                                  .transition(.fade(1))])
+//        downloadButton.mode = resource.isDownloaded
+//        MusicResourceManager.default.request(id, responseBlock: {
+//            self.player?.respond(with: $0)
+//        }, progressBlock: {
+//            self.timeSlider.buffProgress($0)
+//        }, resourceBlock: { (resource) in
+//            self.title = resource.name
+        
+//            self.downloadButton.mode = .downlotaded
+//            self.resource = resource
+//        })
     }
     
     private func reset() {

@@ -43,15 +43,16 @@ final class MusicListViewController: MusicTableViewController {
     
     private func request() {
         guard let listId = listId else { tableView.mj_header.endRefreshing(); return }
-        MusicNetwork.default.request(API.default.detail(listId: listId), response: { (_, _, _) in
-            self.tableView.mj_header.endRefreshing()
-        }, success: {
-            guard $0.isSuccess else { return }
-            self.apiDatas = MusicPlayListDetailModel($0["playlist"])
-            self.viewModels = self.apiDatas?.musicDetail.map{ $0.musicPlayListDetailViewModel } ?? []
-            self.tableView.reloadData()
-        })
+        MusicNetwork.send(API.detail(listId: listId))
+            .receive { self.tableView.mj_header.endRefreshing() }
+            .receive(json: { (json) in
+                guard json.isSuccess else { return }
+                self.apiDatas = MusicPlayListDetailModel(json["playlist"])
+                self.viewModels = self.apiDatas?.musicDetail.map{ $0.musicPlayListDetailViewModel } ?? []
+                self.tableView.reloadData()
+            })
     }
+    
     @objc private func actionButtonClicked(_ sender: MusicButton) {
 //        sender.startAnimation()
 //        sender.isAnimation = !sender.isAnimation

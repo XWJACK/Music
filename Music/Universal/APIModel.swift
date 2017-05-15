@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol JSONInitable {
+    init(_ json: JSON)
+}
+
 //MARK: - Music Account
 
 struct MusicAccountModel: JSONInitable {
@@ -40,13 +44,9 @@ struct MusicProfileModel: JSONInitable {
 
 struct MusicArtistModel: JSONInitable {
     let name: String
-//    let picUrl: URL?
-//    let imageUrl: URL?
     
     init(_ json: JSON) {
         name = json["name"].stringValue
-//        picUrl = json["picUrl"].url
-//        imageUrl = json["img1v1Url"].url
     }
 }
 
@@ -54,13 +54,17 @@ struct MusicArtistModel: JSONInitable {
 
 struct MusicAlbumModel: JSONInitable {
     let name: String
-//    let blurPicUrl: URL?
     let picUrl: URL?
     
     init(_ json: JSON) {
         name = json["name"].stringValue
-//        blurPicUrl = json["blurPicUrl"].url
         picUrl = json["picUrl"].url
+    }
+    
+    var encode: String {
+        var dic: [String: String] = ["name": name]
+        dic["picUrl"] = picUrl?.absoluteString
+        return JSON(dic).rawString([.jsonSerialization: true]) ?? ""
     }
 }
 
@@ -80,26 +84,55 @@ struct MusicCreatorModel: JSONInitable {
     }
 }
 
-//MARK: - Music Detail
+//MARK: - Music Detail ( Serach / PlayList)
 
-struct MusicDetailModel: JSONInitable {
+struct MusicDetailModel {
+    
     let id: String
     let name: String
+    let duration: TimeInterval?
     let artists: [MusicArtistModel]
     let album: MusicAlbumModel
     
-    init(_ json: JSON) {
+    init(searchJSON json: JSON) {
         id = json["id"].stringValue
         name = json["name"].stringValue
+        duration = json["duration"].double
+        
+        artists = json["artists"].arrayValue.map{ MusicArtistModel($0) }
+        album = MusicAlbumModel(json["album"])
+    }
+    
+    init(playListJSON json: JSON) {
+        id = json["id"].stringValue
+        name = json["name"].stringValue
+        duration = json["dt"].double
         artists = json["ar"].array?.map{ MusicArtistModel($0) } ?? []
         album = MusicAlbumModel(json["al"])
     }
     
     var musicPlayListDetailViewModel: MusicPlayListDetailViewModel {
-        var data = MusicPlayListDetailViewModel()
-        data.name = name
-        data.detail = (artists.first?.name ?? "") + "-" + album.name
-        return data
+        var model = MusicPlayListDetailViewModel()
+        model.name = name
+        model.detail = (artists.first?.name ?? "") + "-" + album.name
+        return model
+    }
+    
+    var musicSearchViewModel: MusicSearchViewModel {
+        var model = MusicSearchViewModel()
+        model.name = name
+        model.detail = (artists.first?.name ?? "") + "-" + album.name
+        return model
+    }
+    
+    var resource: MusicResource {
+        let resource = MusicResource(id: id)
+        resource.name = name
+        resource.duration = duration
+        
+        resource.resourceSource = .network
+        resource.album = album
+        return resource
     }
 }
 
@@ -108,65 +141,48 @@ struct MusicDetailModel: JSONInitable {
 struct MusicResouceInfoModel: JSONInitable {
     
     let id: String
-    let url: URL?
-    let md5: String
+    var url: URL? = nil
+    var md5: String? = nil
     /// File size
-    let size: Int64
+    var size: Int64? = nil
     /// Audio bit rate
-    let bitRate: UInt32?
+    var bitRate: UInt32? = nil
+    
+    init(id: String) {
+        self.id = id
+    }
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         url = json["url"].url
-        md5 = json["md5"].stringValue
-        size = json["size"].int64Value
+        md5 = json["md5"].string
+        size = json["size"].int64
         bitRate = json["br"].uInt32
     }
-}
-
-//MARK: - Music Search
-
-struct MusicSearchModel: JSONInitable {
     
-    let id: String
-    let name: String
-    let artists: [MusicArtistModel]
-    let album: MusicAlbumModel
-//    let mp3Url: URL?
-    
-    init(_ json: JSON) {
-        id = json["id"].stringValue
-        name = json["name"].stringValue
-//        mp3Url = json["mp3Url"].url
-        
-        artists = json["artists"].arrayValue.map{ MusicArtistModel($0) }
-        album = MusicAlbumModel(json["album"])
-    }
-    
-    var musicSearchViewMode: MusicSearchViewModel {
-        var data = MusicSearchViewModel()
-        data.name = name
-        data.detail = (artists.first?.name ?? "") + "-" + album.name
-        return data
-    }
-    
-    var resource: MusicResource {
-        let resource = MusicResource(id: id)
-        resource.name = name
-//        resource.musicUrl = mp3Url
-        resource.resourceSource = .network
-        resource.picUrl = album.picUrl
-        return resource
+    var encode: String {
+        var dic: [String: String] = ["id": id]
+        dic["url"] = url?.absoluteString
+        dic["md5"] = md5
+        dic["size"] = size?.description
+        dic["br"] = bitRate?.description
+        return JSON(dic).rawString([.jsonSerialization: true]) ?? ""
     }
 }
 
 //MARK: - Lyric
 
 struct MusicLyricModel: JSONInitable {
+    
+    private(set) var hasLyric: Bool = true
     let lyric: String
+    
     init(_ json: JSON) {
-        lyric = json["lrc"]["lyric"].stringValue
+        hasLyric = !(json["nolyric"].bool ?? false)
+        lyric = json["lrc"]["lyric"].string ?? "Empty Lyric"
     }
+    
+    var encode: String { return JSON(["nolyric": (!hasLyric).description, "lyric": lyric]).rawString([.jsonSerialization: true]) ?? "" }
 }
 
 //MARK: - Play List
@@ -203,6 +219,6 @@ class MusicPlayListDetailModel: MusicPlayListModel {
     
     required init(_ json: JSON) {
         super.init(json)
-        musicDetail = json["tracks"].array?.map{ MusicDetailModel($0) } ?? []
+        musicDetail = json["tracks"].array?.map{ MusicDetailModel(playListJSON: $0) } ?? []
     }
 }

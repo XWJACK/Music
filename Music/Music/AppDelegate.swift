@@ -38,6 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ConsoleLog.isDebug = true
         #endif
         
+        MusicNetwork.globalFailCallBack.block = { ConsoleLog.error($0) }
+        
         return true
     }
 

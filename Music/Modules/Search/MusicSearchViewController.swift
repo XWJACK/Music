@@ -131,8 +131,8 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
         MusicResourceManager.default.reset(resources,
                                            withIdentifier: "Search" + searchText + resources.count.description,
                                            currentResourceIndex: indexPath.row)
-        musicPlayerViewController.play(withResourceId: MusicResourceManager.default.current())
         musicNavigationController?.push(musicPlayerViewController)
+        musicPlayerViewController.play(withResource: MusicResourceManager.default.current())
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

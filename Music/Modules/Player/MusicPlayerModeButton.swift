@@ -20,10 +20,6 @@ class MusicPlayerModeButton: UIButton {
     
     private(set) var mode: MusicPlayerPlayMode = .order
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     /// order -> single -> random -> order -> ....
     @discardableResult
     func changePlayMode() -> MusicPlayerPlayMode {

@@ -46,6 +46,11 @@ final class MusicCollectionListViewController: MusicTableViewController {
         request()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        musicNavigationBar.rightButton.isHidden = musicPlayerViewController.isHiddenInput
+    }
+    
     private func request() {
         guard let userId = AccountManager.default.account?.id else { tableView.mj_header.endRefreshing(); return }
         

@@ -16,10 +16,6 @@ class MusicPlayerControlButton: UIButton {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     private func changeMode() {
         switch mode {
         case .playing:

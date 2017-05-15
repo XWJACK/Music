@@ -41,6 +41,11 @@ final class MusicListViewController: MusicTableViewController {
         request()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        musicNavigationBar.rightButton.isHidden = musicPlayerViewController.isHiddenInput
+    }
+    
     private func request() {
         guard let listId = listId else { tableView.mj_header.endRefreshing(); return }
         MusicNetwork.send(API.detail(listId: listId))

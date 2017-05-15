@@ -13,7 +13,6 @@
 		040576641EB3441A00FE8987 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0405765E1EB3441A00FE8987 /* PlayerModel.swift */; };
 		0405766C1EB347D900FE8987 /* MusicListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0405766B1EB347D900FE8987 /* MusicListViewController.swift */; };
 		0405766F1EB34AA400FE8987 /* MusicPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0405766E1EB34AA400FE8987 /* MusicPlayerSlider.swift */; };
-		040576721EB34B5400FE8987 /* MusicPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */; };
 		040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */; };
 		044A1C3E1EC33DFD00179379 /* ThirdFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044A1C3D1EC33DFD00179379 /* ThirdFramework.swift */; };
 		044A1C401EC33EC500179379 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044A1C3F1EC33EC500179379 /* AccountManager.swift */; };
@@ -35,6 +34,7 @@
 		04606A631EBF336800746D9E /* MusicCenterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04606A621EBF336800746D9E /* MusicCenterTableViewCell.swift */; };
 		04645E301EB4924200AF2738 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */; };
 		0484C8F11EB97D3000A2A6A1 /* MusicLoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */; };
+		048CDF321EC9A1040008179E /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048CDF311EC9A1040008179E /* Global.swift */; };
 		048E74EE1EBB7ACF00D91224 /* MusicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */; };
 		04AA36301EBCA56F00DED541 /* MusicSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */; };
 		04AA363E1EBDEA7F00DED541 /* MusicResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */; };
@@ -94,6 +94,7 @@
 		04606A621EBF336800746D9E /* MusicCenterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicCenterTableViewCell.swift; path = Modules/Center/MusicCenterTableViewCell.swift; sourceTree = "<group>"; };
 		04645E2F1EB4924200AF2738 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExtension.swift; path = Extension/UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		0484C8F01EB97D3000A2A6A1 /* MusicLoveButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicLoveButton.swift; sourceTree = "<group>"; };
+		048CDF311EC9A1040008179E /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		048E74ED1EBB7ACF00D91224 /* MusicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicTableViewController.swift; path = ViewControllers/MusicTableViewController.swift; sourceTree = "<group>"; };
 		04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicSearchTableViewCell.swift; path = Modules/Search/MusicSearchTableViewCell.swift; sourceTree = "<group>"; };
 		04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceManager.swift; sourceTree = "<group>"; };
@@ -366,6 +367,7 @@
 			children = (
 				04FE26421EB58819002CF86C /* AppDelegate.swift */,
 				04FE26431EB58819002CF86C /* LaunchScreen.storyboard */,
+				048CDF311EC9A1040008179E /* Global.swift */,
 			);
 			path = Music;
 			sourceTree = "<group>";
@@ -458,7 +460,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				044F1AED1E78FA1200A8502A /* Assets.xcassets in Resources */,
-				040576721EB34B5400FE8987 /* MusicPlayerViewController.storyboard in Resources */,
 				04FE26611EB58819002CF86C /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,6 +523,7 @@
 				048E74EE1EBB7ACF00D91224 /* MusicTableViewController.swift in Sources */,
 				04AA36301EBCA56F00DED541 /* MusicSearchTableViewCell.swift in Sources */,
 				0456B38A1E7F822800ECAC9F /* MusicFileManager.swift in Sources */,
+				048CDF321EC9A1040008179E /* Global.swift in Sources */,
 				040576641EB3441A00FE8987 /* PlayerModel.swift in Sources */,
 				045145E41EB61AFD00D6F08A /* MusicPlayerDownloadButton.swift in Sources */,
 				04645E301EB4924200AF2738 /* UIViewControllerExtension.swift in Sources */,

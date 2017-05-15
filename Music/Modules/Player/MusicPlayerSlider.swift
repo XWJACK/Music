@@ -14,8 +14,8 @@ class MusicPlayerSlider: UISlider {
 //    let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     private let progressView = UIProgressView(progressViewStyle: .default)
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         progressView.trackTintColor = .clear
         progressView.progressTintColor = UIColor.white.withAlphaComponent(0.25)
@@ -23,6 +23,10 @@ class MusicPlayerSlider: UISlider {
         
 //        indicator.isHidden = true
 //        addSubview(indicator)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func trackRect(forBounds bounds: CGRect) -> CGRect {

@@ -117,26 +117,26 @@ class MusicResourceManager {
         self.randomResourceIndexs = uniqueRandom(0...resources.count - 1)
         self.currentRandomResourceIndex = randomResourceIndexs.index(of: currentResourceIndex)!
         
-//        for (index, resource) in self.resources.enumerated() where cachedResourceList[resource.id] != nil {
-//            self.resources[index] = cachedResourceList[resource.id]!
-//        }
-//        
-//        for (index, resource) in self.resources.enumerated() where downloadedResouceList[resource.id] != nil {
-//            self.resources[index] = downloadedResouceList[resource.id]!
-//        }
+        for (index, resource) in self.resources.enumerated() where cachedResourceList[resource.id] != nil {
+            self.resources[index] = cachedResourceList[resource.id]!
+        }
+        
+        for (index, resource) in self.resources.enumerated() where downloadedResouceList[resource.id] != nil {
+            self.resources[index] = downloadedResouceList[resource.id]!
+        }
     }
     
-    /// Get Current MusicResourceIdentifier
+    /// Get Current MusicResource
     ///
-    /// - Returns: MusicResourceIdentifier
-    func current() -> MusicResourceIdentifier {
-        return resources[currentResourceIndex].id
+    /// - Returns: MusicResource
+    func current() -> MusicResource {
+        return resources[currentResourceIndex]
     }
     
-    /// Last MusicResourceIdentifier
+    /// Last MusicResource
     ///
-    /// - Returns: MusicResourceIdentifier
-    func last() -> MusicResourceIdentifier {
+    /// - Returns: MusicResource
+    func last() -> MusicResource {
         
         switch resourceLoadMode {
         case .order:
@@ -151,10 +151,10 @@ class MusicResourceManager {
         return current()
     }
     
-    /// Next MusicResourceIdentifier
+    /// Next MusicResource
     ///
-    /// - Returns: MusicResourceIdentifier
-    func next() -> MusicResourceIdentifier {
+    /// - Returns: MusicResource
+    func next() -> MusicResource {
         switch resourceLoadMode {
         case .order:
             currentResourceIndex = (currentResourceIndex + 1) % resources.count
@@ -166,10 +166,13 @@ class MusicResourceManager {
         return current()
     }
     
+    func register(_ resource: MusicResource, operation: (() -> ())? = nil) {
+        
+    }
+    
     /// Request Music by resource id
     ///
     /// - Parameters:
-    
     ///   - resourceId: Resource id
     ///   - response: MusicPlayerResponse
     func request(_ resourceId: String,
@@ -241,27 +244,6 @@ class MusicResourceManager {
                     })
             }
             
-            //        if originResource.
-            
-            // Reading Music Lyric
-            //        guard let infoData = try? FileHandle(forReadingFrom: musicUrl.appendingPathExtension("info")).readDataToEndOfFile() else { failedBlock?(MusicError.resourcesError(.invalidInfo)); return }
-            //        let resource = MusicResource(JSON(data: infoData))
-            //        response?.lyric.success?(resource.lyric ?? "Empty Lyric")
-            
-            //        group.enter()
-            //        // Request Music Lyric
-            //        MusicNetwork.default.request(API.default.lyric(musicID: resourceID), success: {
-            //
-            //            let lyricModel = MusicLyricModel($0)
-            //            self.resources[index].lyric = lyricModel.lyric
-            //            response?.lyric.success?(lyricModel.lyric)
-            //            group.leave()
-            //        }, failed: {
-            //            print($0)
-            //            group.leave()
-            //        })
-            //
-            
             /// Completed request data, and now it can be cache to file
             cacheGroup.notify(queue: self.cacheQueue, execute: {
                 guard let validData = data else { return }
@@ -289,7 +271,6 @@ class MusicResourceManager {
     ///   - resource: MusicResource
     ///   - data: Music Data
     private func cache(_ resource: MusicResource, data: Data) {
-        resource.resourceSource = .cache
         resource.info?.md5 = resource.id.md5()
         
         guard let md5 = resource.info?.md5 else { ConsoleLog.error("MD5 Error for resource: " + resource.id); return }
@@ -299,6 +280,7 @@ class MusicResourceManager {
             try data.write(to: musicUrl)
             try resource.encode.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
             resource.info?.url = musicUrl
+            resource.resourceSource = .cache
         } catch {
             ConsoleLog.error(error)
         }

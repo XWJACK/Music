@@ -16,15 +16,6 @@ class MusicViewController: UIViewController {
     /// Rreplacing `navigationController` to custom.
     var musicNavigationController: MusicNavigationController? { return navigationController as? MusicNavigationController }
     
-    var isShowStatusBar = true {
-        didSet {
-            setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    override var prefersStatusBarHidden: Bool { return !isShowStatusBar }
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation { return .slide }
-    
     override var title: String? {
         get { return musicNavigationBar.titleLabel.text }
         set { musicNavigationBar.titleLabel.text = newValue }

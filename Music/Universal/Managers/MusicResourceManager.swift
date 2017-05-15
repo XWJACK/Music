@@ -85,7 +85,15 @@ class MusicResourceManager {
     /// Background serial cache queue
     private let cacheQueue: DispatchQueue
     
+    private let playResourceQueue: DispatchQueue
+    private var playResources: [String: (responseBlock: ((Data) -> ())?, progressBlock: ((Progress) -> ())?, resourceBlock: ((MusicResource) -> ())?)] = [:]
+    
     private init() {
+        
+        playResourceQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.playResourceQueue",
+                                          qos: .default,
+                                          attributes: [.concurrent])
+        
         cacheQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.cacheQueue",
                                    qos: .background)
         
@@ -130,6 +138,7 @@ class MusicResourceManager {
     ///
     /// - Returns: MusicResource
     func current() -> MusicResource {
+//        guard currentResourceIndex < resources.count else { return }
         return resources[currentResourceIndex]
     }
     
@@ -166,22 +175,16 @@ class MusicResourceManager {
         return current()
     }
     
-    func register(_ resource: MusicResource, operation: (() -> ())? = nil) {
+
+    func register(_ resourceId: String,
+                  responseBlock: ((Data) -> ())? = nil,
+                  progressBlock: ((Progress) -> ())? = nil,
+                  resourceBlock: ((MusicResource) -> ())? = nil,
+                  failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         
-    }
-    
-    /// Request Music by resource id
-    ///
-    /// - Parameters:
-    ///   - resourceId: Resource id
-    ///   - response: MusicPlayerResponse
-    func request(_ resourceId: String,
-                 responseBlock: ((Data) -> ())? = nil,
-                 progressBlock: ((Progress) -> ())? = nil,
-                 resourceBlock: ((MusicResource) -> ())? = nil,
-                 failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
+        playResources[resourceId] = (responseBlock, progressBlock, resourceBlock)
         
-        DispatchQueue.global().async {
+        playResourceQueue.async {
             
             /// Find resource by id
             guard let index = self.resources.index(where: { $0.id == resourceId }) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
@@ -205,8 +208,8 @@ class MusicResourceManager {
                     originResource.info?.url = url
                     
                     MusicNetwork.send(url)
-                        .receive(queue: .global(), data: responseBlock)
-                        .receive(progress: progressBlock)
+                        .receive(queue: .global(), data: self.playResources[resourceId]?.responseBlock)
+                        .receive(progress: self.playResources[resourceId]?.progressBlock)
                         .receive(queue: .global(), response: { cacheGroup.leave() })
                         .receive(queue: .global(), success: { data = $0 })
                 })
@@ -219,14 +222,18 @@ class MusicResourceManager {
                     failedBlock?(MusicError.fileError(.readingError))
                     /// Then request from network
                     originResource.resourceSource = .network
-                    self.request(originResource.id, responseBlock: responseBlock, progressBlock: progressBlock, resourceBlock: resourceBlock, failedBlock: failedBlock)
+                    self.register(originResource.id,
+                                  responseBlock: self.playResources[resourceId]?.responseBlock,
+                                  progressBlock: self.playResources[resourceId]?.progressBlock,
+                                  resourceBlock: self.playResources[resourceId]?.resourceBlock,
+                                  failedBlock: failedBlock)
                     return
                 }
                 let progress = Progress(totalUnitCount: Int64(data.count))
                 progress.completedUnitCount = Int64(data.count)
                 
-                responseBlock?(data)
-                progressBlock?(progress)
+                self.playResources[resourceId]?.responseBlock?(data)
+                self.playResources[resourceId]?.progressBlock?(progress)
             }
             
             //Request Lyric if not exist
@@ -252,7 +259,7 @@ class MusicResourceManager {
             
             /// Completed request resource
             resourceGroup.notify(queue: .main, execute: {
-                resourceBlock?(originResource)
+                self.playResources[resourceId]?.resourceBlock?(originResource)
             })
         }
     }

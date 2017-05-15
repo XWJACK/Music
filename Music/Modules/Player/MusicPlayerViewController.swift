@@ -139,7 +139,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         timeSlider.minimumTrackTintColor = .white
         timeSlider.value = 0
-        timeSlider.isEnabled = false
+//        timeSlider.isEnabled = false
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider").scaleToSize(newSize: timeSlider.thumbImageSize), for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs").scaleToSize(newSize: timeSlider.thumbImageSize), for: .highlighted)
         timeSlider.addTarget(self, action: #selector(timeSliderSeek(_:)), for: .touchUpInside)
@@ -236,24 +236,21 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
 
         coverView.setImage(url: resource.album?.picUrl)
         if let duration = resource.duration {
-            durationTimeLabel.text = duration.musicTime
-            timeSlider.maximumValue = duration.float
+            let rawDuration = duration / 1000
+            durationTimeLabel.text = rawDuration.musicTime
+            timeSlider.maximumValue = rawDuration.float
         } else { ConsoleLog.debug("No duration") }
         
 //        downloadButton.mode = .disable//resource.resourceSource == .downloaded ? .downloaded : .disable
         
-        MusicResourceManager.default//.register()
-        
-//        MusicResourceManager.default.request(id, responseBlock: {
-//            self.player?.respond(with: $0)
-//        }, progressBlock: {
-//            self.timeSlider.buffProgress($0)
-//        }, resourceBlock: { (resource) in
-//            self.title = resource.name
-        
-//            self.downloadButton.mode = .downlotaded
-//            self.resource = resource
-//        })
+        MusicResourceManager.default.register(resource.id, responseBlock: {
+            self.player?.respond(with: $0)
+        }, progressBlock: {
+            self.timeSlider.buffProgress($0)
+        }, resourceBlock: { (resource) in
+//            self.downloadButton.mode
+            self.resource = resource
+        })
     }
     
     private func reset() {

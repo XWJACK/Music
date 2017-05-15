@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "player_background_mask-ip6.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "player_background_mask-ip6@2x.png",
       "scale" : "2x"
     },
     {

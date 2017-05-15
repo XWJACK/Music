@@ -10,7 +10,7 @@ import UIKit
 
 class MusicTableViewController: MusicViewController, UITableViewDataSource, UITableViewDelegate {
     
-    let backgroundImageView = UIImageView(image: #imageLiteral(resourceName: "backgroundImage"))
+    let backgroundImageView = UIImageView(image: #imageLiteral(resourceName: "background_default_dark-ip5"))
     var effectView: UIVisualEffectView?
     let tableView = UITableView(frame: .zero, style: .grouped)
     

@@ -20,14 +20,16 @@ enum MusicPlayerStatus {
 class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     /// UI
-    private let effectiveView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-    private let backgroundImageView: UIImageView = UIImageView()
+    private let effectView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    private let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "background_default_dark-ip5"))
+    private let maskBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_background_mask-ip5"))
     
     private let displayView: UIView = UIView()
+    private let coverView: MusicPlayerCoverView = MusicPlayerCoverView()
     
     private let actionView: UIView = UIView()
     private let downloadButton: MusicPlayerDownloadButton = MusicPlayerDownloadButton(type: .custom)
-    private let loveButton: MusicLoveButton = MusicLoveButton(type: .custom)
+    private let loveButton: MusicPlayerLoveButton = MusicPlayerLoveButton(type: .custom)
     
     private let progressView: UIView = UIView()
     private let currentTimeLabel: UILabel = UILabel()
@@ -53,16 +55,15 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         musicNavigationBar.titleLabel.font = .font18
         
-        backgroundImageView.clipsToBounds = true
-        backgroundImageView.contentMode = .scaleAspectFill
-        backgroundImageView.image = #imageLiteral(resourceName: "backgroundImage")
         //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
         //        addSwipGesture(target: self, action: #selector(right(sender:)), direction: .right)
         
         view.addSubview(backgroundImageView)
-        view.addSubview(effectiveView)
+        view.addSubview(effectView)
         
         super.viewDidLoad()
+        
+        displayView.addSubview(coverView)
         
         actionView.addSubview(loveButton)
         actionView.addSubview(downloadButton)
@@ -77,32 +78,45 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         controlView.addSubview(controlButton)
         controlView.addSubview(nextButton)
         
-        effectiveView.addSubview(displayView)
-        effectiveView.addSubview(actionView)
-        effectiveView.addSubview(progressView)
-        effectiveView.addSubview(controlView)
+        effectView.addSubview(maskBackgroundImageView)
+        effectView.addSubview(displayView)
+        effectView.addSubview(actionView)
+        effectView.addSubview(progressView)
+        effectView.addSubview(controlView)
+        
+        
+        // - Background View
         
         backgroundImageView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        effectiveView.snp.makeConstraints { (make) in
+        effectView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        maskBackgroundImageView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
         
-        //MARK: - Display View
+        // - Display View
         
         displayView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            make.top.equalToSuperview().offset(64)
+            make.top.equalToSuperview().offset(90)
         }
-        
-        //MARK: - Action View
+        coverView.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(225)
+        }
+        // - Action View
         
         loveButton.mode = .disable
+        loveButton.addTarget(self, action: #selector(loveButtonClicked(_:)), for: .touchUpInside)
+        
         downloadButton.mode = .disable
+        downloadButton.addTarget(self, action: #selector(downloadButtonClicked(_:)), for: .touchUpInside)
         
         actionView.snp.makeConstraints { (make) in
-            make.height.equalTo(80)
+            make.height.equalTo(50)
             make.left.right.equalToSuperview()
             make.top.equalTo(displayView.snp.bottom)
         }
@@ -117,7 +131,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             make.width.height.equalTo(40)
         }
         
-        //MARK: - Progress View
+        // - Progress View
         
         currentTimeLabel.font = .font10
         currentTimeLabel.textColor = .white
@@ -128,6 +142,9 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         timeSlider.isEnabled = false
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider").scaleToSize(newSize: timeSlider.thumbImageSize), for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs").scaleToSize(newSize: timeSlider.thumbImageSize), for: .highlighted)
+        timeSlider.addTarget(self, action: #selector(timeSliderSeek(_:)), for: .touchUpInside)
+        timeSlider.addTarget(self, action: #selector(timeSliderSeek(_:)), for: .touchUpOutside)
+        timeSlider.addTarget(self, action: #selector(timeSliderValueChange(_:)), for: .valueChanged)
         
         durationTimeLabel.font = .font10
         durationTimeLabel.textColor = .white
@@ -152,21 +169,26 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             make.centerY.equalToSuperview()
         }
         
-        //MARK: - Control View
+        // - Control View
         
         controlButton.mode = .playing
+        controlButton.addTarget(self, action: #selector(controlButtonClicked(_:)), for: .touchUpInside)
         
         playModeButton.setImage(#imageLiteral(resourceName: "player_control_model_order"), for: .normal)
         playModeButton.setImage(#imageLiteral(resourceName: "player_control_model_order_highlighted"), for: .highlighted)
+        playModeButton.addTarget(self, action: #selector(playModeButtonClicked(_:)), for: .touchUpInside)
         
         lastButton.setImage(#imageLiteral(resourceName: "player_control_last"), for: .normal)
         lastButton.setImage(#imageLiteral(resourceName: "player_control_last_press"), for: .highlighted)
+        lastButton.addTarget(self, action: #selector(lastButtonClicked(_:)), for: .touchUpInside)
         
         nextButton.setImage(#imageLiteral(resourceName: "player_control_next"), for: .normal)
         nextButton.setImage(#imageLiteral(resourceName: "player_control_next_press"), for: .highlighted)
+        nextButton.addTarget(self, action: #selector(nextButtonClicked(_:)), for: .touchUpInside)
         
         listButton.setImage(#imageLiteral(resourceName: "player_control_list"), for: .normal)
         listButton.setImage(#imageLiteral(resourceName: "player_control_list_press"), for: .highlighted)
+        listButton.addTarget(self, action: #selector(listButtonClicked(_:)), for: .touchUpInside)
         
         controlView.snp.makeConstraints { (make) in
             make.height.equalTo(54)
@@ -207,16 +229,17 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         self.resource = resource
         
         title = resource.name
-//        backgroundImageView.kf.setImage(with: resource.album?.picUrl,
-//                                        placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "backgroundImage"),
-//                                        options: [.forceTransition,
-//                                                  .transition(.fade(1))])
-//        
-//        if let duration = resource.duration {
-//            durationTimeLabel.text = duration.musicTime
-//            timeSlider.maximumValue = duration.float
-//        } else { ConsoleLog.debug("No duration") }
-//        
+        backgroundImageView.kf.setImage(with: resource.album?.picUrl,
+                                        placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "background_default_dark-ip5"),
+                                        options: [.forceTransition,
+                                                  .transition(.fade(1))])
+
+        coverView.setImage(url: resource.album?.picUrl)
+        if let duration = resource.duration {
+            durationTimeLabel.text = duration.musicTime
+            timeSlider.maximumValue = duration.float
+        } else { ConsoleLog.debug("No duration") }
+        
 //        downloadButton.mode = .disable//resource.resourceSource == .downloaded ? .downloaded : .disable
         
         MusicResourceManager.default//.register()
@@ -254,17 +277,45 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     @objc private func refresh() {
         guard !isUserInteraction,
             let currentTime = player?.currentTime else { return }
-//        if player!.currentTime >= player!.duration { destoryTimer() }
         currentTimeLabel.text = currentTime.musicTime
         timeSlider.value = currentTime.float
     }
     
-    @IBAction func playModeButtonClicked(_ sender: MusicPlayerModeButton) {
+    //MARK: - Progress Target
+    
+    @objc private func timeSliderValueChange(_ sender: MusicPlayerSlider) {
+        isUserInteraction = true
+        currentTimeLabel.text = TimeInterval(sender.value).musicTime
+    }
+    
+    @objc private func timeSliderSeek(_ sender: MusicPlayerSlider) {
+        isUserInteraction = false
+        player?.seek(toTime: TimeInterval(sender.value))
+        player?.play()
+        controlButton.mode = .playing
+    }
+    
+    //MARK: - Action Target
+    
+    @objc private func loveButtonClicked(_ sender: MusicPlayerLoveButton) {
+//        guard let id = resourceId else { return }
+//        MusicNetwork.default.request(API.default.like(musicID: id, isLike: sender.mode == .love), success: {
+//            if $0.isSuccess { sender.mode = !sender.mode }
+//        })
+    }
+    
+    @objc private func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
+//        MusicResourceManager.default
+    }
+    
+    //MARK: - Control Target
+    
+    @objc private func playModeButtonClicked(_ sender: MusicPlayerModeButton) {
         sender.changePlayMode()
         MusicResourceManager.default.resourceLoadMode = sender.mode
     }
     
-    @IBAction func controlButtonClicked(_ sender: MusicPlayerControlButton) {
+    @objc private func controlButtonClicked(_ sender: MusicPlayerControlButton) {
         
         guard let player = player else { return }
         
@@ -273,42 +324,19 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         sender.mode = !sender.mode
     }
     
-    @IBAction func lastButtonClicked(_ sender: UIButton) {
+    @objc private func lastButtonClicked(_ sender: UIButton) {
         play(withResource: MusicResourceManager.default.last())
     }
     
-    @IBAction func nextButtonClicked(_ sender: UIButton) {
+    @objc private func nextButtonClicked(_ sender: UIButton) {
         play(withResource: MusicResourceManager.default.next())
     }
     
-    @IBAction func timeSliderValueChange(_ sender: MusicPlayerSlider) {
-        isUserInteraction = true
-        currentTimeLabel.text = TimeInterval(sender.value).musicTime
-    }
-    
-    @IBAction func timeSliderSeek(_ sender: MusicPlayerSlider) {
-        isUserInteraction = false
-        player?.seek(toTime: TimeInterval(sender.value))
-        player?.play()
-        controlButton.mode = .playing
-    }
-    
-    @IBAction func listButtonClicked(_ sender: UIButton) {
+    @objc private func listButtonClicked(_ sender: UIButton) {
         
     }
     
-    @IBAction func loveButtonClicked(_ sender: MusicLoveButton) {
-//        guard let id = resourceId else { return }
-//        MusicNetwork.default.request(API.default.like(musicID: id, isLike: sender.mode == .love), success: {
-//            if $0.isSuccess { sender.mode = !sender.mode }
-//        })
-    }
-    
-    @IBAction func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
-//        MusicResourceManager.default
-    }
-    
-    //MARK - StreamAudioPlayerDelegate
+    //MARK: - StreamAudioPlayerDelegate
     
     func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval, isSuccess: Bool) {
         

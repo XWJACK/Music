@@ -1,5 +1,5 @@
 //
-//  MusicLoveButton.swift
+//  MusicPlayerLoveButton.swift
 //  Music
 //
 //  Created by Jack on 5/3/17.
@@ -18,7 +18,7 @@ enum MusicPlayerLoveMode {
     }
 }
 
-class MusicLoveButton: UIButton {
+class MusicPlayerLoveButton: UIButton {
 
     var mode: MusicPlayerLoveMode = .love {
         didSet {

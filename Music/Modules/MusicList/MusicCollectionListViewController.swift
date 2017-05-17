@@ -43,6 +43,10 @@ final class MusicCollectionListViewController: MusicTableViewController {
             self.request()
         }
         
+        searchButton.snp.makeConstraints { (make) in
+            make.width.height.equalTo(28)
+        }
+        
         request()
     }
     

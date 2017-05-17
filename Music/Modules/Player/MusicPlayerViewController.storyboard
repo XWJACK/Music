@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -25,7 +24,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WPj-Te-9Dc">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="Bwd-8r-12y">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_default_dark" translatesAutoresizingMaskIntoConstraints="NO" id="Bwd-8r-12y">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
@@ -48,7 +47,7 @@
                                                 </visualEffectView>
                                             </subviews>
                                         </view>
-                                        <blurEffect style="dark"/>
+                                        <blurEffect style="light"/>
                                     </visualEffectView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -66,7 +65,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zMJ-CT-WwR" userLabel="MainView">
                                 <rect key="frame" x="0.0" y="64" width="320" height="296"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_cover" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-5a-IF7">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_display_cover_background" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-5a-IF7">
                                         <rect key="frame" x="54" y="42" width="212" height="212"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="fzG-5a-IF7" secondAttribute="height" multiplier="1:1" id="KGH-S0-7I6"/>
@@ -294,7 +293,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="backgroundImage" width="320" height="480"/>
+        <image name="background_default_dark" width="320" height="480"/>
         <image name="player_control_download" width="40" height="40"/>
         <image name="player_control_last" width="49" height="49"/>
         <image name="player_control_list" width="44" height="44"/>
@@ -302,6 +301,6 @@
         <image name="player_control_model_single" width="44" height="44"/>
         <image name="player_control_next" width="49" height="49"/>
         <image name="player_control_play" width="83" height="83"/>
-        <image name="player_cover" width="212" height="212"/>
+        <image name="player_display_cover_background" width="212" height="212"/>
     </resources>
 </document>

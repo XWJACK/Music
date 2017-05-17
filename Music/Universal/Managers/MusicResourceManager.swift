@@ -13,7 +13,7 @@ typealias ResponseData = (Data) -> ()
 typealias MusicResourceCollection = [MusicResourceIdentifier: MusicResource]
 
 /// Music Resource
-class MusicResource: JSONInitable {
+class MusicResource: JSONInitable, CustomDebugStringConvertible, CustomStringConvertible {
     
     /// Source of Resource
     ///
@@ -52,15 +52,28 @@ class MusicResource: JSONInitable {
     }
     
     var encode: String {
-        var dic: [String: String] = ["id": id]
+        var dic: [String: Any] = ["id": id]
         dic["name"] = name
-        dic["duration"] = duration?.description
+        dic["duration"] = duration
         
         dic["lyric"] = lyric?.encode
         dic["info"] = info?.encode
         dic["album"] = album?.encode
         
-        return JSON(dic).rawString([.jsonSerialization: true]) ?? ""
+        return JSON(dic).rawString() ?? ""
+    }
+    
+    var debugDescription: String {
+        return description
+    }
+    
+    var description: String {
+        return  "- id: \(id)\n" +
+                "- name: \(name)\n" +
+                "- duration: \(duration ?? nil)\n" +
+                "- lyric: \(lyric ?? nil)\n" +
+                "- info: \(info ?? nil)\n" +
+                "- album: \(album ?? nil)\n"
     }
 }
 
@@ -182,6 +195,11 @@ class MusicResourceManager {
                   resourceBlock: ((MusicResource) -> ())? = nil,
                   failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         
+        if playResources[resourceId] != nil {
+            playResources[resourceId] = (responseBlock, progressBlock, resourceBlock)
+            return
+        }
+        
         playResources[resourceId] = (responseBlock, progressBlock, resourceBlock)
         
         playResourceQueue.async {
@@ -204,11 +222,12 @@ class MusicResourceManager {
                         
                     guard let firstJson = json["data"].array?.first else { return }
                     let model = MusicResouceInfoModel(firstJson)
-                    guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
-                    originResource.info?.url = url
+                    originResource.info = model
                     
+                    guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
+                        
                     MusicNetwork.send(url)
-                        .receive(queue: .global(), data: self.playResources[resourceId]?.responseBlock)
+                        .receive(data: self.playResources[resourceId]?.responseBlock)
                         .receive(progress: self.playResources[resourceId]?.progressBlock)
                         .receive(queue: .global(), response: { cacheGroup.leave() })
                         .receive(queue: .global(), success: { data = $0 })
@@ -264,6 +283,11 @@ class MusicResourceManager {
         }
     }
     
+    func unRegister(_ resourceId: String) {
+        guard playResources[resourceId] != nil else { return }
+        playResources[resourceId] = (nil, nil, nil)
+    }
+    
 //    func download(_ resourceId: MusicResourceIdentifier, successBlock: (() -> ())? = nil) {
 //        
 //        if let index = resources.index(where: { $0.id == resourceId }) {
@@ -285,7 +309,8 @@ class MusicResourceManager {
             ConsoleLog.verbose("Cache music: " + md5)
             let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
             try data.write(to: musicUrl)
-            try resource.encode.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
+            try resource.encode.data(using: .utf8)?.write(to: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info"))
+//            try resource.encode.data(using: .utf8)?.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
             resource.info?.url = musicUrl
             resource.resourceSource = .cache
         } catch {

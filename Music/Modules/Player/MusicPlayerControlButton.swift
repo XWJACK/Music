@@ -19,12 +19,11 @@ class MusicPlayerControlButton: UIButton {
     private func changeMode() {
         switch mode {
         case .playing:
-            setImage(#imageLiteral(resourceName: "player_control_pause"), for: .normal)
-            setImage(#imageLiteral(resourceName: "player_control_pause_press"), for: .highlighted)
-        case .paused:
             setImage(#imageLiteral(resourceName: "player_control_play"), for: .normal)
             setImage(#imageLiteral(resourceName: "player_control_play_press"), for: .highlighted)
-            
+        case .paused:
+            setImage(#imageLiteral(resourceName: "player_control_pause"), for: .normal)
+            setImage(#imageLiteral(resourceName: "player_control_pause_press"), for: .highlighted)
         }
     }
     

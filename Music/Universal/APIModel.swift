@@ -62,9 +62,9 @@ struct MusicAlbumModel: JSONInitable {
     }
     
     var encode: String {
-        var dic: [String: String] = ["name": name]
+        var dic: [String: Any] = ["name": name]
         dic["picUrl"] = picUrl?.absoluteString
-        return JSON(dic).rawString([.jsonSerialization: true]) ?? ""
+        return JSON(dic).rawString() ?? ""
     }
 }
 
@@ -161,12 +161,12 @@ struct MusicResouceInfoModel: JSONInitable {
     }
     
     var encode: String {
-        var dic: [String: String] = ["id": id]
+        var dic: [String: Any] = ["id": id]
         dic["url"] = url?.absoluteString
         dic["md5"] = md5
-        dic["size"] = size?.description
-        dic["br"] = bitRate?.description
-        return JSON(dic).rawString([.jsonSerialization: true]) ?? ""
+        dic["size"] = size
+        dic["br"] = bitRate
+        return JSON(dic).rawString() ?? ""
     }
 }
 
@@ -182,7 +182,10 @@ struct MusicLyricModel: JSONInitable {
         lyric = json["lrc"]["lyric"].string ?? "Empty Lyric"
     }
     
-    var encode: String { return JSON(["nolyric": (!hasLyric).description, "lyric": lyric]).rawString([.jsonSerialization: true]) ?? "" }
+    var encode: String {
+        let dic: [String: Any] = ["nolyric": !hasLyric, "lrc": ["lyric": lyric]]
+        return JSON(dic).rawString() ?? ""
+    }
 }
 
 //MARK: - Play List

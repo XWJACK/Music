@@ -51,6 +51,17 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     private var timer: Timer? = nil
     private var resource: MusicResource? = nil
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+        currentTimeLabel.text = "00:00"
+        durationTimeLabel.text = "00:00"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         
         musicNavigationBar.titleLabel.font = .font18
@@ -135,11 +146,10 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         currentTimeLabel.font = .font10
         currentTimeLabel.textColor = .white
-        currentTimeLabel.text = "00:00"
         
+        timeSlider.isEnabled = false
         timeSlider.minimumTrackTintColor = .white
-        timeSlider.value = 0
-//        timeSlider.isEnabled = false
+        timeSlider.maximumTrackTintColor = UIColor.white.withAlphaComponent(0.1)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider").scaleToSize(newSize: timeSlider.thumbImageSize), for: .normal)
         timeSlider.setThumbImage(#imageLiteral(resourceName: "player_slider_prs").scaleToSize(newSize: timeSlider.thumbImageSize), for: .highlighted)
         timeSlider.addTarget(self, action: #selector(timeSliderSeek(_:)), for: .touchUpInside)
@@ -148,7 +158,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         durationTimeLabel.font = .font10
         durationTimeLabel.textColor = .white
-        durationTimeLabel.text = "00:00"
         
         progressView.snp.makeConstraints { (make) in
             make.height.equalTo(36)
@@ -197,7 +206,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             make.bottom.equalToSuperview().offset(-20)
         }
         controlButton.snp.makeConstraints { (make) in
-            make.width.height.equalTo(64)
+            make.width.height.equalTo(54)
             make.center.equalToSuperview()
         }
         lastButton.snp.makeConstraints { (make) in
@@ -239,7 +248,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             let rawDuration = duration / 1000
             durationTimeLabel.text = rawDuration.musicTime
             timeSlider.maximumValue = rawDuration.float
-        } else { ConsoleLog.debug("No duration") }
+        } else { ConsoleLog.debug("No duration with reosurce: \n" + resource.description) }
         
 //        downloadButton.mode = .disable//resource.resourceSource == .downloaded ? .downloaded : .disable
         
@@ -248,7 +257,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }, progressBlock: {
             self.timeSlider.buffProgress($0)
         }, resourceBlock: { (resource) in
-//            self.downloadButton.mode
             self.resource = resource
         })
     }
@@ -262,6 +270,12 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         player = AudioPlayer()
         player?.delegate = self
         
+        createTimer()
+        
+        MusicResourceManager.default.unRegister(resource?.id ?? "No Resource")
+    }
+    
+    private func createTimer() {
         timer = Timer(timeInterval: 0.1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
         RunLoop.main.add(timer!, forMode: .commonModes)
     }
@@ -287,9 +301,16 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     @objc private func timeSliderSeek(_ sender: MusicPlayerSlider) {
         isUserInteraction = false
-        player?.seek(toTime: TimeInterval(sender.value))
-        player?.play()
-        controlButton.mode = .playing
+        if player?.seek(toTime: TimeInterval(sender.value)) == true {
+            player?.play()
+//            controlButton.mode = .paused
+            ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)")
+        } else {
+            destoryTimer()
+            timeSlider.loading(true)
+            controlButton.mode = .playing
+            ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)" + " but need to watting")
+        }
     }
     
     //MARK: - Action Target
@@ -316,7 +337,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         guard let player = player else { return }
         
-        if sender.mode == .paused { player.play() }
+        if sender.mode == .playing { player.play() }
         else { player.pause() }
         sender.mode = !sender.mode
     }
@@ -334,17 +355,40 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     //MARK: - StreamAudioPlayerDelegate
+    func streamAudioPlayerCompletedParsedAudioInfo(_ player: AudioPlayer) {
+        ConsoleLog.verbose("streamAudioPlayerCompletedParsedAudioInfo")
+        DispatchQueue.main.async {
+            self.timeSlider.isEnabled = true
+        }
+    }
     
-    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval, isSuccess: Bool) {
-        
+    func streamAudioPlayer(_ player: AudioPlayer, didCompletedSeekToTime time: TimeInterval) {
+        ConsoleLog.verbose("didCompletedSeekToTime: " + "\(time)")
+        DispatchQueue.main.async {
+            self.timeSlider.loading(false)
+            guard self.controlButton.mode == .paused else { return }
+            self.createTimer()
+            self.player?.play()
+        }
+    }
+    
+    func streamAudioPlayer(_ player: AudioPlayer, parsedProgress progress: Progress) {
+//        ConsoleLog.verbose("psersedProgress: \(progress.fractionCompleted)")
+    }
+    
+    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval?) {
 //        DispatchQueue.main.async {
 //            self.timeSlider.isEnabled = true
+//            self.resource?.duration = duration
 //            self.timeSlider.maximumValue = duration.float
 //            self.durationTimeLabel.text = duration.musicTime
 //        }
     }
     
-    func didCompletedPlayAudio(_ player: AudioPlayer) {
-        nextButtonClicked(nextButton)
-    }
+//    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange isRunning: Bool) {
+//        ConsoleLog.verbose("Queue Status Change: isRunning-" + isRunning.description)
+//    }
+//    func didCompletedPlayAudio(_ player: AudioPlayer) {
+//        nextButtonClicked(nextButton)
+//    }
 }

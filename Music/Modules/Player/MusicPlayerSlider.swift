@@ -11,7 +11,8 @@ import UIKit
 class MusicPlayerSlider: UISlider {
     
     let thumbImageSize = CGSize(width: 20, height: 20)
-//    let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    
+    private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     private let progressView = UIProgressView(progressViewStyle: .default)
     
     override init(frame: CGRect) {
@@ -21,8 +22,11 @@ class MusicPlayerSlider: UISlider {
         progressView.progressTintColor = UIColor.white.withAlphaComponent(0.25)
         addSubview(progressView)
         
-//        indicator.isHidden = true
-//        addSubview(indicator)
+        indicator.isHidden = true
+        indicator.isUserInteractionEnabled = false
+        addSubview(indicator)
+        
+        bringSubview(toFront: indicator)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,7 +41,7 @@ class MusicPlayerSlider: UISlider {
     
     override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
         let superRect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
-//        indicator.frame = superRect
+        indicator.frame = superRect
         return superRect
     }
     
@@ -47,5 +51,10 @@ class MusicPlayerSlider: UISlider {
     
     func resetProgress() {
         progressView.setProgress(0, animated: false)
+    }
+    
+    func loading(_ isLoading: Bool) {
+        indicator.isHidden = !isLoading
+        if isLoading { indicator.startAnimating() }
     }
 }

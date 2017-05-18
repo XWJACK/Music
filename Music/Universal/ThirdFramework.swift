@@ -56,6 +56,7 @@ typealias ConsoleLog = Log.ConsoleLog
 import Wave
 typealias AudioPlayer = Wave.StreamAudioPlayer
 typealias AudioPlayerDelegate = Wave.StreamAudioPlayerDelegate
+typealias AudioQueueStatus = Wave.StreamAudioQueueStatus
 
 //MARK: - PageKit
 import PageKit

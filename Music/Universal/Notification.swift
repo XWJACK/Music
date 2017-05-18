@@ -11,5 +11,5 @@ import Foundation
 extension Notification.Name {
     
     /// Notification when play status change
-    static var playStatusChange: Notification.Name = Notification.Name("com.xwjack.music.playStatusChange")
+    static var playStatusChange: Notification.Name = Notification.Name("com.xwjack.Music.playStatusChange")
 }

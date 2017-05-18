@@ -7,8 +7,16 @@ PODS:
   - MusicAPI (0.1.0):
     - Alamofire
   - PageKit (0.1.1)
+  - Realm (2.7.0):
+    - Realm/Headers (= 2.7.0)
+  - Realm/Headers (2.7.0)
+  - RealmSwift (2.7.0):
+    - Realm (= 2.7.0)
   - Reveal-SDK (4)
   - SnapKit (3.2.0)
+  - SQLite.swift (0.11.2):
+    - SQLite.swift/standard (= 0.11.2)
+  - SQLite.swift/standard (0.11.2)
   - SwiftyJSON (3.1.4)
   - Toast-Swift (2.0.0)
   - Wave (0.1.0)
@@ -21,11 +29,13 @@ DEPENDENCIES:
   - MJRefresh
   - MusicAPI (from `git@github.com:XWJACK/MusicAPI.git`, commit `2138e41`)
   - PageKit (from `git@github.com:XWJACK/PageKit.git`, commit `8538ac0`)
+  - RealmSwift
   - Reveal-SDK (~> 4)
   - SnapKit
+  - SQLite.swift
   - SwiftyJSON
   - Toast-Swift
-  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `20b7869`)
+  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `239519a`)
 
 EXTERNAL SOURCES:
   Log:
@@ -41,7 +51,7 @@ EXTERNAL SOURCES:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
-    :commit: 20b7869
+    :commit: 239519a
     :git: git@github.com:XWJACK/Wave.git
 
 CHECKOUT OPTIONS:
@@ -58,7 +68,7 @@ CHECKOUT OPTIONS:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
-    :commit: 20b7869
+    :commit: 239519a
     :git: git@github.com:XWJACK/Wave.git
 
 SPEC CHECKSUMS:
@@ -69,12 +79,15 @@ SPEC CHECKSUMS:
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   MusicAPI: 58e256fe639071f7e28c57eaaee079a75ef2f58e
   PageKit: a3aa5403687a1c7a3608501597c0859eec43d160
+  Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
+  RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
   Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Toast-Swift: 5b2f8f720f7e78e48511f693df1f9c9a6e38a25a
   Wave: 26f0e8b65d29d53202408b4dd997653f519dabe9
 
-PODFILE CHECKSUM: 2a81dd63cb0125a07fa18a2aeba0835d40a91047
+PODFILE CHECKSUM: 1809d0744f577f6371991ae247f8c59569c429e5
 
 COCOAPODS: 1.2.1

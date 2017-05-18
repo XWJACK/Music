@@ -272,6 +272,8 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         createTimer()
         
+        timeSlider.resetProgress()
+        
         MusicResourceManager.default.unRegister(resource?.id ?? "No Resource")
     }
     
@@ -303,12 +305,10 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         isUserInteraction = false
         if player?.seek(toTime: TimeInterval(sender.value)) == true {
             player?.play()
-//            controlButton.mode = .paused
             ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)")
         } else {
             destoryTimer()
             timeSlider.loading(true)
-            controlButton.mode = .playing
             ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)" + " but need to watting")
         }
     }
@@ -373,17 +373,26 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     func streamAudioPlayer(_ player: AudioPlayer, parsedProgress progress: Progress) {
-//        ConsoleLog.verbose("psersedProgress: \(progress.fractionCompleted)")
+        if progress.fractionCompleted > 0.001 {
+            player.play()
+        }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval?) {
+    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange status: AudioQueueStatus) {
+        switch status {
+        case .playing: controlButton.mode = .paused
+        case .paused: controlButton.mode = .playing
+        case .stop: controlButton.mode = .playing
+        }
+    }
+//    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval?) {
 //        DispatchQueue.main.async {
 //            self.timeSlider.isEnabled = true
 //            self.resource?.duration = duration
 //            self.timeSlider.maximumValue = duration.float
 //            self.durationTimeLabel.text = duration.musicTime
 //        }
-    }
+//    }
     
 //    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange isRunning: Bool) {
 //        ConsoleLog.verbose("Queue Status Change: isRunning-" + isRunning.description)

@@ -244,11 +244,10 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
                                                   .transition(.fade(1))])
 
         coverView.setImage(url: resource.album?.picUrl)
-        if let duration = resource.duration {
-            let rawDuration = duration / 1000
-            durationTimeLabel.text = rawDuration.musicTime
-            timeSlider.maximumValue = rawDuration.float
-        } else { ConsoleLog.debug("No duration with reosurce: \n" + resource.description) }
+        
+        let rawDuration = resource.duration / 1000
+        durationTimeLabel.text = rawDuration.musicTime
+        timeSlider.maximumValue = rawDuration.float
         
 //        downloadButton.mode = .disable//resource.resourceSource == .downloaded ? .downloaded : .disable
         

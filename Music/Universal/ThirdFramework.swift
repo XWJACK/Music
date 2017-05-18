@@ -46,7 +46,8 @@ import SnapKit
 //MARK: - Toast_Swift
 import Toast_Swift
 
-
+//MARK: - SQLite
+import SQLite
 
 //MARK: - Log
 import Log

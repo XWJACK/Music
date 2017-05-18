@@ -13,7 +13,7 @@ typealias ResponseData = (Data) -> ()
 typealias MusicResourceCollection = [MusicResourceIdentifier: MusicResource]
 
 /// Music Resource
-class MusicResource: JSONInitable, CustomDebugStringConvertible, CustomStringConvertible {
+class MusicResource {
     
     /// Source of Resource
     ///
@@ -29,52 +29,53 @@ class MusicResource: JSONInitable, CustomDebugStringConvertible, CustomStringCon
     
     let id: String
     var name: String = ""
-    var duration: TimeInterval?
+    var duration: TimeInterval = 0.01
     
     var resourceSource: ResourceSource = .network
     
     var lyric: MusicLyricModel?
     var info: MusicResouceInfoModel?
     var album: MusicAlbumModel?
+    var artist: MusicArtistModel?
     
     init(id: String) {
         self.id = id
     }
     
-    required init(_ json: JSON) {
-        id = json["id"].string ?? { assertionFailure("Error Music Id"); return "Error Id" }()
-        name = json["name"].stringValue
-        duration = json["duration"].double
-        
-        lyric = MusicLyricModel(json["lyric"])
-        info = MusicResouceInfoModel(json["info"])
-        album = MusicAlbumModel(json["album"])
-    }
+//    required init(_ json: JSON) {
+//        id = json["id"].string ?? { assertionFailure("Error Music Id"); return "Error Id" }()
+//        name = json["name"].stringValue
+//        duration = json["duration"].double
+//        
+//        lyric = MusicLyricModel(json["lyric"])
+//        info = MusicResouceInfoModel(json["info"])
+//        album = MusicAlbumModel(json["album"])
+//    }
+//
+//    var encode: String {
+//        var dic: [String: Any] = ["id": id]
+//        dic["name"] = name
+//        dic["duration"] = duration
+//        
+//        dic["lyric"] = lyric?.encode
+//        dic["info"] = info?.encode
+//        dic["album"] = album?.encode
+//        
+//        return JSON(dic).rawString() ?? ""
+//    }
     
-    var encode: String {
-        var dic: [String: Any] = ["id": id]
-        dic["name"] = name
-        dic["duration"] = duration
-        
-        dic["lyric"] = lyric?.encode
-        dic["info"] = info?.encode
-        dic["album"] = album?.encode
-        
-        return JSON(dic).rawString() ?? ""
-    }
-    
-    var debugDescription: String {
-        return description
-    }
-    
-    var description: String {
-        return  "- id: \(id)\n" +
-                "- name: \(name)\n" +
-                "- duration: \(duration ?? nil)\n" +
-                "- lyric: \(lyric ?? nil)\n" +
-                "- info: \(info ?? nil)\n" +
-                "- album: \(album ?? nil)\n"
-    }
+//    var debugDescription: String {
+//        return description
+//    }
+//    
+//    var description: String {
+//        return  "- id: \(id)\n" +
+//                "- name: \(name)\n" +
+//                "- duration: \(duration)\n" +
+//                "- lyric: \(lyric)\n" +
+//                "- info: \(info)\n" +
+//                "- album: \(album)\n"
+//    }
 }
 
 class MusicResourceManager {
@@ -94,6 +95,7 @@ class MusicResourceManager {
     private var cachedResourceList: MusicResourceCollection = [:]
     private var downloadedResouceList: MusicResourceCollection = [:]
     
+    private let musicDB: Connection?
     
     /// Background serial cache queue
     private let cacheQueue: DispatchQueue
@@ -102,6 +104,8 @@ class MusicResourceManager {
     private var playResources: [String: (responseBlock: ((Data) -> ())?, progressBlock: ((Progress) -> ())?, resourceBlock: ((MusicResource) -> ())?)] = [:]
     
     private init() {
+        
+        musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("music.db").path)
         
         playResourceQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.playResourceQueue",
                                           qos: .default,
@@ -309,7 +313,7 @@ class MusicResourceManager {
             ConsoleLog.verbose("Cache music: " + md5)
             let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
             try data.write(to: musicUrl)
-            try resource.encode.data(using: .utf8)?.write(to: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info"))
+//            try resource.encode.data(using: .utf8)?.write(to: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info"))
 //            try resource.encode.data(using: .utf8)?.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
             resource.info?.url = musicUrl
             resource.resourceSource = .cache
@@ -331,16 +335,16 @@ class MusicResourceManager {
     private func search(fromURL url: URL) -> MusicResourceCollection {
         var results: MusicResourceCollection = [:]
         
-        if let contents = try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
-            contents.filter({ $0.pathExtension == "info" }).forEach {
-                
-                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
-                let resource = MusicResource(JSON(data: fileContent))
-                resource.resourceSource = url == MusicFileManager.default.musicCacheURL ? .cache : .download
-                resource.info?.url = $0.deletingPathExtension()
-                results[resource.id] = resource
-            }
-        }
+//        if let contents = try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
+//            contents.filter({ $0.pathExtension == "info" }).forEach {
+//                
+//                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
+//                let resource = MusicResource(JSON(data: fileContent))
+//                resource.resourceSource = url == MusicFileManager.default.musicCacheURL ? .cache : .download
+//                resource.info?.url = $0.deletingPathExtension()
+//                results[resource.id] = resource
+//            }
+//        }
         return results
     }
     

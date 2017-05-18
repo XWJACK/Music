@@ -15,14 +15,20 @@ final class MusicFileManager {
     private let fileManager = FileManager.default
     private let ioQueue: DispatchQueue
     
+    let musicLibraryURL: URL
+    
     let musicCacheURL: URL
     let musicDownloadURL: URL
-    let libraryURL: URL
+    let musicDataBaseURL: URL
+    
+    var isDataBaseExist: Bool { return fileManager.fileExists(atPath: musicDataBaseURL.path) }
     
     private init() {
-        libraryURL = try! fileManager.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        musicCacheURL = libraryURL.appendingPathComponent("Music/Cache/")
-        musicDownloadURL = libraryURL.appendingPathComponent("Music/Download/")
+        musicLibraryURL = try! fileManager.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Music/")
+        musicCacheURL = musicLibraryURL.appendingPathComponent("Cache/")
+        musicDownloadURL = musicLibraryURL.appendingPathComponent("Download/")
+        musicDataBaseURL = musicLibraryURL
+        
         ioQueue = DispatchQueue(label: "com.xwjack.music.fileManager")
         createMusicCacheDirectory()
         createMusicDownloadDirectory()

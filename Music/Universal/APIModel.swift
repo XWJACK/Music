@@ -160,32 +160,33 @@ struct MusicResouceInfoModel: JSONInitable {
         bitRate = json["br"].uInt32
     }
     
-    var encode: String {
-        var dic: [String: Any] = ["id": id]
-        dic["url"] = url?.absoluteString
-        dic["md5"] = md5
-        dic["size"] = size
-        dic["br"] = bitRate
-        return JSON(dic).rawString() ?? ""
-    }
+//    var encode: String {
+//        var dic: [String: Any] = ["id": id]
+//        dic["url"] = url?.absoluteString
+//        dic["md5"] = md5
+//        dic["size"] = size
+//        dic["br"] = bitRate
+//        return JSON(dic).rawString() ?? ""
+//    }
 }
 
 //MARK: - Lyric
 
 struct MusicLyricModel: JSONInitable {
     
-    private(set) var hasLyric: Bool = true
-    let lyric: String
+    let lyric: String? = nil
+    
+    init() {
+    }
     
     init(_ json: JSON) {
-        hasLyric = !(json["nolyric"].bool ?? false)
-        lyric = json["lrc"]["lyric"].string ?? "Empty Lyric"
+        lyric = json["lrc"]["lyric"].string
     }
     
-    var encode: String {
-        let dic: [String: Any] = ["nolyric": !hasLyric, "lrc": ["lyric": lyric]]
-        return JSON(dic).rawString() ?? ""
-    }
+//    var encode: String {
+//        let dic: [String: Any] = ["nolyric": !hasLyric, "lrc": ["lyric": lyric]]
+//        return JSON(dic).rawString() ?? ""
+//    }
 }
 
 //MARK: - Play List

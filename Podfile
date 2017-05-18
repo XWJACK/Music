@@ -17,9 +17,10 @@ pod 'Alamofire'
 pod 'SwiftyJSON'
 pod 'Kingfisher'
 pod 'Toast-Swift'
+pod 'SQLite.swift'
 
 #pod 'RealmSwift'
-#pod 'SQLite.swift'
+
 
 # OC
 pod 'MJRefresh'

@@ -371,18 +371,15 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, parsedProgress progress: Progress) {
-        if progress.fractionCompleted > 0.001 {
-            player.play()
-        }
-    }
-    
     func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange status: AudioQueueStatus) {
         switch status {
         case .playing: controlButton.mode = .paused
         case .paused: controlButton.mode = .playing
         case .stop: controlButton.mode = .playing
         }
+    }
+    func streamAudioPlayer(_ player: AudioPlayer, anErrorOccur error: WaveError) {
+        ConsoleLog.error(error)
     }
 //    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval?) {
 //        DispatchQueue.main.async {

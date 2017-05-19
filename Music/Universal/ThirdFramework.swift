@@ -18,7 +18,7 @@ typealias ThirdFileManager = KingfisherManager
 
 //MARK: - SwiftyJSON
 import SwiftyJSON
-typealias JSON = SwiftyJSON.JSON
+public typealias JSON = SwiftyJSON.JSON
 
 //MARK: - MJRefresh
 import MJRefresh
@@ -49,6 +49,36 @@ import Toast_Swift
 //MARK: - SQLite
 import SQLite
 
+extension JSON: Value {
+    
+    public static var declaredDatatype: String {
+        return Blob.declaredDatatype
+    }
+    
+    public static func fromDatatypeValue(_ datatypeValue: Blob) -> JSON {
+        return JSON(data: Data.fromDatatypeValue(datatypeValue))
+    }
+    
+    public var datatypeValue: Blob {
+        do {
+            return try self.rawData().datatypeValue
+        } catch {
+            ConsoleLog.error("JSON to Blob Error: \(error)")
+            return emptyData.datatypeValue
+        }
+    }
+}
+
+extension Row {
+    subscript(column: Expression<JSON>) -> JSON {
+        return get(column)
+    }
+    subscript(column: Expression<JSON?>) -> JSON? {
+        return get(column)
+    }
+}
+
+
 //MARK: - Log
 import Log
 typealias ConsoleLog = Log.ConsoleLog
@@ -58,6 +88,7 @@ import Wave
 typealias AudioPlayer = Wave.StreamAudioPlayer
 typealias AudioPlayerDelegate = Wave.StreamAudioPlayerDelegate
 typealias AudioQueueStatus = Wave.StreamAudioQueueStatus
+typealias WaveError = Wave.WaveError
 
 //MARK: - PageKit
 import PageKit

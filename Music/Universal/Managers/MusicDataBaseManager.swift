@@ -18,10 +18,10 @@ class MusicDataBaseManager {
         let id = Expression<String>("id")
         let name = Expression<String>("name")
         let duration = Expression<Double>("duration")
-        let lyric = Expression<Blob?>("lyric")
-        let artist = Expression<Blob>("artist")
-        let album = Expression<Blob>("album")
-        let info = Expression<Blob?>("info")
+        let lyric = Expression<JSON>("lyric")
+        let artist = Expression<JSON>("artist")
+        let album = Expression<JSON>("album")
+        let info = Expression<JSON>("info")
     }
     
     private struct Cache {
@@ -43,6 +43,8 @@ class MusicDataBaseManager {
     
     private init() {
         musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("music.db").path)
+        
+        musicDB?.trace{ ConsoleLog.verbose("MusicDBLog: " + $0) }
         
         do {
             /// Created resouce table
@@ -68,10 +70,77 @@ class MusicDataBaseManager {
         }
     }
     
+    func isCached(_ identifiter: MusicResourceIdentifier) -> Bool {
+        do {
+            return try musicDB?.pluck(cache.table.select(cache.id).filter(cache.id == identifiter)) != nil
+        } catch {
+            ConsoleLog.error(error)
+            return false
+        }
+    }
+    
+    func isDownload(_ identifiter: MusicResourceIdentifier) -> Bool {
+        do {
+            return try musicDB?.pluck(download.table.select(download.id).filter(download.id == identifiter)) != nil
+        } catch {
+            ConsoleLog.error(error)
+            return false
+        }
+    }
+    
+    func cacheList() -> [MusicResourceIdentifier] {
+        do {
+            return Array(try musicDB!.prepare(cache.table).map{ $0.get(cache.id) })
+        } catch {
+            ConsoleLog.error(error)
+            return []
+        }
+    }
+    
+    func downloadList() -> [MusicResourceIdentifier] {
+        do {
+            return Array(try musicDB!.prepare(download.table).map{ $0.get(download.id) })
+        } catch {
+            ConsoleLog.error(error)
+            return []
+        }
+    }
+    
     func cache(_ resource: MusicResource) {
         do {
             try musicDB?.run(self.cache.table.insert(self.cache.id <- resource.id))
-            try musicDB?.run(self.resource.table.insert())
+            save(resource)
+        } catch {
+            ConsoleLog.error("Erro Cache resource information to DataBase")
+        }
+    }
+    
+    func get(_ resouceId: MusicResourceIdentifier) -> MusicResource? {
+        do {
+            guard let result = try musicDB?.pluck(self.resource.table.filter(cache.id == resouceId)) else { return nil }
+            let resource = MusicResource(id: result[self.resource.id])
+            resource.name = result[self.resource.name]
+            resource.duration = result[self.resource.duration]
+            resource.lyric = MusicLyricModel(result[self.resource.lyric])
+            resource.album = MusicAlbumModel(result[self.resource.album])
+            resource.artist = MusicArtistModel(result[self.resource.artist])
+            resource.info = MusicResouceInfoModel(result[self.resource.info])
+            return resource
+        } catch {
+            ConsoleLog.error(error)
+            return nil
+        }
+    }
+    
+    private func save(_ resource: MusicResource) {
+        do {
+            try musicDB?.run(self.resource.table.insert(self.resource.id <- resource.id,
+                                                        self.resource.name <- resource.name,
+                                                        self.resource.duration <- resource.duration,
+                                                        self.resource.lyric <- resource.lyric?.rawJSON ?? emptyJSON,
+                                                        self.resource.album <- resource.album?.rawJSON ?? emptyJSON,
+                                                        self.resource.artist <- resource.artist?.rawJSON ?? emptyJSON,
+                                                        self.resource.info <- resource.info?.rawJSON ?? emptyJSON))
         } catch {
             ConsoleLog.error("Erro Cache resource information to DataBase")
         }

@@ -29,7 +29,7 @@ class MusicResource {
     
     let id: String
     var name: String = ""
-    var duration: TimeInterval = 0.01
+    var duration: TimeInterval = 0.1
     
     var resourceSource: ResourceSource = .network
     
@@ -41,41 +41,6 @@ class MusicResource {
     init(id: String) {
         self.id = id
     }
-    
-//    required init(_ json: JSON) {
-//        id = json["id"].string ?? { assertionFailure("Error Music Id"); return "Error Id" }()
-//        name = json["name"].stringValue
-//        duration = json["duration"].double
-//        
-//        lyric = MusicLyricModel(json["lyric"])
-//        info = MusicResouceInfoModel(json["info"])
-//        album = MusicAlbumModel(json["album"])
-//    }
-//
-//    var encode: String {
-//        var dic: [String: Any] = ["id": id]
-//        dic["name"] = name
-//        dic["duration"] = duration
-//        
-//        dic["lyric"] = lyric?.encode
-//        dic["info"] = info?.encode
-//        dic["album"] = album?.encode
-//        
-//        return JSON(dic).rawString() ?? ""
-//    }
-    
-//    var debugDescription: String {
-//        return description
-//    }
-//    
-//    var description: String {
-//        return  "- id: \(id)\n" +
-//                "- name: \(name)\n" +
-//                "- duration: \(duration)\n" +
-//                "- lyric: \(lyric)\n" +
-//                "- info: \(info)\n" +
-//                "- album: \(album)\n"
-//    }
 }
 
 class MusicResourceManager {
@@ -92,20 +57,17 @@ class MusicResourceManager {
     private var currentResourceIndex: Int = 0
     private var currentRandomResourceIndex: Int = 0
     
-    private var cachedResourceList: MusicResourceCollection = [:]
-    private var downloadedResouceList: MusicResourceCollection = [:]
-    
-    private let musicDB: Connection?
-    
     /// Background serial cache queue
     private let cacheQueue: DispatchQueue
     
     private let playResourceQueue: DispatchQueue
-    private var playResources: [String: (responseBlock: ((Data) -> ())?, progressBlock: ((Progress) -> ())?, resourceBlock: ((MusicResource) -> ())?)] = [:]
+    private var playResources: [String: (responseBlock: ((Data) -> ())?, progressBlock: ((Progress) -> ())?, resourceBlock: ((MusicResource) -> ())?, failedBlock: ((Error) -> ())?)] = [:]
+    
+    
+    private var dataBaseManager: MusicDataBaseManager { return MusicDataBaseManager.default }
+    private var fileManager: MusicFileManager { return MusicFileManager.default }
     
     private init() {
-        
-        musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("music.db").path)
         
         playResourceQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.playResourceQueue",
                                           qos: .default,
@@ -113,11 +75,6 @@ class MusicResourceManager {
         
         cacheQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.cacheQueue",
                                    qos: .background)
-        
-//        DispatchQueue.global().async {
-            cachedResourceList = search(fromURL: MusicFileManager.default.musicCacheURL)
-            downloadedResouceList = search(fromURL: MusicFileManager.default.musicDownloadURL)
-//        }
     }
     
     /// Rest Resources, only effective if identifier is different
@@ -142,12 +99,15 @@ class MusicResourceManager {
         self.randomResourceIndexs = uniqueRandom(0...resources.count - 1)
         self.currentRandomResourceIndex = randomResourceIndexs.index(of: currentResourceIndex)!
         
-        for (index, resource) in self.resources.enumerated() where cachedResourceList[resource.id] != nil {
-            self.resources[index] = cachedResourceList[resource.id]!
+        let cacheList = dataBaseManager.cacheList()
+        let downloadList = dataBaseManager.downloadList()
+        
+        for (index, resource) in self.resources.enumerated() where cacheList.contains(resource.id) {
+            self.resources[index].resourceSource = .cache
         }
         
-        for (index, resource) in self.resources.enumerated() where downloadedResouceList[resource.id] != nil {
-            self.resources[index] = downloadedResouceList[resource.id]!
+        for (index, resource) in self.resources.enumerated() where downloadList.contains(resource.id) {
+            self.resources[index].resourceSource = .download
         }
     }
     
@@ -155,7 +115,6 @@ class MusicResourceManager {
     ///
     /// - Returns: MusicResource
     func current() -> MusicResource {
-//        guard currentResourceIndex < resources.count else { return }
         return resources[currentResourceIndex]
     }
     
@@ -193,18 +152,18 @@ class MusicResourceManager {
     }
     
 
-    func register(_ resourceId: String,
+    func register(_ resourceId: MusicResourceIdentifier,
                   responseBlock: ((Data) -> ())? = nil,
                   progressBlock: ((Progress) -> ())? = nil,
                   resourceBlock: ((MusicResource) -> ())? = nil,
                   failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         
         if playResources[resourceId] != nil {
-            playResources[resourceId] = (responseBlock, progressBlock, resourceBlock)
+            playResources[resourceId] = (responseBlock, progressBlock, resourceBlock, failedBlock)
             return
         }
         
-        playResources[resourceId] = (responseBlock, progressBlock, resourceBlock)
+        playResources[resourceId] = (responseBlock, progressBlock, resourceBlock, failedBlock)
         
         playResourceQueue.async {
             
@@ -231,74 +190,77 @@ class MusicResourceManager {
                     guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
                         
                     MusicNetwork.send(url)
-                        .receive(data: self.playResources[resourceId]?.responseBlock)
-                        .receive(progress: self.playResources[resourceId]?.progressBlock)
+                        .receive(data: { self.playResources[resourceId]?.responseBlock?($0) })
+                        .receive(progress: { self.playResources[resourceId]?.progressBlock?($0) })
                         .receive(queue: .global(), response: { cacheGroup.leave() })
                         .receive(queue: .global(), success: { data = $0 })
                 })
                 
+                //Request Lyric if not exist
+                if originResource.lyric?.lyric == nil {
+                    cacheGroup.enter()
+                    resourceGroup.enter()
+                    
+                    MusicNetwork.send(API.lyric(musicID: originResource.id))
+                        .receive(queue: .global(), json: { (json) in
+                            originResource.lyric = MusicLyricModel(json)
+                        })
+                        .receive(queue: .global(), response: {
+                            cacheGroup.leave()
+                            resourceGroup.leave()
+                        })
+                }
+                
             } else {// Reading music data from local
                 ConsoleLog.verbose("Reading: " + originResource.id + " music from local")
-                guard let musicUrl = originResource.info?.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
-                //Reading Music File
-                guard let data = try? FileHandle(forReadingFrom: musicUrl).readDataToEndOfFile() else {
-                    failedBlock?(MusicError.fileError(.readingError))
-                    /// Then request from network
-                    originResource.resourceSource = .network
-                    self.register(originResource.id,
-                                  responseBlock: self.playResources[resourceId]?.responseBlock,
-                                  progressBlock: self.playResources[resourceId]?.progressBlock,
-                                  resourceBlock: self.playResources[resourceId]?.resourceBlock,
-                                  failedBlock: failedBlock)
-                    return
+                
+                let readingFromLocal: (URL) -> () = {
+                    //Reading Music File
+                    guard let data = try? FileHandle(forReadingFrom: $0).readDataToEndOfFile() else {
+                        failedBlock?(MusicError.fileError(.readingError))
+                        return
+                    }
+                    let progress = Progress(totalUnitCount: Int64(data.count))
+                    progress.completedUnitCount = Int64(data.count)
+                    
+                    DispatchQueue.main.async {
+                        self.playResources[resourceId]?.responseBlock?(data)
+                        self.playResources[resourceId]?.progressBlock?(progress)
+                    }
                 }
-                let progress = Progress(totalUnitCount: Int64(data.count))
-                progress.completedUnitCount = Int64(data.count)
                 
-                self.playResources[resourceId]?.responseBlock?(data)
-                self.playResources[resourceId]?.progressBlock?(progress)
-            }
-            
-            //Request Lyric if not exist
-            if !(originResource.lyric?.hasLyric ?? false) {
-                cacheGroup.enter()
-                resourceGroup.enter()
-                
-                MusicNetwork.send(API.lyric(musicID: originResource.id))
-                    .receive(queue: .global(), json: { (json) in
-                        originResource.lyric = MusicLyricModel(json)
-                    })
-                    .receive(queue: .global(), response: {
-                        cacheGroup.leave()
-                        resourceGroup.leave()
-                    })
+                /// Aleardy reading data from database
+                if let musicUrl = originResource.info?.url {
+                    readingFromLocal(musicUrl)
+                } else {
+                    guard let localResource = self.dataBaseManager.get(originResource.id) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
+                    localResource.resourceSource = originResource.resourceSource
+                    self.resources[index] = localResource
+                    readingFromLocal(localResource.info!.url!)
+                }
             }
             
             /// Completed request data, and now it can be cache to file
             cacheGroup.notify(queue: self.cacheQueue, execute: {
                 guard let validData = data else { return }
-                self.cache(originResource, data: validData)
+                self.cache(self.resources[index], data: validData)
             })
             
             /// Completed request resource
             resourceGroup.notify(queue: .main, execute: {
-                self.playResources[resourceId]?.resourceBlock?(originResource)
+                self.playResources[resourceId]?.resourceBlock?(self.resources[index])
             })
         }
     }
     
-    func unRegister(_ resourceId: String) {
+    func unRegister(_ resourceId: MusicResourceIdentifier) {
         guard playResources[resourceId] != nil else { return }
-        playResources[resourceId] = (nil, nil, nil)
+        playResources[resourceId] = (nil, nil, nil, nil)
     }
-    
-//    func download(_ resourceId: MusicResourceIdentifier, successBlock: (() -> ())? = nil) {
-//        
-//        if let index = resources.index(where: { $0.id == resourceId }) {
-//            let originResource = resources[index]
-//        }
-//    }
 
+    private func destoryRegister(_ resourceId: MusicResourceIdentifier) {
+        playResources[resourceId] = nil
+    }
     
     /// Cache resource to local
     ///
@@ -306,17 +268,15 @@ class MusicResourceManager {
     ///   - resource: MusicResource
     ///   - data: Music Data
     private func cache(_ resource: MusicResource, data: Data) {
-        resource.info?.md5 = resource.id.md5()
-        
-        guard let md5 = resource.info?.md5 else { ConsoleLog.error("MD5 Error for resource: " + resource.id); return }
+        guard let md5 = resource.info?.md5 else { ConsoleLog.error("No MD5 in resource: " + resource.id); return }
         do {
             ConsoleLog.verbose("Cache music: " + md5)
             let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
             try data.write(to: musicUrl)
-//            try resource.encode.data(using: .utf8)?.write(to: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info"))
-//            try resource.encode.data(using: .utf8)?.write(toFile: MusicFileManager.default.musicCacheURL.appendingPathComponent(md5 + ".info").path, atomically: true, encoding: .utf8)
-            resource.info?.url = musicUrl
+            resource.info?.update(url: musicUrl)
             resource.resourceSource = .cache
+            MusicDataBaseManager.default.cache(resource)
+            destoryRegister(resource.id)
         } catch {
             ConsoleLog.error(error)
         }
@@ -326,26 +286,6 @@ class MusicResourceManager {
 //        resource.isCached = false
 //        resource.isDownload = true
 //        resource.md5 = resource.id.md5()
-    }
-    
-    /// Search MusicResourceCollection by url
-    ///
-    /// - Parameter url: URL
-    /// - Returns: MusicResourceCollection
-    private func search(fromURL url: URL) -> MusicResourceCollection {
-        var results: MusicResourceCollection = [:]
-        
-//        if let contents = try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
-//            contents.filter({ $0.pathExtension == "info" }).forEach {
-//                
-//                guard let fileContent = FileHandle(forReadingAtPath: $0.path)?.readDataToEndOfFile() else { return }
-//                let resource = MusicResource(JSON(data: fileContent))
-//                resource.resourceSource = url == MusicFileManager.default.musicCacheURL ? .cache : .download
-//                resource.info?.url = $0.deletingPathExtension()
-//                results[resource.id] = resource
-//            }
-//        }
-        return results
     }
     
     private func uniqueRandom(_ range: ClosedRange<Int>) -> [Int] {

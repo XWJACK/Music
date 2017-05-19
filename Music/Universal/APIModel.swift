@@ -44,9 +44,11 @@ struct MusicProfileModel: JSONInitable {
 
 struct MusicArtistModel: JSONInitable {
     let name: String
+    let rawJSON: JSON
     
     init(_ json: JSON) {
         name = json["name"].stringValue
+        rawJSON = json
     }
 }
 
@@ -55,16 +57,12 @@ struct MusicArtistModel: JSONInitable {
 struct MusicAlbumModel: JSONInitable {
     let name: String
     let picUrl: URL?
+    let rawJSON: JSON
     
     init(_ json: JSON) {
         name = json["name"].stringValue
         picUrl = json["picUrl"].url
-    }
-    
-    var encode: String {
-        var dic: [String: Any] = ["name": name]
-        dic["picUrl"] = picUrl?.absoluteString
-        return JSON(dic).rawString() ?? ""
+        rawJSON = json
     }
 }
 
@@ -128,10 +126,10 @@ struct MusicDetailModel {
     var resource: MusicResource {
         let resource = MusicResource(id: id)
         resource.name = name
-        resource.duration = duration
-        
+        resource.duration = duration ?? 0.1
         resource.resourceSource = .network
         resource.album = album
+        resource.artist = artists.first
         return resource
     }
 }
@@ -141,52 +139,44 @@ struct MusicDetailModel {
 struct MusicResouceInfoModel: JSONInitable {
     
     let id: String
-    var url: URL? = nil
-    var md5: String? = nil
+    var url: URL?
+    /// mp3
+    let type: String
+    let md5: String
     /// File size
-    var size: Int64? = nil
+    let size: Int64
     /// Audio bit rate
-    var bitRate: UInt32? = nil
+    let bitRate: UInt32
     
-    init(id: String) {
-        self.id = id
-    }
+    private(set) var rawJSON: JSON
     
     init(_ json: JSON) {
         id = json["id"].stringValue
         url = json["url"].url
-        md5 = json["md5"].string
-        size = json["size"].int64
-        bitRate = json["br"].uInt32
+        md5 = json["md5"].stringValue
+        size = json["size"].int64Value
+        bitRate = json["br"].uInt32Value
+        type = json["type"].stringValue
+        rawJSON = json
     }
     
-//    var encode: String {
-//        var dic: [String: Any] = ["id": id]
-//        dic["url"] = url?.absoluteString
-//        dic["md5"] = md5
-//        dic["size"] = size
-//        dic["br"] = bitRate
-//        return JSON(dic).rawString() ?? ""
-//    }
+    mutating func update(url: URL) {
+        self.url = url
+        rawJSON["url"] = JSON(url.absoluteString)
+    }
 }
 
 //MARK: - Lyric
 
 struct MusicLyricModel: JSONInitable {
     
-    let lyric: String? = nil
-    
-    init() {
-    }
+    let lyric: String?
+    let rawJSON: JSON
     
     init(_ json: JSON) {
         lyric = json["lrc"]["lyric"].string
+        rawJSON = json
     }
-    
-//    var encode: String {
-//        let dic: [String: Any] = ["nolyric": !hasLyric, "lrc": ["lyric": lyric]]
-//        return JSON(dic).rawString() ?? ""
-//    }
 }
 
 //MARK: - Play List

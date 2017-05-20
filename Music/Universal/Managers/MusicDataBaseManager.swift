@@ -70,6 +70,8 @@ class MusicDataBaseManager {
         }
     }
     
+    //MARK: - Check
+    
     func isCached(_ identifiter: MusicResourceIdentifier) -> Bool {
         do {
             return try musicDB?.pluck(cache.table.select(cache.id).filter(cache.id == identifiter)) != nil
@@ -87,6 +89,8 @@ class MusicDataBaseManager {
             return false
         }
     }
+    
+    //MARK: - List
     
     func cacheList() -> [MusicResourceIdentifier] {
         do {
@@ -106,6 +110,28 @@ class MusicDataBaseManager {
         }
     }
     
+    //MARK: - Count
+    
+    func cacheCount() -> Int {
+        do {
+            return try musicDB?.scalar(cache.table.select(cache.id.count)) ?? 0
+        } catch {
+            ConsoleLog.error(error)
+            return 0
+        }
+    }
+    
+    func downloadCount() -> Int {
+        do {
+            return try musicDB?.scalar(download.table.select(download.id.count)) ?? 0
+        } catch {
+            ConsoleLog.error(error)
+            return 0
+        }
+    }
+    
+    //MARK: - Save Resource
+    
     func cache(_ resource: MusicResource) {
         do {
             try musicDB?.run(self.cache.table.insert(self.cache.id <- resource.id))
@@ -114,6 +140,8 @@ class MusicDataBaseManager {
             ConsoleLog.error("Erro Cache resource information to DataBase")
         }
     }
+    
+    //MARK: - Get Reshource
     
     func get(_ resouceId: MusicResourceIdentifier) -> MusicResource? {
         do {

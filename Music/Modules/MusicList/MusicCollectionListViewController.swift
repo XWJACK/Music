@@ -16,6 +16,7 @@ struct MusicCollectionListViewModel {
 
 final class MusicCollectionListViewController: MusicTableViewController {
 
+    private var localViewModels: [(image: UIImage, title: String, detail: String)] = []
     private var apiDatas: [MusicPlayListModel] = []
     private var viewModels: [MusicCollectionListViewModel] = []
     
@@ -46,6 +47,8 @@ final class MusicCollectionListViewController: MusicTableViewController {
         searchButton.snp.makeConstraints { (make) in
             make.width.height.equalTo(28)
         }
+        
+        localViewModels.append((#imageLiteral(resourceName: "collection_downloaded"), "Local Music", MusicDataBaseManager.default.downloadCount().description + " songs"))
         
         request()
     }
@@ -82,20 +85,34 @@ final class MusicCollectionListViewController: MusicTableViewController {
         return 50
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModels.count
+        return section == 0 ? localViewModels.count : viewModels.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
         let controller = MusicListViewController()
-        controller.listId = apiDatas[indexPath.row].id
+        if indexPath.section == 1 {
+            controller.listId = apiDatas[indexPath.row].id
+        }
         musicNavigationController?.push(controller, hiddenTabBar: false)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicCollectionListTableViewCell.reuseIdentifier, for: indexPath) as? MusicCollectionListTableViewCell else { return MusicCollectionListTableViewCell() }
         cell.indexPath = indexPath
+        if indexPath.section == 0 {
+            let viewModel = localViewModels[indexPath.row]
+            cell.coverImageView.image = viewModel.image
+            cell.titleLabel.text = viewModel.title
+            cell.detailLabel.text = viewModel.detail
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        }
         cell.update(viewModels[indexPath.row])
         return cell
     }

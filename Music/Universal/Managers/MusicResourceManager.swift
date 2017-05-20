@@ -111,6 +111,9 @@ class MusicResourceManager {
         for (index, resource) in self.resources.enumerated() where downloadList.contains(resource.id) {
             self.resources[index].resourceSource = .download
         }
+        cacheQueue.async {
+            self.dataBaseManager.update(leastResources: self.resources)
+        }
     }
     
     /// Get Current MusicResource
@@ -275,7 +278,8 @@ class MusicResourceManager {
             try data.write(to: musicUrl)
             resource.info?.url = musicUrl
             resource.resourceSource = .cache
-            MusicDataBaseManager.default.cache(resource)
+            dataBaseManager.cache(resource)
+            dataBaseManager.update(leastResource: resource)
             destoryRegister(resource.id)
         } catch {
             ConsoleLog.error(error)

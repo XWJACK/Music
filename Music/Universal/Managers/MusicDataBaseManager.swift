@@ -44,7 +44,7 @@ class MusicDataBaseManager {
     private init() {
         musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("music.db").path)
         
-        musicDB?.trace{ ConsoleLog.verbose("MusicDBLog: " + $0) }
+        musicDB?.trace{ ConsoleLog.verbose($0) }
         
         do {
             /// Created resouce table

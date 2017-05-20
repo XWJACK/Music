@@ -159,11 +159,6 @@ struct MusicResouceInfoModel: JSONInitable {
         type = json["type"].stringValue
         rawJSON = json
     }
-    
-    mutating func update(url: URL) {
-        self.url = url
-        rawJSON["url"] = JSON(url.absoluteString)
-    }
 }
 
 //MARK: - Lyric

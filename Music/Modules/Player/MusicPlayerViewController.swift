@@ -173,8 +173,8 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             make.centerY.equalToSuperview()
         }
         timeSlider.snp.makeConstraints { (make) in
-            make.left.equalTo(currentTimeLabel.snp.right).offset(10)
-            make.right.equalTo(durationTimeLabel.snp.left).offset(-10)
+            make.left.equalTo(55)
+            make.right.equalTo(-55)
             make.centerY.equalToSuperview()
         }
         
@@ -249,12 +249,8 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         durationTimeLabel.text = rawDuration.musicTime
         timeSlider.maximumValue = rawDuration.float
         
-//        downloadButton.mode = .disable//resource.resourceSource == .downloaded ? .downloaded : .disable
-        
         MusicResourceManager.default.register(resource.id, responseBlock: {
             self.player?.respond(with: $0)
-        }, progressBlock: {
-            self.timeSlider.buffProgress($0)
         }, resourceBlock: { (resource) in
             self.resource = resource
         })
@@ -378,8 +374,22 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         case .stop: controlButton.mode = .playing
         }
     }
+    
+    func streamAudioPlayer(_ player: AudioPlayer, parsedProgress progress: Progress) {
+        DispatchQueue.main.async {
+            self.timeSlider.buffProgress(progress)
+            if progress.fractionCompleted > 0.001 {
+                self.player?.play()
+            }
+        }
+    }
+    
     func streamAudioPlayer(_ player: AudioPlayer, anErrorOccur error: WaveError) {
         ConsoleLog.error(error)
+    }
+    
+    func streamAudioPlayerDidCompletedPlayAudio(_ player: AudioPlayer) {
+        nextButtonClicked(nextButton)
     }
 //    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval?) {
 //        DispatchQueue.main.async {

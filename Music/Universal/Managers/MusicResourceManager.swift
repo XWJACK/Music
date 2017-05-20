@@ -61,7 +61,7 @@ class MusicResourceManager {
     private let cacheQueue: DispatchQueue
     
     private let playResourceQueue: DispatchQueue
-    private var playResources: [String: (responseBlock: ((Data) -> ())?, progressBlock: ((Progress) -> ())?, resourceBlock: ((MusicResource) -> ())?, failedBlock: ((Error) -> ())?)] = [:]
+    private var playResources: [String: ((Data) -> ())?] = [:]
     
     
     private var dataBaseManager: MusicDataBaseManager { return MusicDataBaseManager.default }
@@ -154,16 +154,9 @@ class MusicResourceManager {
 
     func register(_ resourceId: MusicResourceIdentifier,
                   responseBlock: ((Data) -> ())? = nil,
-                  progressBlock: ((Progress) -> ())? = nil,
+//                  progressBlock: ((Progress) -> ())? = nil,
                   resourceBlock: ((MusicResource) -> ())? = nil,
                   failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
-        
-        if playResources[resourceId] != nil {
-            playResources[resourceId] = (responseBlock, progressBlock, resourceBlock, failedBlock)
-            return
-        }
-        
-        playResources[resourceId] = (responseBlock, progressBlock, resourceBlock, failedBlock)
         
         playResourceQueue.async {
             
@@ -177,8 +170,15 @@ class MusicResourceManager {
             
             //Reading music data from network
             if originResource.resourceSource == .network {
-                cacheGroup.enter()
                 
+                if self.playResources[resourceId] != nil {
+                    self.playResources[resourceId] = (responseBlock)
+                    return
+                }
+                
+                self.playResources[resourceId] = (responseBlock)
+                
+                cacheGroup.enter()
                 // Request Music Source
                 MusicNetwork.send(API.musicUrl(musicID: originResource.id))
                     .receive(queue: .global(), json: { (json) in
@@ -190,10 +190,9 @@ class MusicResourceManager {
                     guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
                         
                     MusicNetwork.send(url)
-                        .receive(data: { self.playResources[resourceId]?.responseBlock?($0) })
-                        .receive(progress: { self.playResources[resourceId]?.progressBlock?($0) })
-                        .receive(queue: .global(), response: { cacheGroup.leave() })
-                        .receive(queue: .global(), success: { data = $0 })
+                        .receive(data: { self.playResources[resourceId]??($0) })
+                        .receive(queue: self.cacheQueue, response: { cacheGroup.leave() })
+                        .receive(queue: self.cacheQueue, success: { data = $0 })
                 })
                 
                 //Request Lyric if not exist
@@ -202,30 +201,35 @@ class MusicResourceManager {
                     resourceGroup.enter()
                     
                     MusicNetwork.send(API.lyric(musicID: originResource.id))
-                        .receive(queue: .global(), json: { (json) in
+                        .receive(queue: self.cacheQueue, json: { (json) in
                             originResource.lyric = MusicLyricModel(json)
                         })
-                        .receive(queue: .global(), response: {
+                        .receive(queue: self.cacheQueue, response: {
                             cacheGroup.leave()
                             resourceGroup.leave()
                         })
                 }
+                
+                /// Completed request data, and now it can be cache to file
+                cacheGroup.notify(queue: self.cacheQueue, execute: {
+                    guard let validData = data else { return }
+                    self.cache(self.resources[index], data: validData)
+                })
                 
             } else {// Reading music data from local
                 ConsoleLog.verbose("Reading: " + originResource.id + " music from local")
                 
                 let readingFromLocal: (URL) -> () = {
                     //Reading Music File
-                    guard let data = try? FileHandle(forReadingFrom: $0).readDataToEndOfFile() else {
+                    do {
+                        let data = try FileHandle(forReadingFrom: $0).readDataToEndOfFile()
+                        DispatchQueue.main.async {
+                            responseBlock?(data)
+                        }
+                    } catch {
                         failedBlock?(MusicError.fileError(.readingError))
+                        ConsoleLog.error(error)
                         return
-                    }
-                    let progress = Progress(totalUnitCount: Int64(data.count))
-                    progress.completedUnitCount = Int64(data.count)
-                    
-                    DispatchQueue.main.async {
-                        self.playResources[resourceId]?.responseBlock?(data)
-                        self.playResources[resourceId]?.progressBlock?(progress)
                     }
                 }
                 
@@ -235,27 +239,22 @@ class MusicResourceManager {
                 } else {
                     guard let localResource = self.dataBaseManager.get(originResource.id) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
                     localResource.resourceSource = originResource.resourceSource
+                    localResource.info?.url = localResource.resourceSource == .cache ? self.fileManager.musicCacheURL.appendingPathComponent(localResource.info!.md5) : self.fileManager.musicDownloadURL.appendingPathComponent(localResource.info!.md5)
                     self.resources[index] = localResource
                     readingFromLocal(localResource.info!.url!)
                 }
             }
             
-            /// Completed request data, and now it can be cache to file
-            cacheGroup.notify(queue: self.cacheQueue, execute: {
-                guard let validData = data else { return }
-                self.cache(self.resources[index], data: validData)
-            })
-            
             /// Completed request resource
             resourceGroup.notify(queue: .main, execute: {
-                self.playResources[resourceId]?.resourceBlock?(self.resources[index])
+                resourceBlock?(self.resources[index])
             })
         }
     }
     
     func unRegister(_ resourceId: MusicResourceIdentifier) {
         guard playResources[resourceId] != nil else { return }
-        playResources[resourceId] = (nil, nil, nil, nil)
+        playResources[resourceId] = (nil)
     }
 
     private func destoryRegister(_ resourceId: MusicResourceIdentifier) {
@@ -270,10 +269,10 @@ class MusicResourceManager {
     private func cache(_ resource: MusicResource, data: Data) {
         guard let md5 = resource.info?.md5 else { ConsoleLog.error("No MD5 in resource: " + resource.id); return }
         do {
-            ConsoleLog.verbose("Cache music: " + md5)
-            let musicUrl = MusicFileManager.default.musicCacheURL.appendingPathComponent(md5)
+            ConsoleLog.verbose("Cache music: \(resource)")
+            let musicUrl = fileManager.musicCacheURL.appendingPathComponent(md5)
             try data.write(to: musicUrl)
-            resource.info?.update(url: musicUrl)
+            resource.info?.url = musicUrl
             resource.resourceSource = .cache
             MusicDataBaseManager.default.cache(resource)
             destoryRegister(resource.id)

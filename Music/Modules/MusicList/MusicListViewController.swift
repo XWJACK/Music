@@ -59,8 +59,6 @@ final class MusicListViewController: MusicTableViewController {
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
-//        sender.startAnimation()
-//        sender.isAnimation = !sender.isAnimation
         musicNavigationController?.push(musicPlayerViewController)
     }
     
@@ -74,6 +72,13 @@ final class MusicListViewController: MusicTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
+        
+        guard let resources = apiDatas?.musicDetail.map({ $0.resource }) else { return }
+        MusicResourceManager.default.reset(resources,
+                                           withIdentifier: "MusicList" + listId! + resources.count.description,
+                                           currentResourceIndex: indexPath.row)
+        musicNavigationController?.push(musicPlayerViewController)
+        musicPlayerViewController.play(withResource: MusicResourceManager.default.current())
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

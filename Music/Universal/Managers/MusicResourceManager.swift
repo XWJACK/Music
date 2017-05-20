@@ -154,7 +154,6 @@ class MusicResourceManager {
 
     func register(_ resourceId: MusicResourceIdentifier,
                   responseBlock: ((Data) -> ())? = nil,
-//                  progressBlock: ((Progress) -> ())? = nil,
                   resourceBlock: ((MusicResource) -> ())? = nil,
                   failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         

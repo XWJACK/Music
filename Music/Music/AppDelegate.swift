@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,6 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         
         MusicNetwork.globalFailCallBack.block = { ConsoleLog.error($0) }
+        
+        MPRemoteCommandCenter.shared().playCommand.addTarget(musicPlayerViewController, action: #selector(musicPlayerViewController.playCommand))
+        MPRemoteCommandCenter.shared().pauseCommand.addTarget(musicPlayerViewController, action: #selector(musicPlayerViewController.pauseCommand))
+        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(musicPlayerViewController, action: #selector(musicPlayerViewController.nextTrack))
+        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget(musicPlayerViewController, action: #selector(musicPlayerViewController.lastTrack))
         
         return true
     }

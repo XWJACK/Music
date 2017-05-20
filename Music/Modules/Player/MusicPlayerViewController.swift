@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 /// Music Player Status
 enum MusicPlayerStatus {
@@ -43,8 +44,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     private let nextButton: UIButton = UIButton(type: .custom)
     private let listButton: UIButton = UIButton(type: .custom)
     
-    
-    var isHiddenInput: Bool { return resource != nil }
+    var isHiddenInput: Bool { return resource == nil }
     
     private var isUserInteraction: Bool = false
     private var player: AudioPlayer? = nil
@@ -241,7 +241,12 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         backgroundImageView.kf.setImage(with: resource.album?.picUrl,
                                         placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "background_default_dark-ip5"),
                                         options: [.forceTransition,
-                                                  .transition(.fade(1))])
+                                                  .transition(.fade(1))],
+                                        completionHandler: { image, _, _, _ in
+                                            
+                                            MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: image ?? #imageLiteral(resourceName: "background_default_dark")),
+                                                                                               MPMediaItemPropertyTitle: resource.name]
+        })
 
         coverView.setImage(url: resource.album?.picUrl)
         
@@ -249,11 +254,34 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         durationTimeLabel.text = rawDuration.musicTime
         timeSlider.maximumValue = rawDuration.float
         
+        downloadButton.mode = resource.resourceSource == .download ? .downloaded : .download
+        
+        controlButton.mode = .paused
+        
         MusicResourceManager.default.register(resource.id, responseBlock: {
             self.player?.respond(with: $0)
         }, resourceBlock: { (resource) in
             self.resource = resource
         })
+    }
+    
+    
+    func playCommand() {
+        player?.play()
+        controlButton.mode = .paused
+    }
+    
+    func pauseCommand() {
+        player?.pause()
+        controlButton.mode = .playing
+    }
+    
+    func nextTrack() {
+        nextButtonClicked(nextButton)
+    }
+    
+    func lastTrack() {
+        lastButtonClicked(lastButton)
     }
     
     private func reset() {
@@ -267,6 +295,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         createTimer()
         
+        timeSlider.isEnabled = false
         timeSlider.resetProgress()
         
         MusicResourceManager.default.unRegister(resource?.id ?? "No Resource")
@@ -300,7 +329,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         isUserInteraction = false
         if player?.seek(toTime: TimeInterval(sender.value)) == true {
             player?.play()
-            ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)")
         } else {
             destoryTimer()
             timeSlider.loading(true)
@@ -318,7 +346,20 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     @objc private func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
-//        MusicResourceManager.default
+        switch sender.mode {
+        case .download:
+            break
+        case .downloaded:
+            let controller = UIAlertController(title: "Delete this Music?", message: nil, preferredStyle: .alert)
+            controller.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                sender.mode = .download
+                self.view.makeToast("Delete Music Successful")
+            }))
+            controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            present(controller, animated: true, completion: nil)
+        default: break
+        }
     }
     
     //MARK: - Control Target
@@ -368,10 +409,12 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange status: AudioQueueStatus) {
-        switch status {
-        case .playing: controlButton.mode = .paused
-        case .paused: controlButton.mode = .playing
-        case .stop: controlButton.mode = .playing
+        DispatchQueue.main.async {
+            switch status {
+            case .playing: self.controlButton.mode = .paused
+            case .paused: self.controlButton.mode = .playing
+            case .stop: self.controlButton.mode = .playing
+            }
         }
     }
     
@@ -384,26 +427,11 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, anErrorOccur error: WaveError) {
-        ConsoleLog.error(error)
-    }
+//    func streamAudioPlayer(_ player: AudioPlayer, anErrorOccur error: WaveError) {
+//        ConsoleLog.error(error)
+//    }
     
     func streamAudioPlayerDidCompletedPlayAudio(_ player: AudioPlayer) {
         nextButtonClicked(nextButton)
     }
-//    func streamAudioPlayer(_ player: AudioPlayer, parsedDuration duration: TimeInterval?) {
-//        DispatchQueue.main.async {
-//            self.timeSlider.isEnabled = true
-//            self.resource?.duration = duration
-//            self.timeSlider.maximumValue = duration.float
-//            self.durationTimeLabel.text = duration.musicTime
-//        }
-//    }
-    
-//    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange isRunning: Bool) {
-//        ConsoleLog.verbose("Queue Status Change: isRunning-" + isRunning.description)
-//    }
-//    func didCompletedPlayAudio(_ player: AudioPlayer) {
-//        nextButtonClicked(nextButton)
-//    }
 }

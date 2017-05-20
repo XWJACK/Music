@@ -180,7 +180,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         // - Control View
         
-        controlButton.mode = .playing
+        controlButton.mode = .paused
         controlButton.addTarget(self, action: #selector(controlButtonClicked(_:)), for: .touchUpInside)
         
         playModeButton.setImage(#imageLiteral(resourceName: "player_control_model_order"), for: .normal)
@@ -231,7 +231,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-    func play(withResource resource: MusicResource) {
+    func playResource(_ resource: MusicResource = MusicResourceManager.default.current()) {
         
         reset()
 
@@ -241,21 +241,14 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         backgroundImageView.kf.setImage(with: resource.album?.picUrl,
                                         placeholder: backgroundImageView.image ?? #imageLiteral(resourceName: "background_default_dark-ip5"),
                                         options: [.forceTransition,
-                                                  .transition(.fade(1))],
-                                        completionHandler: { image, _, _, _ in
-                                            
-                                            MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: image ?? #imageLiteral(resourceName: "background_default_dark")),
-                                                                                               MPMediaItemPropertyTitle: resource.name]
-        })
-
-        coverView.setImage(url: resource.album?.picUrl)
+                                                  .transition(.fade(1))])
         
         let rawDuration = resource.duration / 1000
         durationTimeLabel.text = rawDuration.musicTime
         timeSlider.maximumValue = rawDuration.float
         
+        coverView.setImage(url: resource.album?.picUrl)
         downloadButton.mode = resource.resourceSource == .download ? .downloaded : .download
-        
         controlButton.mode = .paused
         
         MusicResourceManager.default.register(resource.id, responseBlock: {
@@ -264,7 +257,6 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             self.resource = resource
         })
     }
-    
     
     func playCommand() {
         player?.play()
@@ -316,6 +308,17 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             let currentTime = player?.currentTime else { return }
         currentTimeLabel.text = currentTime.musicTime
         timeSlider.value = currentTime.float
+        updateRemoteControl(currentTime)
+    }
+    
+    private func updateRemoteControl(_ time: TimeInterval) {
+        var info: [String: Any] = [:]
+        info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: backgroundImageView.image ?? #imageLiteral(resourceName: "background_default_dark"))
+        info[MPMediaItemPropertyTitle] = resource?.name ?? ""
+        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = time
+        info[MPMediaItemPropertyPlaybackDuration] = (resource?.duration ?? 0) / 1000
+            
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }
     
     //MARK: - Progress Target
@@ -354,6 +357,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
             controller.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 sender.mode = .download
                 self.view.makeToast("Delete Music Successful")
+                //TODO: Delete Download
             }))
             controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
@@ -370,20 +374,16 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     @objc private func controlButtonClicked(_ sender: MusicPlayerControlButton) {
-        
-        guard let player = player else { return }
-        
-        if sender.mode == .playing { player.play() }
-        else { player.pause() }
-        sender.mode = !sender.mode
+        if sender.mode == .playing { playCommand() }
+        else { pauseCommand() }
     }
     
     @objc private func lastButtonClicked(_ sender: UIButton) {
-        play(withResource: MusicResourceManager.default.last())
+        playResource(MusicResourceManager.default.last())
     }
     
     @objc private func nextButtonClicked(_ sender: UIButton) {
-        play(withResource: MusicResourceManager.default.next())
+        playResource(MusicResourceManager.default.next())
     }
     
     @objc private func listButtonClicked(_ sender: UIButton) {

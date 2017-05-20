@@ -75,6 +75,8 @@ class MusicResourceManager {
         
         cacheQueue = DispatchQueue(label: "com.xwjack.Music.MusicResourceManager.cacheQueue",
                                    qos: .background)
+        
+        resources = dataBaseManager.getLeastResources()
     }
     
     /// Rest Resources, only effective if identifier is different
@@ -281,9 +283,7 @@ class MusicResourceManager {
     }
     
     private func save(_ resource: MusicResource) {
-//        resource.isCached = false
-//        resource.isDownload = true
-//        resource.md5 = resource.id.md5()
+        
     }
     
     private func uniqueRandom(_ range: ClosedRange<Int>) -> [Int] {

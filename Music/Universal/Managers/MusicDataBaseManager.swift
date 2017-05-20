@@ -14,7 +14,7 @@ class MusicDataBaseManager {
     static let `default`: MusicDataBaseManager = MusicDataBaseManager()
     
     private struct Resource {
-        let table = Table("resources")
+        let table: Table
         let id = Expression<String>("id")
         let name = Expression<String>("name")
         let duration = Expression<Double>("duration")
@@ -22,24 +22,66 @@ class MusicDataBaseManager {
         let artist = Expression<JSON>("artist")
         let album = Expression<JSON>("album")
         let info = Expression<JSON>("info")
+        
+        private(set) var sqlStatement: String = ""
+        
+        init(table: Table) {
+            self.table = table
+            
+            sqlStatement = self.table.create(ifNotExists: true) { (table) in
+                table.column(id, primaryKey: true)
+                table.column(name)
+                table.column(duration)
+                table.column(lyric)
+                table.column(artist)
+                table.column(album)
+                table.column(info)
+            }
+        }
+        
+        func save(resource: MusicResource) -> [Setter] {
+            return [id <- resource.id,
+                    name <- resource.name,
+                    duration <- resource.duration,
+                    lyric <- resource.lyric?.rawJSON ?? emptyJSON,
+                    album <- resource.album?.rawJSON ?? emptyJSON,
+                    artist <- resource.artist?.rawJSON ?? emptyJSON,
+                    info <- resource.info?.rawJSON ?? emptyJSON]
+        }
+        
+        func get(fromRow row: Row) -> MusicResource {
+            let resource = MusicResource(id: row[id])
+            resource.name = row[name]
+            resource.duration = row[duration]
+            resource.lyric = MusicLyricModel(row[lyric])
+            resource.album = MusicAlbumModel(row[album])
+            resource.artist = MusicArtistModel(row[artist])
+            resource.info = MusicResouceInfoModel(row[info])
+            return resource
+        }
     }
     
-    private struct Cache {
-        let table = Table("cache")
+    private struct List {
+        let table: Table
         let id = Expression<String>("id")
-    }
-    
-    private struct Download {
-        let table = Table("download")
-        let id = Expression<String>("id")
+        
+        private(set) var sqlStatement: String = ""
+        
+        init(table: Table) {
+            self.table = table
+            
+            sqlStatement = self.table.create(ifNotExists: true, block: { (table) in
+                table.column(id, primaryKey: true)
+            })
+        }
     }
     
     private let musicDB: Connection?
-//    private let userTable = Table("user")
     
-    private let resource = Resource()
-    private let cache = Cache()
-    private let download = Download()
+    private let resource = Resource(table: Table("Resources"))
+    private let cache = List(table: Table("Cache"))
+    private let download = List(table: Table("Download"))
+    private let leastResources = Resource(table: Table("LeastResources"))
     
     private init() {
         musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("music.db").path)
@@ -48,23 +90,13 @@ class MusicDataBaseManager {
         
         do {
             /// Created resouce table
-            try musicDB?.run(resource.table.create(ifNotExists: true, block: { (table) in
-                table.column(resource.id, primaryKey: true)
-                table.column(resource.name)
-                table.column(resource.duration)
-                table.column(resource.lyric)
-                table.column(resource.artist)
-                table.column(resource.album)
-                table.column(resource.info)
-            }))
+            try musicDB?.run(resource.sqlStatement)
             /// Created cache table
-            try musicDB?.run(cache.table.create(ifNotExists: true, block: { (table) in
-                table.column(cache.id, primaryKey: true)
-            }))
+            try musicDB?.run(cache.sqlStatement)
             /// Created download table
-            try musicDB?.run(download.table.create(ifNotExists: true, block: { (table) in
-                table.column(download.id, primaryKey: true)
-            }))
+            try musicDB?.run(download.sqlStatement)
+            /// Created least reshources table
+            try musicDB?.run(leastResources.sqlStatement)
         } catch {
             ConsoleLog.error("Create Music DB Table Error: \(error)")
         }
@@ -110,7 +142,7 @@ class MusicDataBaseManager {
         }
     }
     
-    //MARK: - Count
+    //MARK: - List Count
     
     func cacheCount() -> Int {
         do {
@@ -137,23 +169,38 @@ class MusicDataBaseManager {
             try musicDB?.run(self.cache.table.insert(self.cache.id <- resource.id))
             save(resource)
         } catch {
-            ConsoleLog.error("Erro Cache resource information to DataBase")
+            ConsoleLog.error("Cache resource information to DataBase with error: \(error)")
         }
     }
     
-    //MARK: - Get Reshource
+    //MARK: - Least Resources
+    
+    func update(leastResources: [MusicResource]) {
+        do {
+            try musicDB?.run(self.leastResources.table.delete())
+            for resource in leastResources {
+                try musicDB?.run(self.leastResources.table.insert(self.leastResources.save(resource: resource)))
+            }
+        } catch {
+            ConsoleLog.error("Update least resources with error: \(error)")
+        }
+    }
+    
+    func getLeastResources() -> [MusicResource] {
+        do {
+            return Array(try musicDB!.prepare(self.leastResources.table).map{ self.leastResources.get(fromRow: $0) })
+        } catch {
+            ConsoleLog.error(error)
+            return []
+        }
+    }
+    
+    //MARK: - Get Resource
     
     func get(_ resouceId: MusicResourceIdentifier) -> MusicResource? {
         do {
-            guard let result = try musicDB?.pluck(self.resource.table.filter(cache.id == resouceId)) else { return nil }
-            let resource = MusicResource(id: result[self.resource.id])
-            resource.name = result[self.resource.name]
-            resource.duration = result[self.resource.duration]
-            resource.lyric = MusicLyricModel(result[self.resource.lyric])
-            resource.album = MusicAlbumModel(result[self.resource.album])
-            resource.artist = MusicArtistModel(result[self.resource.artist])
-            resource.info = MusicResouceInfoModel(result[self.resource.info])
-            return resource
+            guard let row = try musicDB?.pluck(self.resource.table.filter(cache.id == resouceId)) else { return nil }
+            return self.resource.get(fromRow: row)
         } catch {
             ConsoleLog.error(error)
             return nil
@@ -162,13 +209,7 @@ class MusicDataBaseManager {
     
     private func save(_ resource: MusicResource) {
         do {
-            try musicDB?.run(self.resource.table.insert(self.resource.id <- resource.id,
-                                                        self.resource.name <- resource.name,
-                                                        self.resource.duration <- resource.duration,
-                                                        self.resource.lyric <- resource.lyric?.rawJSON ?? emptyJSON,
-                                                        self.resource.album <- resource.album?.rawJSON ?? emptyJSON,
-                                                        self.resource.artist <- resource.artist?.rawJSON ?? emptyJSON,
-                                                        self.resource.info <- resource.info?.rawJSON ?? emptyJSON))
+            try musicDB?.run(self.resource.table.insert(self.resource.save(resource: resource)))
         } catch {
             ConsoleLog.error("Erro Cache resource information to DataBase")
         }

@@ -78,7 +78,7 @@ final class MusicListViewController: MusicTableViewController {
                                            withIdentifier: "MusicList" + listId! + resources.count.description,
                                            currentResourceIndex: indexPath.row)
         musicNavigationController?.push(musicPlayerViewController)
-        musicPlayerViewController.play(withResource: MusicResourceManager.default.current())
+        musicPlayerViewController.playResource()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

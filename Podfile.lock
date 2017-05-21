@@ -14,7 +14,7 @@ PODS:
   - SQLite.swift/standard (0.11.2)
   - SwiftyJSON (3.1.4)
   - Toast-Swift (2.0.0)
-  - Wave (0.1.1)
+  - Wave (0.2.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -29,7 +29,7 @@ DEPENDENCIES:
   - SQLite.swift
   - SwiftyJSON
   - Toast-Swift
-  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `80e9e32`)
+  - Wave (from `git@github.com:XWJACK/Wave.git`, commit `a0d90b6`)
 
 EXTERNAL SOURCES:
   Log:
@@ -45,7 +45,7 @@ EXTERNAL SOURCES:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
-    :commit: 80e9e32
+    :commit: a0d90b6
     :git: git@github.com:XWJACK/Wave.git
 
 CHECKOUT OPTIONS:
@@ -62,7 +62,7 @@ CHECKOUT OPTIONS:
     :commit: 8538ac0
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
-    :commit: 80e9e32
+    :commit: a0d90b6
     :git: git@github.com:XWJACK/Wave.git
 
 SPEC CHECKSUMS:
@@ -78,8 +78,8 @@ SPEC CHECKSUMS:
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Toast-Swift: 5b2f8f720f7e78e48511f693df1f9c9a6e38a25a
-  Wave: cbe37e7dc3354c723488b2f3027b807f04c06808
+  Wave: 260064bd932d7b4b6c36231f87e77a8b368cbbfe
 
-PODFILE CHECKSUM: 2c58145ccda795f63a5a103bd1a6fbba7adff527
+PODFILE CHECKSUM: fb6ea1a4edabb607f7c0b54f5fdc9897d5699bff
 
 COCOAPODS: 1.2.1

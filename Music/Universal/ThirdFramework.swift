@@ -8,13 +8,9 @@
 
 //MARK: - Alamofire
 import Alamofire
-typealias Parameters = Alamofire.Parameters
-typealias HTTPMethod = Alamofire.HTTPMethod
-typealias URLEncoding = Alamofire.URLEncoding
 
 //MARK: - Kingfisher
 import Kingfisher
-typealias ThirdFileManager = KingfisherManager
 
 //MARK: - SwiftyJSON
 import SwiftyJSON
@@ -49,6 +45,7 @@ import Toast_Swift
 //MARK: - SQLite
 import SQLite
 
+/// Extension json for supporting saveing into SQLite
 extension JSON: Value {
     
     public static var declaredDatatype: String {
@@ -68,7 +65,7 @@ extension JSON: Value {
         }
     }
 }
-
+/// Extension json for decoding from row
 extension Row {
     subscript(column: Expression<JSON>) -> JSON {
         return get(column)
@@ -85,10 +82,6 @@ typealias ConsoleLog = Log.ConsoleLog
 
 //MARK: - Wave
 import Wave
-typealias AudioPlayer = Wave.StreamAudioPlayer
-typealias AudioPlayerDelegate = Wave.StreamAudioPlayerDelegate
-typealias AudioQueueStatus = Wave.StreamAudioQueueStatus
-typealias WaveError = Wave.WaveError
 
 //MARK: - PageKit
 import PageKit
@@ -112,6 +105,7 @@ extension JSON {
     var isSuccess: Bool { return code == 200 }
 }
 
+/// Extension with json decoding
 extension Client {
     
     @discardableResult

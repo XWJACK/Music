@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import Wave
 
 /// Music Player Status
 enum MusicPlayerStatus {
@@ -18,7 +19,7 @@ enum MusicPlayerStatus {
     }
 }
 
-class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
+class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate {
     
     /// UI
     private let effectView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
@@ -47,7 +48,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     var isHiddenInput: Bool { return resource == nil }
     
     private var isUserInteraction: Bool = false
-    private var player: AudioPlayer? = nil
+    private var player: StreamAudioPlayer? = nil
     private var timer: Timer? = nil
     private var resource: MusicResource? = nil
     
@@ -282,7 +283,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         destoryTimer()
         
-        player = AudioPlayer()
+        player = StreamAudioPlayer()
         player?.delegate = self
         
         createTimer()
@@ -402,14 +403,14 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     
     //MARK: - StreamAudioPlayerDelegate
     
-    func streamAudioPlayerCompletedParsedAudioInfo(_ player: AudioPlayer) {
+    func streamAudioPlayerCompletedParsedAudioInfo(_ player: StreamAudioPlayer) {
         ConsoleLog.verbose("streamAudioPlayerCompletedParsedAudioInfo")
         DispatchQueue.main.async {
             self.timeSlider.isEnabled = true
         }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, didCompletedPlayFromTime time: TimeInterval) {
+    func streamAudioPlayer(_ player: StreamAudioPlayer, didCompletedPlayFromTime time: TimeInterval) {
         ConsoleLog.verbose("didCompletedSeekToTime: " + "\(time)")
         DispatchQueue.main.async {
             self.dismissBuffingStatus()
@@ -418,7 +419,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, didCompletedPlayAudio isEnd: Bool) {
+    func streamAudioPlayer(_ player: StreamAudioPlayer, didCompletedPlayAudio isEnd: Bool) {
         DispatchQueue.main.async {
             if isEnd {
                 self.nextTrack()
@@ -428,7 +429,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-//    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange status: AudioQueueStatus) {
+//    func streamAudioPlayer(_ player: StreamAudioPlayer, queueStatusChange status: AudioQueueStatus) {
 //        DispatchQueue.main.async {
 //            switch status {
 //            case .playing: self.controlButton.mode = .paused
@@ -438,7 +439,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
 //        }
 //    }
     
-    func streamAudioPlayer(_ player: AudioPlayer, parsedProgress progress: Progress) {
+    func streamAudioPlayer(_ player: StreamAudioPlayer, parsedProgress progress: Progress) {
         DispatchQueue.main.async {
             self.timeSlider.buffProgress(progress)
             if progress.fractionCompleted > 0.01 && self.controlButton.mode == .paused {
@@ -447,7 +448,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-//    func streamAudioPlayer(_ player: AudioPlayer, anErrorOccur error: WaveError) {
+//    func streamAudioPlayer(_ player: StreamAudioPlayer, anErrorOccur error: WaveError) {
 //        ConsoleLog.error(error)
 //    }
 }

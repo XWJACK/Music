@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Kingfisher
 
 final class MusicFileManager {
     
@@ -38,10 +39,10 @@ final class MusicFileManager {
     ///
     /// - Parameter completed: Completed clear
     func clearCache(_ completed: (() -> ())? = nil) {
-        ThirdFileManager.shared.cache.clearDiskCache {
+        KingfisherManager.shared.cache.clearDiskCache {
             self.ioQueue.async {
                 self.clear(self.musicCacheURL)
-                self.clear(self.musicDownloadURL)
+//                self.clear(self.musicDownloadURL)
                 self.createMusicCacheDirectory()
                 self.createMusicDownloadDirectory()
                 DispatchQueue.main.async {
@@ -83,14 +84,14 @@ final class MusicFileManager {
             return diskCacheSize
         }
         
-        ThirdFileManager.shared.cache.calculateDiskCacheSize { (kingfisherSize) in
+        KingfisherManager.shared.cache.calculateDiskCacheSize { (kingfisherSize) in
             self.ioQueue.async {
                 
                 let musicCacheSize = calculateFileSize(in: self.musicCacheURL)
-                let musicDownloadSize = calculateFileSize(in: self.musicDownloadURL)
+//                let musicDownloadSize = calculateFileSize(in: self.musicDownloadURL)
                 
                 DispatchQueue.main.async {
-                    completed(Int64(kingfisherSize) + musicCacheSize + musicDownloadSize)
+                    completed(Int64(kingfisherSize) + musicCacheSize)// + musicDownloadSize)
                 }
             }
         }

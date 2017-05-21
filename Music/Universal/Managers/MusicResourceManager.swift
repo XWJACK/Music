@@ -61,7 +61,7 @@ class MusicResourceManager {
     private let cacheQueue: DispatchQueue
     
     private let playResourceQueue: DispatchQueue
-    private var playResources: [String: ((Data) -> ())?] = [:]
+    private var playResources: [String: Client] = [:]
     
     
     private var dataBaseManager: MusicDataBaseManager { return MusicDataBaseManager.default }
@@ -171,36 +171,30 @@ class MusicResourceManager {
             
             //Reading music data from network
             if originResource.resourceSource == .network {
-                
-                if self.playResources[resourceId] != nil {
-                    self.playResources[resourceId] = (responseBlock)
-                    return
-                }
-                
-                self.playResources[resourceId] = (responseBlock)
-                
                 cacheGroup.enter()
                 // Request Music Source
+                ConsoleLog.verbose("Request Music Info")
                 MusicNetwork.send(API.musicUrl(musicID: originResource.id))
                     .receive(queue: .global(), json: { (json) in
                         
-                    guard let firstJson = json["data"].array?.first else { return }
-                    let model = MusicResouceInfoModel(firstJson)
-                    originResource.info = model
+                        guard let firstJson = json["data"].array?.first else { return }
+                        let model = MusicResouceInfoModel(firstJson)
+                        originResource.info = model
                     
-                    guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
-                        
-                    MusicNetwork.send(url)
-                        .receive(data: { self.playResources[resourceId]??($0) })
-                        .receive(queue: self.cacheQueue, response: { cacheGroup.leave() })
-                        .receive(queue: self.cacheQueue, success: { data = $0 })
+                        guard let url = model.url else { failedBlock?(MusicError.resourcesError(.invalidURL)); return }
+                        ConsoleLog.verbose("Request Music Data")
+                        self.playResources[originResource.id] =
+                            MusicNetwork.send(url)
+                                .receive(data: responseBlock)
+                                .receive(queue: self.cacheQueue, response: { cacheGroup.leave() })
+                                .receive(queue: self.cacheQueue, success: { data = $0 })
                 })
                 
                 //Request Lyric if not exist
                 if originResource.lyric?.lyric == nil {
                     cacheGroup.enter()
                     resourceGroup.enter()
-                    
+                    ConsoleLog.verbose("Request Lyric")
                     MusicNetwork.send(API.lyric(musicID: originResource.id))
                         .receive(queue: self.cacheQueue, json: { (json) in
                             originResource.lyric = MusicLyricModel(json)
@@ -254,8 +248,8 @@ class MusicResourceManager {
     }
     
     func unRegister(_ resourceId: MusicResourceIdentifier) {
-        guard playResources[resourceId] != nil else { return }
-        playResources[resourceId] = (nil)
+        playResources[resourceId]?.task.cancel()
+        destoryRegister(resourceId)
     }
 
     private func destoryRegister(_ resourceId: MusicResourceIdentifier) {

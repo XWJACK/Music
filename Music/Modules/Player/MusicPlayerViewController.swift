@@ -289,6 +289,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         
         timeSlider.isEnabled = false
         timeSlider.resetProgress()
+        dismissBuffingStatus()
         
         MusicResourceManager.default.unRegister(resource?.id ?? "No Resource")
     }

@@ -195,13 +195,13 @@ class MusicDataBaseManager {
         }
     }
     
-    func update(leastResource resource: MusicResource) {
-        do {
-            try musicDB?.run(leastResourcesControl.table.filter(leastResourcesControl.id == resource.id).update(leastResourcesControl.save(resource: resource)))
-        } catch {
-            ConsoleLog.error("Update least resources with error: \(error)")
-        }
-    }
+//    func update(leastResource resource: MusicResource) {
+//        do {
+//            try musicDB?.run(leastResourcesControl.table.filter(leastResourcesControl.id == resource.id).update(leastResourcesControl.save(resource: resource)))
+//        } catch {
+//            ConsoleLog.error("Update least resources with error: \(error)")
+//        }
+//    }
     
     //MARK: - Get Resource
     

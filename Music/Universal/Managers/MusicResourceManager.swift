@@ -51,7 +51,7 @@ class MusicResourceManager {
     
     private var currentResourceIdentifier: String = ""
     
-    private var resources: [MusicResource] = []
+    private(set) var resources: [MusicResource] = []
     private var randomResourceIndexs: [Int] = []
     
     private var currentResourceIndex: Int = 0
@@ -110,9 +110,6 @@ class MusicResourceManager {
         
         for (index, resource) in self.resources.enumerated() where downloadList.contains(resource.id) {
             self.resources[index].resourceSource = .download
-        }
-        cacheQueue.async {
-            self.dataBaseManager.update(leastResources: self.resources)
         }
     }
     
@@ -279,7 +276,6 @@ class MusicResourceManager {
             resource.info?.url = musicUrl
             resource.resourceSource = .cache
             dataBaseManager.cache(resource)
-            dataBaseManager.update(leastResource: resource)
             destoryRegister(resource.id)
         } catch {
             ConsoleLog.error(error)

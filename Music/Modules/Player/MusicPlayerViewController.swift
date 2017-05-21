@@ -321,6 +321,15 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }
     
+    private func showBuffingStatus() {
+        player?.pause()
+        timeSlider.loading(true)
+    }
+    
+    private func dismissBuffingStatus() {
+        timeSlider.loading(false)
+    }
+    
     //MARK: - Progress Target
     
     @objc private func timeSliderValueChange(_ sender: MusicPlayerSlider) {
@@ -332,9 +341,9 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         isUserInteraction = false
         if player?.seek(toTime: TimeInterval(sender.value)) == true {
             player?.play()
+            controlButton.mode = .paused
         } else {
-            destoryTimer()
-            timeSlider.loading(true)
+            showBuffingStatus()
             ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)" + " but need to watting")
         }
     }
@@ -391,6 +400,7 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
     }
     
     //MARK: - StreamAudioPlayerDelegate
+    
     func streamAudioPlayerCompletedParsedAudioInfo(_ player: AudioPlayer) {
         ConsoleLog.verbose("streamAudioPlayerCompletedParsedAudioInfo")
         DispatchQueue.main.async {
@@ -398,30 +408,39 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
         }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, didCompletedSeekToTime time: TimeInterval) {
+    func streamAudioPlayer(_ player: AudioPlayer, didCompletedPlayFromTime time: TimeInterval) {
         ConsoleLog.verbose("didCompletedSeekToTime: " + "\(time)")
         DispatchQueue.main.async {
-            self.timeSlider.loading(false)
+            self.dismissBuffingStatus()
             guard self.controlButton.mode == .paused else { return }
-            self.createTimer()
             self.player?.play()
         }
     }
     
-    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange status: AudioQueueStatus) {
+    func streamAudioPlayer(_ player: AudioPlayer, didCompletedPlayAudio isEnd: Bool) {
         DispatchQueue.main.async {
-            switch status {
-            case .playing: self.controlButton.mode = .paused
-            case .paused: self.controlButton.mode = .playing
-            case .stop: self.controlButton.mode = .playing
+            if isEnd {
+                self.nextTrack()
+            } else {
+                self.showBuffingStatus()
             }
         }
     }
     
+//    func streamAudioPlayer(_ player: AudioPlayer, queueStatusChange status: AudioQueueStatus) {
+//        DispatchQueue.main.async {
+//            switch status {
+//            case .playing: self.controlButton.mode = .paused
+//            case .paused: self.controlButton.mode = .playing
+//            case .stop: self.controlButton.mode = .playing
+//            }
+//        }
+//    }
+    
     func streamAudioPlayer(_ player: AudioPlayer, parsedProgress progress: Progress) {
         DispatchQueue.main.async {
             self.timeSlider.buffProgress(progress)
-            if progress.fractionCompleted > 0.001 {
+            if progress.fractionCompleted > 0.01 && self.controlButton.mode == .paused {
                 self.player?.play()
             }
         }
@@ -430,8 +449,4 @@ class MusicPlayerViewController: MusicViewController, AudioPlayerDelegate {
 //    func streamAudioPlayer(_ player: AudioPlayer, anErrorOccur error: WaveError) {
 //        ConsoleLog.error(error)
 //    }
-    
-    func streamAudioPlayerDidCompletedPlayAudio(_ player: AudioPlayer) {
-        nextButtonClicked(nextButton)
-    }
 }

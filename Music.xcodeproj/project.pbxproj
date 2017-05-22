@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04009B6F1ED2BAE8007CC4F2 /* ThreadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04009B6E1ED2BAE8007CC4F2 /* ThreadManager.swift */; };
 		040300441EB9BB990023021F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040300431EB9BB990023021F /* Notification.swift */; };
 		040300461EB9E39B0023021F /* MusicCollectionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040300451EB9E39B0023021F /* MusicCollectionListViewController.swift */; };
 		040576591EB343CC00FE8987 /* MusicSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040576581EB343CC00FE8987 /* MusicSearchViewController.swift */; };
@@ -66,6 +67,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04009B6E1ED2BAE8007CC4F2 /* ThreadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadManager.swift; sourceTree = "<group>"; };
 		040300431EB9BB990023021F /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		040300451EB9E39B0023021F /* MusicCollectionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicCollectionListViewController.swift; path = Modules/MusicList/MusicCollectionListViewController.swift; sourceTree = "<group>"; };
 		040576581EB343CC00FE8987 /* MusicSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicSearchViewController.swift; path = Modules/Search/MusicSearchViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */,
 				044A1C3F1EC33EC500179379 /* AccountManager.swift */,
 				04E1C2261ECDBAA200E11F04 /* MusicDataBaseManager.swift */,
+				04009B6E1ED2BAE8007CC4F2 /* ThreadManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -538,6 +541,7 @@
 				04EB6C8C1E7AA10200A76240 /* Gesture.swift in Sources */,
 				045146031EB86B6C00D6F08A /* MusicNavigationController.swift in Sources */,
 				040576731EB34B5400FE8987 /* MusicPlayerViewController.swift in Sources */,
+				04009B6F1ED2BAE8007CC4F2 /* ThreadManager.swift in Sources */,
 				045145FE1EB86B4D00D6F08A /* MusicNavigationBar.swift in Sources */,
 				043693161EC9DB3D00E5FE2D /* MusicPlayerCoverView.swift in Sources */,
 				045145F01EB7175300D6F08A /* UIFontExtension.swift in Sources */,

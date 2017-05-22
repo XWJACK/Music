@@ -23,6 +23,8 @@ class MusicDataBaseManager {
         let album = Expression<JSON>("album")
         let info = Expression<JSON>("info")
         
+        let status = Expression<Int>("status")
+        
         private(set) var sqlStatement: String = ""
         
         init(table: Table) {
@@ -36,6 +38,7 @@ class MusicDataBaseManager {
                 table.column(artist)
                 table.column(album)
                 table.column(info)
+                table.column(status)
             }
         }
         
@@ -53,10 +56,10 @@ class MusicDataBaseManager {
             let resource = MusicResource(id: row[id])
             resource.name = row[name]
             resource.duration = row[duration]
-            resource.lyric = MusicLyricModel(row[lyric])
-            resource.album = MusicAlbumModel(row[album])
-            resource.artist = MusicArtistModel(row[artist])
-            resource.info = MusicResouceInfoModel(row[info])
+            resource.lyric = row[lyric] == emptyJSON ? nil : MusicLyricModel(row[lyric])
+            resource.album = row[album] == emptyJSON ? nil : MusicAlbumModel(row[album])
+            resource.artist = row[artist] == emptyJSON ? nil : MusicArtistModel(row[artist])
+            resource.info = row[info] == emptyJSON ? nil : MusicResouceInfoModel(row[info])
             return resource
         }
     }
@@ -98,7 +101,7 @@ class MusicDataBaseManager {
             /// Created least reshources table
             try musicDB?.run(leastResourcesControl.sqlStatement)
         } catch {
-            ConsoleLog.error("Create Music DB Table Error: \(error)")
+            ConsoleLog.error("Create tables with error: \(error)")
         }
     }
     
@@ -173,6 +176,20 @@ class MusicDataBaseManager {
         }
     }
     
+    func download(_ resource: MusicResource) {
+        do {
+            try musicDB?.run(downloadControl.table.insert(downloadControl.id <- resource.id))
+            if !save(resource, withStatus: 1) {
+                try musicDB?.run(resourceControl.table.filter(resourceControl.id == resource.id).update(resourceControl.status <- 1))
+            }
+        } catch {
+            ConsoleLog.error("Download resource information to DataBase with error: \(error)")
+        }
+    }
+    
+    //MARK: - Delete 
+
+    
     //MARK: - Least Resources
     
     func update(leastResources: [MusicResource]) {
@@ -195,14 +212,6 @@ class MusicDataBaseManager {
         }
     }
     
-//    func update(leastResource resource: MusicResource) {
-//        do {
-//            try musicDB?.run(leastResourcesControl.table.filter(leastResourcesControl.id == resource.id).update(leastResourcesControl.save(resource: resource)))
-//        } catch {
-//            ConsoleLog.error("Update least resources with error: \(error)")
-//        }
-//    }
-    
     //MARK: - Get Resource
     
     func get(_ resouceId: MusicResourceIdentifier) -> MusicResource? {
@@ -215,11 +224,33 @@ class MusicDataBaseManager {
         }
     }
     
-    private func save(_ resource: MusicResource) {
+    func clear() {
         do {
-            try musicDB?.run(resourceControl.table.insert(resourceControl.save(resource: resource)))
+            let list = cacheList()
+            try musicDB?.run(cacheControl.table.delete())
+            
+            for row in try musicDB!.prepare(resourceControl.table.select(resourceControl.id)) {
+                let id = row[resourceControl.id]
+                guard list.contains(id) else { continue }
+                try musicDB?.run(resourceControl.table.filter(resourceControl.id == id).delete())
+            }
+            
         } catch {
-            ConsoleLog.error("Erro Cache resource information to DataBase")
+            ConsoleLog.error(error)
+        }
+    }
+    
+    //MARK: - Private
+    @discardableResult
+    private func save(_ resource: MusicResource, withStatus status: Int = 0) -> Bool {
+        do {
+            var setter: [Setter] = resourceControl.save(resource: resource)
+            setter.append(resourceControl.status <- status)
+            try musicDB?.run(resourceControl.table.insert(setter))
+            return true
+        } catch {
+            ConsoleLog.error("Save resource information to DataBase with error: \(error)")
+            return false
         }
     }
 }

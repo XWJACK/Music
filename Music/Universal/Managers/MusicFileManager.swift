@@ -42,7 +42,10 @@ final class MusicFileManager {
         KingfisherManager.shared.cache.clearDiskCache {
             self.ioQueue.async {
                 self.clear(self.musicCacheURL)
-//                self.clear(self.musicDownloadURL)
+
+                MusicDataBaseManager.default.clear()
+                MusicResourceManager.default.clear()
+                
                 self.createMusicCacheDirectory()
                 self.createMusicDownloadDirectory()
                 DispatchQueue.main.async {

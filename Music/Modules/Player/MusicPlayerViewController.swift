@@ -124,7 +124,6 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         loveButton.mode = .disable
         loveButton.addTarget(self, action: #selector(loveButtonClicked(_:)), for: .touchUpInside)
         
-        downloadButton.mode = .disable
         downloadButton.addTarget(self, action: #selector(downloadButtonClicked(_:)), for: .touchUpInside)
         
         actionView.snp.makeConstraints { (make) in
@@ -254,8 +253,6 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         
         MusicResourceManager.default.register(resource.id, responseBlock: {
             self.player?.respond(with: $0)
-        }, resourceBlock: { (resource) in
-            self.resource = resource
         })
     }
     
@@ -323,6 +320,10 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }
     
+    private func post(status: MusicPlayerStatus) {
+        NotificationCenter.default.post(name: .playStatusChange, object: nil, userInfo: ["Status": status])
+    }
+    
     private func showBuffingStatus() {
         player?.pause()
         timeSlider.loading(true)
@@ -362,7 +363,12 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     @objc private func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {
         switch sender.mode {
         case .download:
-            break
+            guard let resource = resource else { return }
+            MusicResourceManager.default.download(resource, successBlock: {
+                DispatchQueue.main.async {
+                    self.downloadButton.mode = .downloaded
+                }
+            })
         case .downloaded:
             let controller = UIAlertController(title: "Delete this Music?", message: nil, preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in

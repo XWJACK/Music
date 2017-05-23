@@ -9,8 +9,6 @@
 import Foundation
 
 typealias MusicResourceIdentifier = String
-typealias ResponseData = (Data) -> ()
-typealias MusicResourceCollection = [MusicResourceIdentifier: MusicResource]
 
 /// Music Resource
 class MusicResource {
@@ -259,6 +257,11 @@ class MusicResourceManager {
 
     func clear() {
         resources.filter{ $0.resourceSource != .download }.forEach{ $0.resourceSource = .network }
+    }
+    
+    func delete(_ resourceId: MusicResourceIdentifier) {
+        resources.filter{ $0.id == resourceId }.forEach{ $0.resourceSource = .network }
+        dataBaseManager.delete(resourceId: resourceId)
     }
     
     func download(_ resource: MusicResource,

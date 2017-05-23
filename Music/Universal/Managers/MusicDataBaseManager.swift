@@ -249,6 +249,8 @@ class MusicDataBaseManager {
             if !save(resource, withStatus: 1) {
                 try musicDB?.run(resourceControl.table.filter(resourceControl.id == resource.id).update(resourceControl.status <- 1))
             }
+            /// Delete cache with same resource
+            try musicDB?.run(cacheControl.table.filter(cacheControl.id == resource.id).delete())
         } catch {
             ConsoleLog.error("Download resource information to DataBase with error: \(error)")
         }
@@ -291,17 +293,23 @@ class MusicDataBaseManager {
         }
     }
     
+    //MARK: - Clear cache resource , delete downloaded
+    
     func clear() {
         do {
-            let list = cacheList()
             try musicDB?.run(cacheControl.table.delete())
             
-            for row in try musicDB!.prepare(resourceControl.table.select(resourceControl.id)) {
-                let id = row[resourceControl.id]
-                guard list.contains(id) else { continue }
-                try musicDB?.run(resourceControl.table.filter(resourceControl.id == id).delete())
-            }
+            try musicDB?.run(resourceControl.table.filter(resourceControl.status == 0).delete())
             
+        } catch {
+            ConsoleLog.error(error)
+        }
+    }
+    
+    func delete(resourceId: String) {
+        do {
+            try musicDB?.run(downloadControl.table.filter(downloadControl.id == resourceId).delete())
+            try musicDB?.run(resourceControl.table.filter(resourceControl.id == resourceId).delete())
         } catch {
             ConsoleLog.error(error)
         }

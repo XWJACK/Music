@@ -372,9 +372,14 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         case .downloaded:
             let controller = UIAlertController(title: "Delete this Music?", message: nil, preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                sender.mode = .download
-                self.view.makeToast("Delete Music Successful")
-                //TODO: Delete Download
+                guard let resourceId = self.resource?.id else { return }
+                DispatchQueue.global().async {
+                    MusicResourceManager.default.delete(resourceId)
+                    DispatchQueue.main.async {
+                        sender.mode = .download
+                        self.view.makeToast("Delete Music Successful")
+                    }
+                }
             }))
             controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             

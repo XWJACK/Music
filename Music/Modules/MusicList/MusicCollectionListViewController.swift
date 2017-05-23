@@ -16,7 +16,7 @@ struct MusicCollectionListViewModel {
 
 final class MusicCollectionListViewController: MusicTableViewController {
 
-    private var localViewModels: [(image: UIImage, title: String, detail: String)] = []
+    private var localViewModels: [(listId: String, image: UIImage, title: String, detail: String)] = []
     private var apiDatas: [MusicPlayListModel] = []
     private var viewModels: [MusicCollectionListViewModel] = []
     
@@ -48,7 +48,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
             make.width.height.equalTo(28)
         }
         
-        localViewModels.append((#imageLiteral(resourceName: "collection_downloaded"), "Local Music", MusicDataBaseManager.default.downloadCount().description + " songs"))
+        localViewModels.append(("Download", #imageLiteral(resourceName: "collection_downloaded"), "Local Music", "0 songs"))
         
         request()
     }
@@ -61,16 +61,44 @@ final class MusicCollectionListViewController: MusicTableViewController {
     private func request() {
         guard let userId = AccountManager.default.account?.id else { tableView.mj_header.endRefreshing(); return }
         
+        localViewModels[0].detail = MusicDataBaseManager.default.downloadCount().description + " songs"
+        
         MusicNetwork.send(API.playList(userId: userId))
-            .receive(json: { (json) in
-            guard json.isSuccess else { return }
-            self.apiDatas = json["playlist"].array?.map{ MusicPlayListModel($0) } ?? []
-            self.viewModels = self.apiDatas.map{ $0.musicCollectionListViewModel }
-            self.tableView.reloadData()
+            .receive(queue: .global(), json: {
+                if self.parseCollectionList($0) {
+                    MusicDataBaseManager.default.set(userId, collectionList: $0)
+                }
             })
             .receive {
                 self.tableView.mj_header.endRefreshing()
+                self.tableView.reloadData()
+            }
+            .receive(queue: .global(), failed: {
+                self.networkBusy($0)
+                guard let json = MusicDataBaseManager.default.get(userId: userId) else { return }
+                self.parseCollectionList(json)
+            })
+    }
+    
+    @discardableResult
+    private func parseCollectionList(_ json: JSON) -> Bool {
+        guard json.isSuccess else { return false }
+        apiDatas = json["playlist"].array?.map{ MusicPlayListModel($0) } ?? []
+        viewModels = self.apiDatas.map{ $0.musicCollectionListViewModel }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
+        return true
+    }
+    
+    @discardableResult
+    private func parseListDetail(_ controller: MusicListViewController, json: JSON) -> Bool {
+        guard json.isSuccess else { return false }
+        controller.apiDatas = MusicPlayListDetailModel(json["playlist"])
+        DispatchQueue.main.async {
+            controller.tableView.reloadData()
+        }
+        return true
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
@@ -96,8 +124,38 @@ final class MusicCollectionListViewController: MusicTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
         let controller = MusicListViewController()
-        if indexPath.section == 1 {
-            controller.listId = apiDatas[indexPath.row].id
+        
+        switch (indexPath.section, indexPath.row) {
+        case (0, _):
+            let listId = localViewModels[indexPath.row].listId
+            DispatchQueue.global().async {
+                controller.listId = listId
+                controller.resources = MusicDataBaseManager.default.downloadList().map{ MusicDataBaseManager.default.get(resourceId: $0) }.filter{ $0 != nil }.map{ $0! }
+                controller.viewModels = controller.resources.map{
+                    var model = MusicPlayListDetailViewModel()
+                    model.name = $0.name
+                    model.detail = ($0.artist?.name ?? "") + "-" + ($0.album?.name ?? "")
+                    return model
+                }
+                DispatchQueue.main.async {
+                    controller.tableView.reloadData()
+                }
+            }
+        case (1, _):
+            let listId = apiDatas[indexPath.row].id
+            controller.listId = listId
+            MusicNetwork.send(API.detail(listId: listId))
+                .receive(queue: .global(), json: { (json) in
+                    
+                    if self.parseListDetail(controller, json: json) {
+                        MusicDataBaseManager.default.set(listId, listDetail: json)
+                    }
+                })
+                .receive(queue: .global(), failed: { (error) in
+                    guard let json = MusicDataBaseManager.default.get(listId: listId) else { return }
+                    self.parseListDetail(controller, json: json)
+                })
+        default: break
         }
         musicNavigationController?.push(controller, hiddenTabBar: false)
     }

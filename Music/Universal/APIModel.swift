@@ -204,10 +204,12 @@ class MusicPlayListModel: JSONInitable {
 
 class MusicPlayListDetailModel: MusicPlayListModel {
     
-    var musicDetail: [MusicDetailModel] = []
+    let tracks: [MusicDetailModel]
+    let rawJSON: JSON
     
     required init(_ json: JSON) {
+        rawJSON = json
+        tracks = json["tracks"].array?.map{ MusicDetailModel(playListJSON: $0) } ?? []
         super.init(json)
-        musicDetail = json["tracks"].array?.map{ MusicDetailModel(playListJSON: $0) } ?? []
     }
 }

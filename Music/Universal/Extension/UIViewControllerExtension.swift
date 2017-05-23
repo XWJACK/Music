@@ -8,8 +8,11 @@
 
 import UIKit
 
-//extension UIViewController {
-//    static func instanseFromStoryboard<T: UIViewController>() -> T? {
-//        return UIStoryboard(name: self.reuseIdentifier, bundle: nil).instantiateViewController(withIdentifier: self.reuseIdentifier) as? T
-//    }
-//}
+extension UIViewController {
+    func networkBusy(_ error: Error) -> () {
+        DispatchQueue.main.async {
+            self.view.makeToast(networkBusyString)
+        }
+        ConsoleLog.error(error)
+    }
+}

@@ -11,3 +11,5 @@ import Foundation
 let musicPlayerViewController = MusicPlayerViewController()
 let emptyData = Data()
 let emptyJSON = JSON(data: emptyData)
+
+let networkBusyString = "Network Busy"

@@ -16,8 +16,17 @@ struct MusicPlayListDetailViewModel {
 final class MusicListViewController: MusicTableViewController {
     
     var listId: String?
-    private var apiDatas: MusicPlayListDetailModel?
-    private var viewModels: [MusicPlayListDetailViewModel] = []
+    
+    var apiDatas: MusicPlayListDetailModel? {
+        didSet {
+            guard let apiDatas = apiDatas else { return }
+            resources = apiDatas.tracks.map({ $0.resource })
+            viewModels = apiDatas.tracks.map{ $0.musicPlayListDetailViewModel }
+        }
+    }
+    var resources: [MusicResource] = []
+    
+    var viewModels: [MusicPlayListDetailViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,29 +42,11 @@ final class MusicListViewController: MusicTableViewController {
         rightButton.snp.makeConstraints { (make) in
             make.width.height.equalTo(28)
         }
-        
-        tableView.mj_header = RefreshNormalHeader { [unowned self] in
-            self.request()
-        }
-        
-        request()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         musicNavigationBar.rightButton.isHidden = musicPlayerViewController.isHiddenInput
-    }
-    
-    private func request() {
-        guard let listId = listId else { tableView.mj_header.endRefreshing(); return }
-        MusicNetwork.send(API.detail(listId: listId))
-            .receive { self.tableView.mj_header.endRefreshing() }
-            .receive(json: { (json) in
-                guard json.isSuccess else { return }
-                self.apiDatas = MusicPlayListDetailModel(json["playlist"])
-                self.viewModels = self.apiDatas?.musicDetail.map{ $0.musicPlayListDetailViewModel } ?? []
-                self.tableView.reloadData()
-            })
     }
     
     @objc private func actionButtonClicked(_ sender: MusicButton) {
@@ -73,7 +64,6 @@ final class MusicListViewController: MusicTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
         
-        guard let resources = apiDatas?.musicDetail.map({ $0.resource }) else { return }
         MusicResourceManager.default.reset(resources,
                                            withIdentifier: "MusicList" + listId! + resources.count.description,
                                            currentResourceIndex: indexPath.row)

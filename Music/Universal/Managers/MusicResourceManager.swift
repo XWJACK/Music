@@ -202,10 +202,17 @@ class MusicResourceManager {
             
             /// Aleardy reading data from database
             if let musicUrl = originResource.info?.url {
-                readingFromLocal(musicUrl)
+                if !musicUrl.isFileURL {
+                    if originResource.resourceSource == .download {
+                        originResource.info?.url = self.fileManager.musicDownloadURL.appendingPathComponent(originResource.info!.md5)
+                    } else {
+                        originResource.info?.url = self.fileManager.musicCacheURL.appendingPathComponent(originResource.info!.md5)
+                    }
+                }
+                readingFromLocal(originResource.info!.url!)
             } else {
                 threadManager.audioParseQueue.async {
-                    guard let localResource = self.dataBaseManager.get(originResource.id) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
+                    guard let localResource = self.dataBaseManager.get(resourceId: originResource.id) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
                     localResource.info?.url = localResource.resourceSource == .cache ? self.fileManager.musicCacheURL.appendingPathComponent(localResource.info!.md5) : self.fileManager.musicDownloadURL.appendingPathComponent(localResource.info!.md5)
 
                     originResource.lyric = localResource.lyric
@@ -251,7 +258,7 @@ class MusicResourceManager {
     }
 
     func clear() {
-        resources.forEach{ $0.resourceSource = .network }
+        resources.filter{ $0.resourceSource != .download }.forEach{ $0.resourceSource = .network }
     }
     
     func download(_ resource: MusicResource,

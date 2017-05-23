@@ -119,8 +119,8 @@ class MusicResourceManager {
             if currentResourceIndex == 0 { currentResourceIndex = resources.count - 1 }
             else { currentResourceIndex -= 1 }
         case .random:
-            if currentResourceIndex == 0 { currentResourceIndex = randomResourceIndexs.count - 1 }
-            else { currentResourceIndex -= 1 }
+            if currentRandomResourceIndex == 0 { currentRandomResourceIndex = randomResourceIndexs.count - 1 }
+            else { currentRandomResourceIndex -= 1 }
             currentResourceIndex = randomResourceIndexs[currentRandomResourceIndex]
         default: break
         }

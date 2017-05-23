@@ -259,9 +259,15 @@ class MusicResourceManager {
         resources.filter{ $0.resourceSource != .download }.forEach{ $0.resourceSource = .network }
     }
     
-    func delete(_ resourceId: MusicResourceIdentifier) {
-        resources.filter{ $0.id == resourceId }.forEach{ $0.resourceSource = .network }
-        dataBaseManager.delete(resourceId: resourceId)
+    func delete(_ resource: MusicResource) {
+        resources.filter{ $0.id == resource.id }.forEach{ $0.resourceSource = .network }
+        dataBaseManager.delete(resourceId: resource.id)
+        guard let md5 = resource.info?.md5 else { ConsoleLog.error("Delete Download fail with no md5"); return }
+        do {
+            try FileManager.default.removeItem(at: fileManager.musicDownloadURL.appendingPathComponent(md5))
+        } catch {
+            ConsoleLog.error("Delete Download file with error: \(error)")
+        }
     }
     
     func download(_ resource: MusicResource,

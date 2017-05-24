@@ -10,25 +10,43 @@ import UIKit
 
 class MusicPlayerCoverView: UIView {
     
-    private let coverImageView = UIImageView(image: #imageLiteral(resourceName: "player_display_cover_background"))
-    private let imageView = UIImageView()
+    private let discBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_disc_background"))
+    private let coverImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_cover"))
+    private let albumImageView: UIImageView = UIImageView()
+    private let discImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_disc"))
+    private let maskImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_mask"))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        coverImageView.layer.masksToBounds = true
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 71
-        
+        addSubview(discBackgroundImageView)
         addSubview(coverImageView)
-        addSubview(imageView)
+        addSubview(albumImageView)
+        addSubview(discImageView)
+        addSubview(maskImageView)
         
-        coverImageView.snp.makeConstraints { (make) in
+        discBackgroundImageView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        imageView.snp.makeConstraints { (make) in
+        
+        coverImageView.snp.makeConstraints { (make) in
+            make.size.equalTo(discImageView).offset(-80)
             make.center.equalToSuperview()
-            make.width.height.equalTo(142)
+        }
+        
+        albumImageView.snp.makeConstraints { (make) in
+            make.size.equalTo(coverImageView)
+            make.center.equalToSuperview()
+        }
+        
+        discImageView.snp.makeConstraints { (make) in
+            make.size.equalTo(discBackgroundImageView)
+            make.center.equalToSuperview()
+        }
+        
+        maskImageView.snp.makeConstraints { (make) in
+            make.width.equalTo(discImageView)
+            make.center.equalToSuperview()
         }
     }
     
@@ -36,15 +54,10 @@ class MusicPlayerCoverView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        coverImageView.layer.cornerRadius = frame.width / 2
-    }
-    
     func setImage(url: URL?) {
-        imageView.kf.setImage(with: url,
-                              placeholder: #imageLiteral(resourceName: "background_default_light"),
-                              options: [.forceTransition,
-                                        .transition(.fade(0.5))])
+        albumImageView.kf.setImage(with: url,
+                                   placeholder: albumImageView.image ?? #imageLiteral(resourceName: "player_cover_default"),
+                                   options: [.forceTransition,
+                                             .transition(.fade(0.5))])
     }
 }

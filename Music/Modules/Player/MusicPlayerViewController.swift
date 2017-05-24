@@ -24,7 +24,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
     /// UI
     private let effectView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     private let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "background_default_dark-ip5"))
-    private let maskBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_background_mask-ip5"))
+//    private let maskBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_background_mask-ip5"))
     
     private let displayView: UIView = UIView()
     private let coverView: MusicPlayerCoverView = MusicPlayerCoverView()
@@ -90,7 +90,7 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         controlView.addSubview(controlButton)
         controlView.addSubview(nextButton)
         
-        effectView.addSubview(maskBackgroundImageView)
+//        effectView.addSubview(maskBackgroundImageView)
         effectView.addSubview(displayView)
         effectView.addSubview(actionView)
         effectView.addSubview(progressView)
@@ -105,9 +105,9 @@ class MusicPlayerViewController: MusicViewController, StreamAudioPlayerDelegate 
         effectView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        maskBackgroundImageView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
+//        maskBackgroundImageView.snp.makeConstraints { (make) in
+//            make.edges.equalToSuperview()
+//        }
         
         // - Display View
         

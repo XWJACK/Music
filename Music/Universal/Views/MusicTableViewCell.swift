@@ -16,6 +16,12 @@ class MusicTableViewCell: UITableViewCell {
     var lineWidth: CGFloat = 0.5
     let separator = UIView()
     
+    var isHiddenSeparator: Bool = false {
+        didSet {
+            separator.isHidden = isHiddenSeparator
+        }
+    }
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         

@@ -12,8 +12,8 @@ struct LyricParser {
     
     let rawLyric: String
     
-    private(set) var timeLyric: [(TimeInterval, String)] = []
-    private(set) var stringLyric: [(String, String)] = []
+    private(set) var timeLyric: [(time: TimeInterval, lyric: String)] = []
+    private(set) var stringLyric: [(time: String, lyric: String)] = []
     
     init(_ rawLyric: String) {
         self.rawLyric = rawLyric
@@ -24,13 +24,14 @@ struct LyricParser {
         
         /// ["03:20.140", "逆着洋流独自游到底"]
         /// ["03:26.700", "年少时候虔诚发过的誓"]
-        let clearRow: [[String.CharacterView.SubSequence]] = row.map{ $0.split(separator: "]") }.map{ [$0[0].dropFirst(), $0[1]] }
+        let clearRow: [[String.CharacterView.SubSequence]] = row.map{ $0.split(separator: "]") }
+        let fixRow: [[String.CharacterView.SubSequence]] = clearRow.filter{ $0.count == 2 }.map{ [$0[0].dropFirst(), $0[1]] }
         
-        stringLyric = clearRow.map{ (String($0[0]), String($0[1])) }
+        stringLyric = fixRow.map{ (String($0[0]), String($0[1])) }
         
         /// [(200.14, "逆着洋流独自游到底")]
         /// [(206.7, "年少时候虔诚发过的誓")]
-        let timeRow: [(TimeInterval, String)] = clearRow.map{ (timeInterval($0[0]), String($0[1])) }
+        let timeRow: [(TimeInterval, String)] = fixRow.map{ (timeInterval($0[0]), String($0[1])) }
         
         timeLyric = timeRow
     }

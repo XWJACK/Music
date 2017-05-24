@@ -42,6 +42,7 @@
 		04AA363E1EBDEA7F00DED541 /* MusicResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */; };
 		04BCF4A91EC22491005E456B /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCF4A81EC22491005E456B /* FoundationExtension.swift */; };
 		04BFFB881ED51725000CE107 /* LyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFFB871ED51725000CE107 /* LyricParser.swift */; };
+		04BFFB8A1ED5C1ED000CE107 /* MusicLyricTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFFB891ED5C1ED000CE107 /* MusicLyricTableViewCell.swift */; };
 		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
 		04E1C2271ECDBAA200E11F04 /* MusicDataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E1C2261ECDBAA200E11F04 /* MusicDataBaseManager.swift */; };
 		04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB6C891E7A96B400A76240 /* UIViewExtension.swift */; };
@@ -107,6 +108,7 @@
 		04BCF4A71EC207DD005E456B /* Music-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Music-Bridging-Header.h"; path = "Supporting Files/Music-Bridging-Header.h"; sourceTree = "<group>"; };
 		04BCF4A81EC22491005E456B /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FoundationExtension.swift; path = Extension/FoundationExtension.swift; sourceTree = "<group>"; };
 		04BFFB871ED51725000CE107 /* LyricParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricParser.swift; sourceTree = "<group>"; };
+		04BFFB891ED5C1ED000CE107 /* MusicLyricTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicLyricTableViewCell.swift; path = Music/Modules/Player/MusicLyricTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
 		04E1C2261ECDBAA200E11F04 /* MusicDataBaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicDataBaseManager.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				045145E51EB61E5A00D6F08A /* MusicPlayerControlButton.swift */,
 				0484C8F01EB97D3000A2A6A1 /* MusicPlayerLoveButton.swift */,
 				043693151EC9DB3D00E5FE2D /* MusicPlayerCoverView.swift */,
+				04BFFB891ED5C1ED000CE107 /* MusicLyricTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				043693161EC9DB3D00E5FE2D /* MusicPlayerCoverView.swift in Sources */,
 				045145F01EB7175300D6F08A /* UIFontExtension.swift in Sources */,
 				0484C8F11EB97D3000A2A6A1 /* MusicPlayerLoveButton.swift in Sources */,
+				04BFFB8A1ED5C1ED000CE107 /* MusicLyricTableViewCell.swift in Sources */,
 				04F7701E1EB9FAE400C70507 /* MusicCollectionListTableViewCell.swift in Sources */,
 				04F770211EBA20B200C70507 /* MusicCenterViewController.swift in Sources */,
 				045146041EB86B6C00D6F08A /* MusicTabBarController.swift in Sources */,

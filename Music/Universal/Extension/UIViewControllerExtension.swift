@@ -10,9 +10,13 @@ import UIKit
 
 extension UIViewController {
     func networkBusy(_ error: Error) -> () {
-        DispatchQueue.main.async {
-            self.view.makeToast(networkBusyString)
-        }
+        showToast(networkBusyString)
         ConsoleLog.error(error)
+    }
+    
+    func showToast(_ message: String) {
+        DispatchQueue.main.async {
+            self.view.makeToast(message, duration: 1, position: .center)
+        }
     }
 }

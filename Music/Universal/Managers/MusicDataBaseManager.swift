@@ -285,7 +285,7 @@ class MusicDataBaseManager {
     
     func get(resourceId: MusicResourceIdentifier) -> MusicResource? {
         do {
-            guard let row = try musicDB?.pluck(resourceControl.table.filter(cacheControl.id == resourceId)) else { return nil }
+            guard let row = try musicDB?.pluck(resourceControl.table.filter(resourceControl.id == resourceId)) else { return nil }
             return resourceControl.get(fromRow: row)
         } catch {
             ConsoleLog.error(error)

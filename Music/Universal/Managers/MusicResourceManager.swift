@@ -142,6 +142,7 @@ class MusicResourceManager {
     
     func register(_ resourceId: MusicResourceIdentifier,
                   responseBlock: ((Data) -> ())? = nil,
+                  lyricBlock: ((MusicLyricModel?) -> ())? = nil,
                   failedBlock: ((Error) -> ())? = { ConsoleLog.error($0) }) {
         
         /// Find resource by id
@@ -171,6 +172,7 @@ class MusicResourceManager {
                 cacheGroup.enter()
                 self.lyric(originResource.id, block: { (model) in
                     originResource.lyric = model
+                    lyricBlock?(model)
                     cacheGroup.leave()
                 })
             }
@@ -185,6 +187,9 @@ class MusicResourceManager {
             ConsoleLog.verbose("Reading: " + originResource.id + " music from " + (originResource.resourceSource == .cache ? "Cache" : "Download"))
             
             let readingFromLocal: (URL) -> () = { url in
+                
+                lyricBlock?(originResource.lyric)
+                
                 //Reading Music File
                 self.threadManager.audioParseQueue.async {
                     do {
@@ -211,7 +216,7 @@ class MusicResourceManager {
             } else {
                 threadManager.audioParseQueue.async {
                     guard let localResource = self.dataBaseManager.get(resourceId: originResource.id) else { failedBlock?(MusicError.resourcesError(.noResource)); return }
-                    localResource.info?.url = localResource.resourceSource == .cache ? self.fileManager.musicCacheURL.appendingPathComponent(localResource.info!.md5) : self.fileManager.musicDownloadURL.appendingPathComponent(localResource.info!.md5)
+                    localResource.info?.url = originResource.resourceSource == .cache ? self.fileManager.musicCacheURL.appendingPathComponent(localResource.info!.md5) : self.fileManager.musicDownloadURL.appendingPathComponent(localResource.info!.md5)
 
                     originResource.lyric = localResource.lyric
                     originResource.info = localResource.info

@@ -41,6 +41,7 @@
 		04AA36301EBCA56F00DED541 /* MusicSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA362F1EBCA56F00DED541 /* MusicSearchTableViewCell.swift */; };
 		04AA363E1EBDEA7F00DED541 /* MusicResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */; };
 		04BCF4A91EC22491005E456B /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCF4A81EC22491005E456B /* FoundationExtension.swift */; };
+		04BFFB881ED51725000CE107 /* LyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFFB871ED51725000CE107 /* LyricParser.swift */; };
 		04C2D07D1E7A7C3B001BDE73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2D07C1E7A7C3B001BDE73 /* Error.swift */; };
 		04E1C2271ECDBAA200E11F04 /* MusicDataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E1C2261ECDBAA200E11F04 /* MusicDataBaseManager.swift */; };
 		04EB6C8A1E7A96B400A76240 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB6C891E7A96B400A76240 /* UIViewExtension.swift */; };
@@ -105,6 +106,7 @@
 		04AA363D1EBDEA7F00DED541 /* MusicResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicResourceManager.swift; sourceTree = "<group>"; };
 		04BCF4A71EC207DD005E456B /* Music-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Music-Bridging-Header.h"; path = "Supporting Files/Music-Bridging-Header.h"; sourceTree = "<group>"; };
 		04BCF4A81EC22491005E456B /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FoundationExtension.swift; path = Extension/FoundationExtension.swift; sourceTree = "<group>"; };
+		04BFFB871ED51725000CE107 /* LyricParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricParser.swift; sourceTree = "<group>"; };
 		04C188461E66C6C900432954 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C2D07C1E7A7C3B001BDE73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Error/Error.swift; sourceTree = "<group>"; };
 		04E1C2261ECDBAA200E11F04 /* MusicDataBaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicDataBaseManager.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				044A1C3F1EC33EC500179379 /* AccountManager.swift */,
 				04E1C2261ECDBAA200E11F04 /* MusicDataBaseManager.swift */,
 				04009B6E1ED2BAE8007CC4F2 /* ThreadManager.swift */,
+				04BFFB871ED51725000CE107 /* LyricParser.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -568,6 +571,7 @@
 				045145E21EB6119F00D6F08A /* MusicPlayerModeButton.swift in Sources */,
 				044F1AEF1E79256E00A8502A /* BlurEffect.swift in Sources */,
 				040300461EB9E39B0023021F /* MusicCollectionListViewController.swift in Sources */,
+				04BFFB881ED51725000CE107 /* LyricParser.swift in Sources */,
 				044A1C3E1EC33DFD00179379 /* ThirdFramework.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

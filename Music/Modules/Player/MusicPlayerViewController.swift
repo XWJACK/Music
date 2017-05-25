@@ -274,9 +274,9 @@ class MusicPlayerViewController: MusicViewController {
         
         MusicResourceManager.default.register(resource.id, responseBlock: { self.player?.respond(with: $0) }, lyricBlock: { (model) in
             guard let lyric = model?.lyric else { return }
-            DispatchQueue.global().async {
+            ThreadManager.default.playerQueue.async {
                 self.lyricParser = LyricParser(lyric)
-                DispatchQueue.main.async {
+                ThreadManager.default.main.async {
                     self.lyricTableView.reloadData()
                 }
             }
@@ -339,11 +339,18 @@ class MusicPlayerViewController: MusicViewController {
     }
     
     fileprivate func updateLyric(_ time: TimeInterval) {
-        guard let lyricParser = lyricParser, !lyricTableView.isDragging else { return }
+        guard let lyricParser = lyricParser else { return }
         
-        let index: Int = lyricParser.timeLyric.index(where: { $0.time > time }) ?? lyricParser.timeLyric.count
-        let offSet: CGFloat = CGFloat(index - 1) * lyricCellHeight - lyricInsert
+        /// 0..<lyricParser.timeLyric.count
+        let index: Int = (lyricParser.timeLyric.index(where: { $0.time > time }) ?? lyricParser.timeLyric.count) - 1
+        let offSet: CGFloat = CGFloat(index) * lyricCellHeight - lyricInsert
         
+        for i in 0..<lyricParser.timeLyric.count {
+            guard let cell = lyricTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? MusicLyricTableViewCell else { continue }
+            cell.lyricLabel.textColor = i != index ? .lightGray : .white
+        }
+        
+        guard !lyricTableView.isDragging else { return }
         lyricTableView.setContentOffset(CGPoint(x: 0, y: offSet), animated: true)
     }
     
@@ -406,7 +413,7 @@ extension MusicPlayerViewController {
         case .download:
             guard let resource = resource else { return }
             MusicResourceManager.default.download(resource, successBlock: {
-                DispatchQueue.main.async {
+                ThreadManager.default.main.async {
                     self.downloadButton.mode = .downloaded
                 }
             })
@@ -414,9 +421,9 @@ extension MusicPlayerViewController {
             let controller = UIAlertController(title: "Delete this Music?", message: nil, preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 guard let resource = self.resource else { return }
-                DispatchQueue.global().async {
+                ThreadManager.default.resourceQueue.async {
                     MusicResourceManager.default.delete(resource)
-                    DispatchQueue.main.async {
+                    ThreadManager.default.main.async {
                         sender.mode = .download
                         self.view.makeToast("Delete Music Successful")
                     }
@@ -461,14 +468,14 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     
     func streamAudioPlayerCompletedParsedAudioInfo(_ player: StreamAudioPlayer) {
         ConsoleLog.verbose("streamAudioPlayerCompletedParsedAudioInfo")
-        DispatchQueue.main.async {
+        ThreadManager.default.main.async {
             self.timeSlider.isEnabled = true
         }
     }
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, didCompletedPlayFromTime time: TimeInterval) {
         ConsoleLog.verbose("didCompletedSeekToTime: " + "\(time)")
-        DispatchQueue.main.async {
+        ThreadManager.default.main.async {
             self.dismissBuffingStatus()
             guard self.controlButton.mode == .paused else { return }
             self.player?.play()
@@ -476,7 +483,7 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     }
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, didCompletedPlayAudio isEnd: Bool) {
-        DispatchQueue.main.async {
+        ThreadManager.default.main.async {
             if isEnd {
                 self.nextTrack()
             } else {
@@ -496,7 +503,7 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     //    }
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedProgress progress: Progress) {
-        DispatchQueue.main.async {
+        ThreadManager.default.main.async {
             self.timeSlider.buffProgress(progress)
             if progress.fractionCompleted > 0.01 && self.controlButton.mode == .paused {
                 self.player?.play()
@@ -535,7 +542,7 @@ extension MusicPlayerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicLyricTableViewCell.reuseIdentifier, for: indexPath) as? MusicLyricTableViewCell else { return MusicLyricTableViewCell() }
         cell.indexPath = indexPath
-        cell.lyric(lyricParser?.timeLyric[indexPath.row].lyric ?? "")
+        cell.lyricLabel.text = lyricParser?.timeLyric[indexPath.row].lyric ?? ""
         return cell
     }
 }

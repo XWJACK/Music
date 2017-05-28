@@ -21,23 +21,34 @@ enum MusicPlayerStatus {
 
 class MusicPlayerViewController: MusicViewController {
     
-    /// UI
-    fileprivate let effectView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    //MARK: - UI property
+    
+    //MARK: - Base View
+    
     fileprivate let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "background_default_dark-ip5"))
+    fileprivate let effectView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
 //    fileprivate let maskBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_background_mask-ip5"))
+    
+    //MARK: - Display View
     
     fileprivate let displayView: UIView = UIView()
     fileprivate let coverView: MusicPlayerCoverView = MusicPlayerCoverView()
+    
+    //MARK: - Action View
     
     fileprivate let actionView: UIView = UIView()
     fileprivate let downloadButton: MusicPlayerDownloadButton = MusicPlayerDownloadButton(type: .custom)
     fileprivate let loveButton: MusicPlayerLoveButton = MusicPlayerLoveButton(type: .custom)
     fileprivate let lyricTableView: UITableView = UITableView(frame: .zero, style: .grouped)
     
+    //MARK: - Progress View
+    
     fileprivate let progressView: UIView = UIView()
     fileprivate let currentTimeLabel: UILabel = UILabel()
     fileprivate let timeSlider: MusicPlayerSlider = MusicPlayerSlider()
     fileprivate let durationTimeLabel: UILabel = UILabel()
+    
+    //MARK: - Control View
     
     fileprivate let controlView: UIView = UIView()
     fileprivate let playModeButton: MusicPlayerModeButton = MusicPlayerModeButton(type: .custom)
@@ -46,7 +57,7 @@ class MusicPlayerViewController: MusicViewController {
     fileprivate let nextButton: UIButton = UIButton(type: .custom)
     fileprivate let listButton: UIButton = UIButton(type: .custom)
     
-    var isHiddenInput: Bool { return resource == nil }
+    //MARK: - Other property
     
     fileprivate var isUserInteraction: Bool = false
     fileprivate var player: StreamAudioPlayer? = nil
@@ -56,6 +67,8 @@ class MusicPlayerViewController: MusicViewController {
     fileprivate var lyricParser: LyricParser?
     fileprivate var lyricCellHeight: CGFloat = 22
     fileprivate var lyricInsert: CGFloat = 14
+    
+    var isHiddenInput: Bool { return resource == nil }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -283,6 +296,8 @@ class MusicPlayerViewController: MusicViewController {
         }, failedBlock: networkBusy)
     }
     
+    //MARK: - Control
+    
     func playCommand() {
         player?.play()
         controlButton.mode = .paused
@@ -300,6 +315,8 @@ class MusicPlayerViewController: MusicViewController {
     func lastTrack() {
         lastButtonClicked(lastButton)
     }
+    
+    //MARK: - Reset
     
     fileprivate func reset() {
         player?.stop()
@@ -319,6 +336,8 @@ class MusicPlayerViewController: MusicViewController {
         MusicResourceManager.default.unRegister(resource?.id ?? "No Resource")
     }
     
+    //MARK: - Timer
+    
     fileprivate func createTimer() {
         timer = Timer(timeInterval: 0.1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
         RunLoop.main.add(timer!, forMode: .commonModes)
@@ -328,6 +347,8 @@ class MusicPlayerViewController: MusicViewController {
         timer?.invalidate()
         timer = nil
     }
+    
+    //MARK: - Refresh
     
     @objc fileprivate func refresh() {
         guard !isUserInteraction,
@@ -367,6 +388,8 @@ class MusicPlayerViewController: MusicViewController {
     fileprivate func post(status: MusicPlayerStatus) {
         NotificationCenter.default.post(name: .playStatusChange, object: nil, userInfo: ["Status": status])
     }
+    
+    //MARK: - Buffing Status
     
     fileprivate func showBuffingStatus() {
         player?.pause()

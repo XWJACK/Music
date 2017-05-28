@@ -25,6 +25,7 @@ struct LyricParser {
         /// ["03:20.140", "逆着洋流独自游到底"]
         /// ["03:26.700", "年少时候虔诚发过的誓"]
         let clearRow: [[String.CharacterView.SubSequence]] = row.map{ $0.split(separator: "]") }
+        /// Filter error formatter
         let fixRow: [[String.CharacterView.SubSequence]] = clearRow.filter{ $0.count == 2 }.map{ [$0[0].dropFirst(), $0[1]] }
         
         stringLyric = fixRow.map{ (String($0[0]), String($0[1])) }

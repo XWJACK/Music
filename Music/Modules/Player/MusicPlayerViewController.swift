@@ -286,10 +286,16 @@ class MusicPlayerViewController: MusicViewController {
         controlButton.mode = .paused
         
         MusicResourceManager.default.register(resource.id, responseBlock: { self.player?.respond(with: $0) }, lyricBlock: { (model) in
-            guard let lyric = model?.lyric else { return }
-            ThreadManager.default.playerQueue.async {
-                self.lyricParser = LyricParser(lyric)
+            if let lyric = model?.lyric {
+                ThreadManager.default.playerQueue.async {
+                    self.lyricParser = LyricParser(lyric)
+                    ThreadManager.default.main.async {
+                        self.lyricTableView.reloadData()
+                    }
+                }
+            } else {
                 ThreadManager.default.main.async {
+                    self.lyricParser = nil
                     self.lyricTableView.reloadData()
                 }
             }
@@ -327,13 +333,13 @@ class MusicPlayerViewController: MusicViewController {
         player = StreamAudioPlayer()
         player?.delegate = self
         
-        createTimer()
-        
         timeSlider.isEnabled = false
         timeSlider.resetProgress()
         dismissBuffingStatus()
         
         MusicResourceManager.default.unRegister(resource?.id ?? "No Resource")
+        
+        createTimer()
     }
     
     //MARK: - Timer
@@ -559,13 +565,13 @@ extension MusicPlayerViewController: UITableViewDelegate {
 extension MusicPlayerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lyricParser?.timeLyric.count ?? 0
+        return lyricParser?.timeLyric.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicLyricTableViewCell.reuseIdentifier, for: indexPath) as? MusicLyricTableViewCell else { return MusicLyricTableViewCell() }
         cell.indexPath = indexPath
-        cell.lyricLabel.text = lyricParser?.timeLyric[indexPath.row].lyric ?? ""
+        cell.lyricLabel.text = lyricParser?.timeLyric[indexPath.row].lyric ?? "No Lyric"
         return cell
     }
 }

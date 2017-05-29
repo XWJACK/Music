@@ -56,5 +56,6 @@ class MusicPlayerSlider: UISlider {
     func loading(_ isLoading: Bool) {
         indicator.isHidden = !isLoading
         if isLoading { indicator.startAnimating() }
+        else { indicator.stopAnimating() }
     }
 }

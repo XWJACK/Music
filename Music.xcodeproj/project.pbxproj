@@ -76,7 +76,6 @@
 		0405765E1EB3441A00FE8987 /* PlayerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
 		0405766B1EB347D900FE8987 /* MusicListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicListViewController.swift; path = Modules/MusicList/MusicListViewController.swift; sourceTree = "<group>"; };
 		0405766E1EB34AA400FE8987 /* MusicPlayerSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerSlider.swift; sourceTree = "<group>"; };
-		040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MusicPlayerViewController.storyboard; path = Music/Modules/Player/MusicPlayerViewController.storyboard; sourceTree = SOURCE_ROOT; };
 		040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayerViewController.swift; path = Music/Modules/Player/MusicPlayerViewController.swift; sourceTree = SOURCE_ROOT; };
 		043693151EC9DB3D00E5FE2D /* MusicPlayerCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerCoverView.swift; sourceTree = "<group>"; };
 		044A1C3D1EC33DFD00179379 /* ThirdFramework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdFramework.swift; sourceTree = "<group>"; };
@@ -150,7 +149,6 @@
 		040576601EB3441A00FE8987 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				040576701EB34B5400FE8987 /* MusicPlayerViewController.storyboard */,
 				040576711EB34B5400FE8987 /* MusicPlayerViewController.swift */,
 			);
 			path = ViewControllers;

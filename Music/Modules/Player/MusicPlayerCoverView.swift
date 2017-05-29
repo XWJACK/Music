@@ -10,8 +10,8 @@ import UIKit
 
 class MusicPlayerCoverView: UIView {
     
-    private let discBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_disc_background"))
-    private let coverImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_cover"))
+//    private let discBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_disc_background"))
+//    private let coverImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_cover"))
     private let albumImageView: UIImageView = UIImageView()
     private let discImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_disc"))
     private let maskImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_mask"))
@@ -19,33 +19,33 @@ class MusicPlayerCoverView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(discBackgroundImageView)
-        addSubview(coverImageView)
+//        addSubview(discBackgroundImageView)
+//        addSubview(coverImageView)
         addSubview(albumImageView)
         addSubview(discImageView)
         addSubview(maskImageView)
         
-        discBackgroundImageView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
+//        discBackgroundImageView.snp.makeConstraints { (make) in
+//            make.edges.equalToSuperview()
+//        }
         
-        coverImageView.snp.makeConstraints { (make) in
+//        coverImageView.snp.makeConstraints { (make) in
+//            make.size.equalTo(discImageView).offset(-80)
+//            make.center.equalToSuperview()
+//        }
+        
+        albumImageView.snp.makeConstraints { (make) in
             make.size.equalTo(discImageView).offset(-80)
             make.center.equalToSuperview()
         }
         
-        albumImageView.snp.makeConstraints { (make) in
-            make.size.equalTo(coverImageView)
-            make.center.equalToSuperview()
-        }
-        
         discImageView.snp.makeConstraints { (make) in
-            make.size.equalTo(discBackgroundImageView)
+            make.size.equalToSuperview()
             make.center.equalToSuperview()
         }
         
         maskImageView.snp.makeConstraints { (make) in
-            make.width.equalTo(discImageView)
+            make.width.equalTo(discImageView).offset(-12)
             make.center.equalToSuperview()
         }
     }
@@ -58,6 +58,6 @@ class MusicPlayerCoverView: UIView {
         albumImageView.kf.setImage(with: url,
                                    placeholder: albumImageView.image ?? #imageLiteral(resourceName: "player_cover_default"),
                                    options: [.forceTransition,
-                                             .transition(.fade(0.5))])
+                                             .transition(.fade(1))])
     }
 }

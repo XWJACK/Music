@@ -10,7 +10,7 @@ import UIKit
 
 class MusicLyricTableViewCell: MusicTableViewCell {
     
-    let lyricLabel: UILabel = UILabel()
+    private let lyricLabel: UILabel = UILabel()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -18,9 +18,7 @@ class MusicLyricTableViewCell: MusicTableViewCell {
         selectionStyle = .none
         isHiddenSeparator = true
         
-        lyricLabel.text = ""
-        lyricLabel.font = .font12
-        lyricLabel.textColor = .lightGray
+        normal(lyric: "")
         lyricLabel.numberOfLines = 0
         lyricLabel.textAlignment = .center
         
@@ -37,5 +35,17 @@ class MusicLyricTableViewCell: MusicTableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func normal(lyric: String? = nil) {
+        if let lyric = lyric { lyricLabel.text = lyric }
+        lyricLabel.font = .font12
+        lyricLabel.textColor = .lightGray
+    }
+    
+    func heightLight(lyric: String? = nil) {
+        if let lyric = lyric { lyricLabel.text = lyric }
+        lyricLabel.font = .font14
+        lyricLabel.textColor = .white
     }
 }

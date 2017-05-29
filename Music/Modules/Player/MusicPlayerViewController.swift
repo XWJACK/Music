@@ -27,7 +27,8 @@ class MusicPlayerViewController: MusicViewController {
     
     fileprivate let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "background_default_dark-ip5"))
     fileprivate let effectView: UIVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-//    fileprivate let maskBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_background_mask-ip5"))
+    fileprivate let maskBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_background_mask-ip5"))
+    fileprivate let mainView: UIView = UIView()
     
     //MARK: - Display View
     
@@ -65,8 +66,8 @@ class MusicPlayerViewController: MusicViewController {
     fileprivate var resource: MusicResource? = nil
     
     fileprivate var lyricParser: LyricParser?
-    fileprivate var lyricCellHeight: CGFloat = 22
-    fileprivate var lyricInsert: CGFloat = 14
+    fileprivate var lyricCellHeight: CGFloat = 26
+    fileprivate var lyricInsert: CGFloat = 12//(actionViewHeight - lyricCellHeight) / 2
     
     var isHiddenInput: Bool { return resource == nil }
     
@@ -83,15 +84,9 @@ class MusicPlayerViewController: MusicViewController {
     
     override func viewDidLoad() {
         
+        view.backgroundColor = .clear
         musicNavigationBar.titleLabel.font = .font18
-        
-        //        addSwipGesture(target: self, action: #selector(left(sender:)), direction: .left)
-        //        addSwipGesture(target: self, action: #selector(right(sender:)), direction: .right)
-        
-        view.addSubview(backgroundImageView)
-        view.addSubview(effectView)
-        
-        super.viewDidLoad()
+        mainView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         displayView.addSubview(coverView)
         
@@ -109,14 +104,19 @@ class MusicPlayerViewController: MusicViewController {
         controlView.addSubview(controlButton)
         controlView.addSubview(nextButton)
         
-//        effectView.addSubview(maskBackgroundImageView)
-        effectView.addSubview(displayView)
-        effectView.addSubview(actionView)
-        effectView.addSubview(progressView)
-        effectView.addSubview(controlView)
+        mainView.addSubview(maskBackgroundImageView)
+        mainView.addSubview(displayView)
+        mainView.addSubview(actionView)
+        mainView.addSubview(progressView)
+        mainView.addSubview(controlView)
         
+        view.addSubview(backgroundImageView)
+        view.addSubview(effectView)
+        view.addSubview(mainView)
         
-        // - Background View
+        super.viewDidLoad()
+        
+        // - Base View
         
         backgroundImageView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -124,19 +124,22 @@ class MusicPlayerViewController: MusicViewController {
         effectView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-//        maskBackgroundImageView.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview()
-//        }
+        mainView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        maskBackgroundImageView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
         
         // - Display View
         
         displayView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            make.top.equalToSuperview().offset(90)
+            make.top.equalToSuperview().offset(88)
         }
         coverView.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
-            make.width.height.equalTo(225)
+            make.width.height.equalTo(234)
         }
         // - Action View
         
@@ -374,7 +377,7 @@ class MusicPlayerViewController: MusicViewController {
         
         for i in 0..<lyricParser.timeLyric.count {
             guard let cell = lyricTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? MusicLyricTableViewCell else { continue }
-            cell.lyricLabel.textColor = i != index ? .lightGray : .white
+            i != index ? cell.normal() : cell.heightLight()
         }
         
         guard !lyricTableView.isDragging else { return }
@@ -571,8 +574,7 @@ extension MusicPlayerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicLyricTableViewCell.reuseIdentifier, for: indexPath) as? MusicLyricTableViewCell else { return MusicLyricTableViewCell() }
         cell.indexPath = indexPath
-        cell.lyricLabel.text = lyricParser?.timeLyric[indexPath.row].lyric ?? "No Lyric"
-        cell.lyricLabel.textColor = .lightGray
+        cell.normal(lyric: lyricParser?.timeLyric[indexPath.row].lyric ?? "No Lyric")
         return cell
     }
 }

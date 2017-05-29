@@ -345,7 +345,7 @@ class MusicPlayerViewController: MusicViewController {
     //MARK: - Timer
     
     fileprivate func createTimer() {
-        timer = Timer(timeInterval: 0.1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+        timer = Timer(timeInterval: 0.5, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
         RunLoop.main.add(timer!, forMode: .commonModes)
     }
     
@@ -572,6 +572,7 @@ extension MusicPlayerViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MusicLyricTableViewCell.reuseIdentifier, for: indexPath) as? MusicLyricTableViewCell else { return MusicLyricTableViewCell() }
         cell.indexPath = indexPath
         cell.lyricLabel.text = lyricParser?.timeLyric[indexPath.row].lyric ?? "No Lyric"
+        cell.lyricLabel.textColor = .lightGray
         return cell
     }
 }

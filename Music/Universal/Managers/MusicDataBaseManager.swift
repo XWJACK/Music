@@ -103,10 +103,10 @@ class MusicDataBaseManager {
     
     private let musicDB: Connection?
     
-    private let resourceControl = Resource(table: Table("Resources"))
+    private let resourceControl = Resource(table: Table("Resource"))
     private let cacheControl = List(table: Table("Cache"))
     private let downloadControl = List(table: Table("Download"))
-    private let leastResourcesControl = Resource(table: Table("LeastResources"))
+    private let leastResourcesControl = Resource(table: Table("LeastResource"))
     
     private let collectionListControl = PlayList(table: Table("CollectionList"))
     private let listDetailControl = PlayList(table: Table("ListDetail"))

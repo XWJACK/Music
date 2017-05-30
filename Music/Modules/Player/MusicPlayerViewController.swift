@@ -317,12 +317,12 @@ class MusicPlayerViewController: MusicViewController {
         controlButton.mode = .playing
     }
     
-    func nextTrack() {
-        nextButtonClicked(nextButton)
+    func lastTrack() {
+        playResource(MusicResourceManager.default.last())
     }
     
-    func lastTrack() {
-        lastButtonClicked(lastButton)
+    func nextTrack() {
+        playResource(MusicResourceManager.default.next())
     }
     
     //MARK: - Reset
@@ -483,11 +483,11 @@ extension MusicPlayerViewController {
     }
     
     @objc fileprivate func lastButtonClicked(_ sender: UIButton) {
-        playResource(MusicResourceManager.default.last())
+        lastTrack()
     }
     
     @objc fileprivate func nextButtonClicked(_ sender: UIButton) {
-        playResource(MusicResourceManager.default.next())
+        nextTrack()
     }
     
     @objc fileprivate func listButtonClicked(_ sender: UIButton) {

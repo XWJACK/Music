@@ -290,14 +290,14 @@ class MusicPlayerViewController: MusicViewController {
         
         MusicResourceManager.default.register(resource.id, responseBlock: { self.player?.respond(with: $0) }, lyricBlock: { (model) in
             if let lyric = model?.lyric {
-                ThreadManager.default.playerQueue.async {
+                DispatchManager.default.playerQueue.async {
                     self.lyricParser = LyricParser(lyric)
-                    ThreadManager.default.main.async {
+                    DispatchManager.default.main.async {
                         self.lyricTableView.reloadData()
                     }
                 }
             } else {
-                ThreadManager.default.main.async {
+                DispatchManager.default.main.async {
                     self.lyricParser = nil
                     self.lyricTableView.reloadData()
                 }
@@ -445,7 +445,7 @@ extension MusicPlayerViewController {
         case .download:
             guard let resource = resource else { return }
             MusicResourceManager.default.download(resource, successBlock: {
-                ThreadManager.default.main.async {
+                DispatchManager.default.main.async {
                     self.downloadButton.mode = .downloaded
                 }
             })
@@ -453,9 +453,9 @@ extension MusicPlayerViewController {
             let controller = UIAlertController(title: "Delete this Music?", message: nil, preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 guard let resource = self.resource else { return }
-                ThreadManager.default.resourceQueue.async {
+                DispatchManager.default.resourceQueue.async {
                     MusicResourceManager.default.delete(resource)
-                    ThreadManager.default.main.async {
+                    DispatchManager.default.main.async {
                         sender.mode = .download
                         self.view.makeToast("Delete Music Successful")
                     }
@@ -500,14 +500,14 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     
     func streamAudioPlayerCompletedParsedAudioInfo(_ player: StreamAudioPlayer) {
         ConsoleLog.verbose("streamAudioPlayerCompletedParsedAudioInfo")
-        ThreadManager.default.main.async {
+        DispatchManager.default.main.async {
             self.timeSlider.isEnabled = true
         }
     }
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, didCompletedPlayFromTime time: TimeInterval) {
         ConsoleLog.verbose("didCompletedSeekToTime: " + "\(time)")
-        ThreadManager.default.main.async {
+        DispatchManager.default.main.async {
             self.dismissBuffingStatus()
             guard self.controlButton.mode == .paused else { return }
             self.player?.play()
@@ -515,7 +515,7 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     }
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, didCompletedPlayAudio isEnd: Bool) {
-        ThreadManager.default.main.async {
+        DispatchManager.default.main.async {
             if isEnd {
                 self.nextTrack()
             } else {
@@ -535,7 +535,7 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
     //    }
     
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedProgress progress: Progress) {
-        ThreadManager.default.main.async {
+        DispatchManager.default.main.async {
             self.timeSlider.buffProgress(progress)
             if progress.fractionCompleted > 0.01 && self.controlButton.mode == .paused {
                 self.player?.play()

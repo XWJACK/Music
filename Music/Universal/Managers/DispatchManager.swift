@@ -1,5 +1,5 @@
 //
-//  ThreadManager.swift
+//  DispatchManager.swift
 //  Music
 //
 //  Created by Jack on 5/22/17.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-final class ThreadManager {
+final class DispatchManager {
     
-    static let `default`: ThreadManager = ThreadManager()
+    static let `default`: DispatchManager = DispatchManager()
     
     /// Audio parse serial queue
     let audioParseQueue: DispatchQueue
@@ -25,8 +25,8 @@ final class ThreadManager {
     var playerQueue: DispatchQueue { return DispatchQueue.global() }
     
     init() {
-        audioParseQueue = DispatchQueue(label: "com.Music.ThreadManager.AudioParse.Serial")
-        resourceQueue = DispatchQueue(label: "com.Music.ThreadManager.MusicResourceManager.background.Serial",
+        audioParseQueue = DispatchQueue(label: "com.Music.DispatchManager.AudioParse.Serial")
+        resourceQueue = DispatchQueue(label: "com.Music.DispatchManager.Resource.background.Serial",
                                       qos: .background)
     }
 }
@@ -34,7 +34,7 @@ final class ThreadManager {
 final class SafeMainDispatchQueue {
     
     private let mainQueueKey = DispatchSpecificKey<String>()
-    private let mainQueueValue: String = "com.Music.ThreadManager.main"
+    private let mainQueueValue: String = "com.Music.DispatchManager.main"
     
     fileprivate static let `default` = SafeMainDispatchQueue()
     

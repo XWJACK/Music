@@ -58,13 +58,15 @@ class MusicResourceManager {
     private var playResources: [String: Client] = [:]
     
     
-    private var threadManager: ThreadManager { return ThreadManager.default }
+    private var threadManager: DispatchManager { return DispatchManager.default }
     private var dataBaseManager: MusicDataBaseManager { return MusicDataBaseManager.default }
     private var fileManager: MusicFileManager { return MusicFileManager.default }
     
     private init() {
         resources = dataBaseManager.getLeastResources()
     }
+    
+    //MARK: - Begin
     
     /// Rest Resources, only effective if identifier is different
     ///
@@ -99,6 +101,8 @@ class MusicResourceManager {
             self.resources[index].resourceSource = .download
         }
     }
+    
+    //MARK: - Player
     
     /// Get Current MusicResource
     ///
@@ -227,6 +231,13 @@ class MusicResourceManager {
         }
     }
     
+    func unRegister(_ resourceId: MusicResourceIdentifier) {
+        playResources[resourceId]?.task.cancel()
+        destoryRegister(resourceId)
+    }
+    
+    //MARK: - Network
+    
     /// Get music info from resource id
     ///
     /// - Parameters:
@@ -254,11 +265,6 @@ class MusicResourceManager {
             .receive(queue: .global(), json: { block(MusicLyricModel($0)) })
             .receive(queue: .global(), failed: { _ in block(nil) })
     }
-    
-    func unRegister(_ resourceId: MusicResourceIdentifier) {
-        playResources[resourceId]?.task.cancel()
-        destoryRegister(resourceId)
-    }
 
     func clear() {
         resources.filter{ $0.resourceSource != .download }.forEach{ $0.resourceSource = .network }
@@ -284,53 +290,59 @@ class MusicResourceManager {
         case .cache:
             ConsoleLog.verbose("Move Cache file to Download")
             guard let url: URL = resource.info?.url else { return }
-            download(resource, withFileURL: url)
-
-            let progress = Progress(totalUnitCount: 1)
-            progress.completedUnitCount = 1
-            
-            successBlock?()
-            progressBlock?(progress)
+            threadManager.resourceQueue.async {
+                self.download(resource, withFileURL: url)
+                
+                let progress = Progress(totalUnitCount: 1)
+                progress.completedUnitCount = 1
+                
+                successBlock?()
+                progressBlock?(progress)
+            }
         case .network:
             ConsoleLog.verbose("Download music file from network")
-            let downloadGroup: DispatchGroup = DispatchGroup()
-            var url: URL?
-            let downloadBlock: (URL) -> () = {
-                MusicNetwork.download($0)
-                    .receive(queue: self.threadManager.resourceQueue, download: {
-                        url = $0
+            threadManager.resourceQueue.async {
+                let downloadGroup: DispatchGroup = DispatchGroup()
+                var url: URL?
+                let downloadBlock: (URL) -> () = {
+                    MusicNetwork.download($0)
+                        .receive(queue: self.threadManager.resourceQueue, download: {
+                            url = $0
+                            downloadGroup.leave()
+                        })
+                }
+                
+                downloadGroup.enter()
+                if let musicUrl = resource.info?.url {
+                    downloadBlock(musicUrl)
+                } else {
+                    self.musicUrl(resource.id, block: { (model) in
+                        resource.info = model
+                        guard let musicUrl: URL = model?.url else { return }
+                        downloadBlock(musicUrl)
+                    })
+                }
+                
+                //TODO: 这里为了保持数据库中数据完整性。
+                if resource.lyric?.lyric == nil {
+                    downloadGroup.enter()
+                    self.lyric(resource.id, block: { (model) in
+                        resource.lyric = model
                         downloadGroup.leave()
                     })
-            }
-            
-            downloadGroup.enter()
-            if let musicUrl = resource.info?.url {
-                downloadBlock(musicUrl)
-            } else {
-                musicUrl(resource.id, block: { (model) in
-                    resource.info = model
-                    guard let musicUrl: URL = model?.url else { return }
-                    downloadBlock(musicUrl)
+                }
+                
+                /// Completed download Info.
+                downloadGroup.notify(queue: self.threadManager.resourceQueue, execute: {
+                    guard let validUrl = url else { return }
+                    self.download(resource, withFileURL: validUrl)
+                    successBlock?()
                 })
             }
-            
-            //TODO: 这里为了保持数据库中数据完整性。
-            if resource.lyric?.lyric == nil {
-                downloadGroup.enter()
-                self.lyric(resource.id, block: { (model) in
-                    resource.lyric = model
-                    downloadGroup.leave()
-                })
-            }
-            
-            /// Completed download Info.
-            downloadGroup.notify(queue: self.threadManager.resourceQueue, execute: {
-                guard let validUrl = url else { return }
-                self.download(resource, withFileURL: validUrl)
-                successBlock?()
-            })
         }
     }
+    
+    //MARK: - private function
     
     private func destoryRegister(_ resourceId: MusicResourceIdentifier) {
         playResources[resourceId] = nil

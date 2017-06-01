@@ -76,10 +76,8 @@ class MusicResourceManager {
     ///   - mode: MusicPlayerPlayMode
     func reset(_ resources: [MusicResource],
                withIdentifier identifier: String,
-               currentResourceIndex: Int,
-               withMode mode: MusicPlayerPlayMode? = nil) {
+               currentResourceIndex: Int) {
         
-        if let mode = mode { self.resourceLoadMode = mode }
         self.currentResourceIndex = currentResourceIndex
         self.currentRandomResourceIndex = randomResourceIndexs.index(of: currentResourceIndex) ?? 0
         
@@ -266,6 +264,8 @@ class MusicResourceManager {
             .receive(queue: .global(), failed: { _ in block(nil) })
     }
 
+    
+    /// Clear Cache
     func clear() {
         resources.filter{ $0.resourceSource != .download }.forEach{ $0.resourceSource = .network }
     }

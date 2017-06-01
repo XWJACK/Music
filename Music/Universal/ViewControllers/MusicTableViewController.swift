@@ -20,7 +20,6 @@ class MusicTableViewController: MusicViewController, UITableViewDataSource, UITa
         effectView = view.addBlurEffect(style: .light)
         view.addSubview(tableView)
         
-        effectView?.alpha = 0.6
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .clear

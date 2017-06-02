@@ -85,7 +85,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
         guard json.isSuccess else { return false }
         apiDatas = json["playlist"].array?.map{ MusicPlayListModel($0) } ?? []
         viewModels = self.apiDatas.map{ $0.musicCollectionListViewModel }
-        DispatchQueue.main.async {
+        DispatchManager.default.main.async {
             self.tableView.reloadData()
         }
         return true
@@ -95,7 +95,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
     private func parseListDetail(_ controller: MusicListViewController, json: JSON) -> Bool {
         guard json.isSuccess else { return false }
         controller.apiDatas = MusicPlayListDetailModel(json["playlist"])
-        DispatchQueue.main.async {
+        DispatchManager.default.main.async {
             controller.tableView.reloadData()
         }
         return true
@@ -128,6 +128,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
         switch (indexPath.section, indexPath.row) {
         case (0, _):
             let listId = localViewModels[indexPath.row].listId
+            controller.title = localViewModels[indexPath.row].title
             DispatchQueue.global().async {
                 controller.listId = listId
                 controller.resources = MusicDataBaseManager.default.downloadList().map{ MusicDataBaseManager.default.get(resourceId: $0) }.filter{ $0 != nil }.map{ $0! }
@@ -137,13 +138,14 @@ final class MusicCollectionListViewController: MusicTableViewController {
                     model.detail = ($0.artist?.name ?? "") + "-" + ($0.album?.name ?? "")
                     return model
                 }
-                DispatchQueue.main.async {
+                DispatchManager.default.main.async {
                     controller.tableView.reloadData()
                 }
             }
         case (1, _):
             let listId = apiDatas[indexPath.row].id
             controller.listId = listId
+            controller.title = apiDatas[indexPath.row].name
             MusicNetwork.send(API.detail(listId: listId))
                 .receive(queue: .global(), json: { (json) in
                     
@@ -152,6 +154,7 @@ final class MusicCollectionListViewController: MusicTableViewController {
                     }
                 })
                 .receive(queue: .global(), failed: { (error) in
+                    controller.view.showToast(networkBusyString)
                     guard let json = MusicDataBaseManager.default.get(listId: listId) else { return }
                     self.parseListDetail(controller, json: json)
                 })

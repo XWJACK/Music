@@ -112,7 +112,7 @@ class MusicDataBaseManager {
     private let listDetailControl = PlayList(table: Table("ListDetail"))
     
     private init() {
-        musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("music.db").path)
+        musicDB = try? Connection(MusicFileManager.default.musicDataBaseURL.appendingPathComponent("Music.db").path)
         
         musicDB?.trace{ ConsoleLog.verbose($0) }
         

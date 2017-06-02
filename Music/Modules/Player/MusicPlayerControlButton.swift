@@ -8,6 +8,15 @@
 
 import UIKit
 
+/// Music Player Status
+enum MusicPlayerStatus {
+    case playing
+    case paused
+    prefix public static func !(a: MusicPlayerStatus) -> MusicPlayerStatus {
+        return a == .playing ? .paused : .playing
+    }
+}
+
 class MusicPlayerControlButton: UIButton {
 
     var mode: MusicPlayerStatus = .paused {

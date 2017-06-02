@@ -22,10 +22,11 @@ final class DispatchManager {
     var main: SafeMainDispatchQueue { return SafeMainDispatchQueue.default }
     
     /// Music player queue
-    var playerQueue: DispatchQueue { return DispatchQueue.global() }
+    var playerQueue: DispatchQueue
     
     init() {
         audioParseQueue = DispatchQueue(label: "com.Music.DispatchManager.AudioParse.Serial")
+        playerQueue = DispatchQueue(label: "com.Music.DispatchManager.MusicPlayer.Serial")
         resourceQueue = DispatchQueue(label: "com.Music.DispatchManager.Resource.background.Serial",
                                       qos: .background)
     }

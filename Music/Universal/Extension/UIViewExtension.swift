@@ -14,4 +14,10 @@ extension UIView {
     func snpEdges() {
         self.snp.makeConstraints { (make) in make.edges.equalToSuperview() }
     }
+    
+    func showToast(_ message: String) {
+        DispatchManager.default.main.async {
+            self.makeToast(message, duration: 1, position: .center)
+        }
+    }
 }

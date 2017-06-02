@@ -92,6 +92,8 @@ final class MusicSearchViewController: MusicTableViewController, UISearchBarDele
                 strongSelf.tableView.reloadData()
             }).receive(response: {[weak self] (json) in
                 self?.tableView.mj_footer.endRefreshing()
+            }).receive(failed: {
+                self.networkBusy($0)
             })
     }
     

@@ -46,12 +46,21 @@ class MusicCenterViewController: MusicTableViewController {
     
     private func clearCache(_ indexPath: IndexPath) {
         guard let cell = self.tableView.cellForRow(at: indexPath) as? MusicCenterClearCacheTableViewCell else { return }
-        cell.indicator.isHidden = false
-        MusicFileManager.default.clearCache {
-            self.cache = "Zero KB"
-            cell.indicator.isHidden = true
-            cell.cacheLabel.text = self.cache
-        }
+        
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "Clear all cache", style: .default, handler: { (action) in
+            cell.indicator.isHidden = false
+            MusicFileManager.default.clearCache {
+                self.cache = "Zero KB"
+                cell.indicator.isHidden = true
+                cell.cacheLabel.text = self.cache
+            }
+        })
+        action.setValue(UIColor.red, forKey: "titleTextColor")
+        controller.addAction(action)
+        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(controller, animated: true, completion: nil)
     }
     
     private func about(_ indexPath: IndexPath) {

@@ -10,15 +10,6 @@ import UIKit
 import MediaPlayer
 import Wave
 
-/// Music Player Status
-enum MusicPlayerStatus {
-    case playing
-    case paused
-    prefix public static func !(a: MusicPlayerStatus) -> MusicPlayerStatus {
-        return a == .playing ? .paused : .playing
-    }
-}
-
 class MusicPlayerViewController: MusicViewController {
     
     //MARK: - UI property
@@ -64,10 +55,12 @@ class MusicPlayerViewController: MusicViewController {
     fileprivate var player: StreamAudioPlayer? = nil
     fileprivate var timer: Timer? = nil
     fileprivate var resource: MusicResource? = nil
+    fileprivate var isBuffering: Bool = false
     
     fileprivate var lyricParser: LyricParser?
     fileprivate var lyricCellHeight: CGFloat = 26
     fileprivate var lyricInsert: CGFloat = 12//(actionViewHeight - lyricCellHeight) / 2
+    fileprivate var lastLyricIndex: Int = 0
     
     var isHiddenInput: Bool { return resource == nil }
     
@@ -308,7 +301,7 @@ class MusicPlayerViewController: MusicViewController {
     //MARK: - Control
     
     func playCommand() {
-        player?.play()
+        if !isBuffering { player?.play() }
         controlButton.mode = .paused
     }
     
@@ -364,8 +357,10 @@ class MusicPlayerViewController: MusicViewController {
             let currentTime = player?.currentTime else { return }
         currentTimeLabel.text = currentTime.musicTime
         timeSlider.value = currentTime.float
-        updateRemoteControl(currentTime)
-        updateLyric(currentTime)
+        self.updateLyric(currentTime)
+        DispatchManager.default.playerQueue.async {
+            self.updateRemoteControl(currentTime)
+        }
     }
     
     fileprivate func updateLyric(_ time: TimeInterval) {
@@ -375,13 +370,16 @@ class MusicPlayerViewController: MusicViewController {
         let index: Int = (lyricParser.timeLyric.index(where: { $0.time > time }) ?? lyricParser.timeLyric.count) - 1
         let offSet: CGFloat = CGFloat(index) * lyricCellHeight - lyricInsert
         
-        for i in 0..<lyricParser.timeLyric.count {
-            guard let cell = lyricTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? MusicLyricTableViewCell else { continue }
-            i != index ? cell.normal() : cell.heightLight()
+        if let cell = self.lyricTableView.cellForRow(at: IndexPath(row: self.lastLyricIndex, section: 0)) as? MusicLyricTableViewCell {
+            cell.normal()
         }
+        if let cell = lyricTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? MusicLyricTableViewCell {
+            cell.heightLight()
+        }
+        lastLyricIndex = index
         
         guard !lyricTableView.isDragging else { return }
-        lyricTableView.setContentOffset(CGPoint(x: 0, y: offSet), animated: true)
+        self.lyricTableView.setContentOffset(CGPoint(x: 0, y: offSet), animated: true)
     }
     
     fileprivate func updateRemoteControl(_ time: TimeInterval) {
@@ -403,10 +401,12 @@ class MusicPlayerViewController: MusicViewController {
     fileprivate func showBuffingStatus() {
         player?.pause()
         timeSlider.loading(true)
+        isBuffering = true
     }
     
     fileprivate func dismissBuffingStatus() {
         timeSlider.loading(false)
+        isBuffering = false
     }
 }
 
@@ -421,8 +421,7 @@ extension MusicPlayerViewController {
     @objc fileprivate func timeSliderSeek(_ sender: MusicPlayerSlider) {
         isUserInteraction = false
         if player?.seek(toTime: TimeInterval(sender.value)) == true {
-            player?.play()
-            controlButton.mode = .paused
+            playCommand()
         } else {
             showBuffingStatus()
             ConsoleLog.verbose("timeSliderSeek to time: " + "\(sender.value)" + " but need to watting")
@@ -510,7 +509,7 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
         DispatchManager.default.main.async {
             self.dismissBuffingStatus()
             guard self.controlButton.mode == .paused else { return }
-            self.player?.play()
+            self.playCommand()
         }
     }
     
@@ -524,28 +523,11 @@ extension MusicPlayerViewController: StreamAudioPlayerDelegate {
         }
     }
     
-    //    func streamAudioPlayer(_ player: StreamAudioPlayer, queueStatusChange status: AudioQueueStatus) {
-    //        DispatchQueue.main.async {
-    //            switch status {
-    //            case .playing: self.controlButton.mode = .paused
-    //            case .paused: self.controlButton.mode = .playing
-    //            case .stop: self.controlButton.mode = .playing
-    //            }
-    //        }
-    //    }
-    
     func streamAudioPlayer(_ player: StreamAudioPlayer, parsedProgress progress: Progress) {
         DispatchManager.default.main.async {
             self.timeSlider.buffProgress(progress)
-            if progress.fractionCompleted > 0.01 && self.controlButton.mode == .paused {
-                self.player?.play()
-            }
         }
     }
-    
-    //    func streamAudioPlayer(_ player: StreamAudioPlayer, anErrorOccur error: WaveError) {
-    //        ConsoleLog.error(error)
-    //    }
 }
 
 // MARK: - UITableViewDelegate

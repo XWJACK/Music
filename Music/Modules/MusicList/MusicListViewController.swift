@@ -31,8 +31,6 @@ final class MusicListViewController: MusicTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Music List"
-        
         let rightButton = MusicButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         rightButton.addTarget(self, action: #selector(actionButtonClicked(_:)), for: .touchUpInside)
         musicNavigationBar.rightButton = rightButton

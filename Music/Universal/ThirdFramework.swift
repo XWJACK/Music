@@ -93,7 +93,7 @@ let API = MusicAPI.default
 
 //MARK: - Lotus
 import Lotus
-let MusicNetwork = Lotus.Session.default
+let MusicNetwork = Lotus.Center.default
 typealias Client = Lotus.Client
 
 extension JSON {

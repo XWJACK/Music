@@ -6,7 +6,7 @@ PODS:
   - MJRefresh (3.1.12)
   - MusicAPI (0.1.0):
     - Alamofire
-  - PageKit (0.1.1)
+  - PageKit (0.2.0)
   - Reveal-SDK (4)
   - SnapKit (3.2.0)
   - SQLite.swift (0.11.2):
@@ -23,7 +23,7 @@ DEPENDENCIES:
   - Lotus (from `git@github.com:XWJACK/Lotus.git`, commit `96eda6b`)
   - MJRefresh
   - MusicAPI (from `git@github.com:XWJACK/MusicAPI.git`, commit `2138e41`)
-  - PageKit (from `git@github.com:XWJACK/PageKit.git`, commit `8538ac0`)
+  - PageKit (from `git@github.com:XWJACK/PageKit.git`, commit `ea41fc4`)
   - Reveal-SDK (~> 4)
   - SnapKit
   - SQLite.swift
@@ -42,7 +42,7 @@ EXTERNAL SOURCES:
     :commit: 2138e41
     :git: git@github.com:XWJACK/MusicAPI.git
   PageKit:
-    :commit: 8538ac0
+    :commit: ea41fc4
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
     :commit: 0580690
@@ -59,7 +59,7 @@ CHECKOUT OPTIONS:
     :commit: 2138e41
     :git: git@github.com:XWJACK/MusicAPI.git
   PageKit:
-    :commit: 8538ac0
+    :commit: ea41fc4
     :git: git@github.com:XWJACK/PageKit.git
   Wave:
     :commit: 0580690
@@ -72,7 +72,7 @@ SPEC CHECKSUMS:
   Lotus: 86bd974744eb6ec721e58e0e7890e51c6f59731b
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   MusicAPI: 58e256fe639071f7e28c57eaaee079a75ef2f58e
-  PageKit: a3aa5403687a1c7a3608501597c0859eec43d160
+  PageKit: 3ba17382abcdd87ce3d070b5674f9475493ca56b
   Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
@@ -80,6 +80,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 5b2f8f720f7e78e48511f693df1f9c9a6e38a25a
   Wave: 5e47327f03f12343638464edaa6e32ca88a30c35
 
-PODFILE CHECKSUM: dc41bba55b5fa93b4e5821e19daba99543f78bb4
+PODFILE CHECKSUM: fd31b14ab232e60c2eac58a1ad86294d9a25ed89
 
 COCOAPODS: 1.2.1

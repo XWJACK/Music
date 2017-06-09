@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MusicPlayerCoverView: UIView {
+class MusicPlayerCoverView: CycleContainer {
     
 //    private let discBackgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_disc_background"))
 //    private let coverImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "player_cover"))

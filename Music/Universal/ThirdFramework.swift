@@ -85,6 +85,9 @@ import Wave
 
 //MARK: - PageKit
 import PageKit
+typealias Container = PageKit.Container
+typealias ReuseContainer = PageKit.ReuseContainer
+typealias CycleContainer = PageKit.CycleContainer
 
 //MARK: - Music API
 

@@ -433,10 +433,9 @@ extension MusicPlayerViewController {
 extension MusicPlayerViewController {
     
     @objc fileprivate func loveButtonClicked(_ sender: MusicPlayerLoveButton) {
-        //        guard let id = resourceId else { return }
-        //        MusicNetwork.default.request(API.default.like(musicID: id, isLike: sender.mode == .love), success: {
-        //            if $0.isSuccess { sender.mode = !sender.mode }
-        //        })
+//        guard let id = resource?.id else { return }
+//        MusicNetwork.send(API.like(musicID: id, isLike: sender.mode == .love))
+//            .receive(json: { if $0.isSuccess { sender.mode = !sender.mode } })
     }
     
     @objc fileprivate func downloadButtonClicked(_ sender: MusicPlayerDownloadButton) {

@@ -10,7 +10,7 @@ pod 'PageKit', :git => 'git@github.com:XWJACK/PageKit.git', :commit => '8538ac0'
 pod 'Wave', :git => 'git@github.com:XWJACK/Wave.git', :commit => '0580690'
 pod 'Log', :git => 'git@github.com:XWJACK/Log.git', :commit => 'f44457e'
 pod 'MusicAPI', :git => 'git@github.com:XWJACK/MusicAPI.git', :commit => '2138e41'
-pod 'Lotus', :git => 'git@github.com:XWJACK/Lotus.git', :commit => '96eda6b'
+pod 'Lotus', :git => 'git@github.com:XWJACK/Lotus.git', :commit => '0f07735'
 
 pod 'SnapKit'
 pod 'Alamofire'

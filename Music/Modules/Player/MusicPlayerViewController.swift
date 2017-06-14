@@ -442,6 +442,7 @@ extension MusicPlayerViewController {
         switch sender.mode {
         case .download:
             guard let resource = resource else { return }
+            sender.mode = .disable
             MusicResourceManager.default.download(resource, successBlock: {
                 DispatchManager.default.main.async {
                     self.downloadButton.mode = .downloaded
